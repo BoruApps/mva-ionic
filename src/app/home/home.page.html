@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Home</ion-title>
+</ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class="ion-text-center navbar-brand ng-binding navbar_p_spacing">Scan the Sample Barcode</div>
+    <ion-card class="action-card">
+        <ion-item>      
+            <ion-input class="transparent" name="barcodenumber" id="barcodenumber" type="text" placeholder="Type your Barcode Number"></ion-input>
+        </ion-item>
+        <ion-card-content>
+          <div class="ion-padding">
+            <ion-button id="submit-button" color="secondary" #ln size="large" type="submit" expand="block">Barcode Scan</ion-button>
+          </div>
+        </ion-card-content>
+    </ion-card>
+</ion-content>
