@@ -1,0 +1,7 @@
+{
+  "name": "mva-ionic",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
