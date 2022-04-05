@@ -1,0 +1,22 @@
+:host {
+  background-position: left;
+}
+
+ion-content.loginPage {
+  --keyboard-offset: 0;
+  --background: transparent;
+}
+
+.pardonTop {
+  margin-top: 40%;
+}
+
+.button-disabled {
+  --opacity: .95 !important;
+  --background: var(--ion-color-medium) !important;
+}
+
+.item-native {
+  background-color: rgba(101, 101, 101, 0.51) !important;
+  color: white !important;
+}

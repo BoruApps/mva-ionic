@@ -1,7 +1,6 @@
 {
   "name": "mva-ionic",
   "integrations": {
-    "capacitor": {},
     "cordova": {}
   },
   "type": "angular"
