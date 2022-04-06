@@ -119,7 +119,7 @@ export class LoginPage implements OnInit {
               this.userdata = userdata;
               this.userdata['theme'] = 'Light';
               this.storage.set('userdata', this.userdata);
-              // this.navCtrl.navigateForward('/tabs/services');
+              this.navCtrl.navigateForward('/home');
               
             } else {
               console.log('login failed');
@@ -132,7 +132,7 @@ export class LoginPage implements OnInit {
           });
     } else if (origin == 'auto') {
       console.log('auto login from session');
-      // this.navCtrl.navigateForward('/tabs/services');
+      this.navCtrl.navigateForward('/home');
     }
     return false;
   }
