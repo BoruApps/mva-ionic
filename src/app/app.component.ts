@@ -13,8 +13,36 @@ export class AppComponent {
   Pages = [
     {
       title: 'Dashboard',
-      url: '',
+      url: 'home',
       icon: 'albums'
+    },{
+      title: 'Sample Summary',
+      url: 'home',
+      icon: 'albums',
+      submenu:[
+        {
+          title: 'tab1',
+          url: 'home',
+          icon: 'albums'
+        },
+        {
+          title: 'tab2',
+          url: 'home',
+          icon: 'albums'
+        }
+      ]
+    },{
+      title: 'Results',
+      url: 'home',
+      icon: 'document'
+    },{
+      title: 'Profile',
+      url: 'home',
+      icon: 'person'
+    },{
+      title: 'Logout',
+      url: 'home',
+      icon: 'log-out'
     },
   ];
   constructor(
