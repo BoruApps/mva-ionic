@@ -1,0 +1,36 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button autoHide="false"></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Profile</ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-card class="action-card">
+        <ion-item>
+            <ion-icon name='id-card-outline' color="secondary"></ion-icon>
+            <ion-text color="warning">
+                <p>&nbsp;&nbsp;{{userdata?.firstname}} {{userdata?.lastname}}</p>
+            </ion-text>
+        </ion-item>
+        <ion-item>
+            <ion-icon name='mail-outline' color="secondary"></ion-icon>
+            <ion-text color="warning">
+                <p>&nbsp;&nbsp;{{userdata?.email}}</p>
+            </ion-text>
+        </ion-item>
+        <ion-item>
+            <ion-icon name="phone-portrait-outline" color="secondary"></ion-icon>
+            <ion-text color="warning">
+                <p>&nbsp;&nbsp;{{userdata?.phone}}</p>
+            </ion-text>
+        </ion-item>
+        <ion-item>
+            <ion-icon name='accessibility-outline' color="secondary"></ion-icon>
+            <ion-text color="warning">
+                <p>&nbsp;&nbsp;{{userdata?.accountname}}</p>
+            </ion-text>
+        </ion-item>
+    </ion-card>
+</ion-content>
