@@ -9,9 +9,18 @@
       <ion-content color="primary">
         <ion-list id="inbox-list">
           <ion-menu-toggle auto-hide="false" *ngFor="let pages of Pages; let i = index">
-            <ion-item (click)="activeIndex = i" routerDirection="root" [routerLink]="[pages.url]" lines="none"
+
+            <!--redirect call for logout menu-->
+            <ion-item *ngIf="pages.url != 'logout' " (click)="activeIndex = i" routerDirection="root" [routerLink]="[pages.url]" lines="none"
               detail="false" [class.selected]="activeIndex == i" color="primary">
-              <ion-icon slot="start" [ios]="pages.icon + '-outline'" [md]="pages.icon + '-sharp'"></ion-icon>
+              <ion-icon slot="start" [name]="pages.icon+ '-outline'"></ion-icon>
+              <ion-label>{{ pages.title }}</ion-label>
+            </ion-item>
+            
+            <!--function call for logout menu-->
+            <ion-item *ngIf="pages.url == 'logout' " (click)="logoutUser()" lines="none"
+              detail="false" [class.selected]="activeIndex == i" color="primary">
+              <ion-icon slot="start" [name]="pages.icon+ '-outline'"></ion-icon>
               <ion-label>{{ pages.title }}</ion-label>
             </ion-item>
           </ion-menu-toggle>
