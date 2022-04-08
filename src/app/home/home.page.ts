@@ -5,6 +5,8 @@ import {HttpHeaders, HttpClient} from '@angular/common/http';
 import {AppConstants} from '../providers/constant/constant';
 import {LoadingController} from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
+import { AlertController } from '@ionic/angular';
+import { TestBed, async } from '@angular/core/testing';
 
 @Component({
     selector: 'app-home',
@@ -24,6 +26,7 @@ export class HomePage implements OnInit {
       private httpClient: HttpClient,
       public appConst: AppConstants,
       private navCtrl: NavController,
+      public alertController: AlertController,
       public loadingController: LoadingController
       ) {
         this.apiurl = this.appConst.getApiUrl();
@@ -51,11 +54,11 @@ export class HomePage implements OnInit {
         return await this.loading.present();
     }
     async hideLoading() {
-        setTimeout(() => {
+        //setTimeout(() => {
             if(this.loading != undefined){
                 this.loading.dismiss();
             }
-        }, 1000);
+        //}, 1000);
     }
     async presentToast(message: string) {
         var toast = await this.toastController.create({
@@ -75,6 +78,23 @@ export class HomePage implements OnInit {
             this.scansample();
         }
     }
+    async confirmCancelImage(header,message){
+        const alert = await this.alertController.create({
+            cssClass: 'my-custom-class',
+            header: header,
+            message: message,
+            buttons: [
+                {
+                    text: 'OK',
+                    role: 'cancel',
+                    cssClass: 'secondary',
+                    handler: (blah) => {}
+                },
+            ]
+        });
+
+        await alert.present();
+    }
     async scansample(){
         var data = {
             samplenumber: this.barcodenumber,
@@ -85,19 +105,26 @@ export class HomePage implements OnInit {
         headers.append('Access-Control-Allow-Origin', '*');
         this.showLoading();
         this.httpClient.post(this.apiurl + "scanasample.php", data, {headers: headers,observe: 'response'
-        }).subscribe(data => {
+        }).subscribe(async data => {
             var verified = data['body']['success'];
             if (verified == true) {
+                console.log('IF = ',data);
                 this.hideLoading();
                 this.storage.set('barcode', this.barcodenumber);
                 this.getrelatedAsset(this.barcodenumber);
             } else {
+                console.log('ELSE');
                 this.hideLoading();
-                this.presentToast('This barcode number does not exist. Please verify the barcode and enter the correct number above.');
+                //this.presentToast('This barcode number does not exist. Please verify the barcode and enter the correct number above.');
+                var message = 'This barcode number does not exist. Please verify the barcode and enter the correct number above.';
+                this.confirmCancelImage('Sample Status',message)
             }
-        }, error => {
+        }, async error => {
+            console.log('Error');
             this.hideLoading();
-            this.presentToast('This barcode number does not exist. Please verify the barcode and enter the correct number above.');
+            //this.presentToast('This barcode number does not exist. Please verify the barcode and enter the correct number above.');
+            var message = 'This barcode number does not exist. Please verify the barcode and enter the correct number above.';
+            this.confirmCancelImage('Sample Status',message)
         });
     }
     async getrelatedAsset(barcode,assetsonly = false,assetid = 0){
@@ -114,8 +141,13 @@ export class HomePage implements OnInit {
         this.httpClient.post(this.apiurl + "OrderTests.php", data, {headers: headers,observe: 'response'
         }).subscribe(data => {
             var verified = data['body']['success'];
+            var data = data['body']['data'];
+            console.log('status === ',data.status);
             if (verified == true) {
                 this.hideLoading();
+                if(data.status){
+                    this.confirmCancelImage('Sample Status',data.status);
+                }
             } else {
                 this.hideLoading();
                 this.presentToast('Not Found.');
