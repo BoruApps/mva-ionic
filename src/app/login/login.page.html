@@ -14,15 +14,31 @@
             <ion-item>
               <ion-icon slot="start" name="mail-outline" color="secondary"></ion-icon>
               <ion-label position="floating">Your Email</ion-label>
-              <ion-input #un class="transparent" name="username" type="email" ngModel required autocomplete clear-input inputmode="email" (keyup)="movefocus($event, pw)"></ion-input>
+              <ion-input #un class="transparent" name="username" 
+                         type="email" required autocomplete clear-input 
+                         inputmode="email"
+                         [(ngModel)]="username"
+                         (ionBlur)="checkTermAndConditions()"
+              ></ion-input>
             </ion-item>
 
             <ion-item>
               <ion-icon slot="start" name="lock-closed-outline" color="secondary"></ion-icon>
               <ion-label position="floating">Your Password</ion-label>
-              <ion-input #pw class="transparent" name="password" type="password" ngModel required clear-input (keyup)="submit($event, ln)"></ion-input>
+              <ion-input #pw class="transparent" name="password" type="password" 
+                         required clear-input 
+                         [(ngModel)]="password"></ion-input>
             </ion-item>
             
+          </div>
+          <div class="ion-padding" *ngIf="isTermChecked">
+              <label class="checkbox-inline term-block">
+                <ion-checkbox name="termandcondition" [(ngModel)]="termConditionCheckbox"></ion-checkbox>
+                  Click to agree to 
+                <a (ionClick)="openTermAndConditions()">
+                  MVA Terms and Conditions of Use and License.
+                </a>
+              </label>
           </div>
           <div class="ion-padding">
             <ion-button id="submit-button" color="secondary" #ln size="large" type="submit" [disabled]="form.invalid" expand="block">Login</ion-button>

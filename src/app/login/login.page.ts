@@ -16,6 +16,10 @@ export class LoginPage implements OnInit {
   apiurl: any;
   vturl: any;
   userdata: Object;
+  username: string;
+  password: string;
+  isTermChecked: boolean;
+  termConditionCheckbox: boolean = false;
 
   constructor(
       private router: Router,
@@ -57,20 +61,6 @@ export class LoginPage implements OnInit {
     toast.present();
   }
 
-  movefocus(e, ref) {
-    if (e.key == "Enter") {
-      ref.setFocus();
-    }
-  }
-
-  submit(e, ref) {
-    if (e.key == "Enter") {
-      console.log('submitting');
-      let el: HTMLElement = document.getElementById('submit-button') as HTMLElement;
-      el.click()
-    }
-  }
-
   async ngOnInit() {
     await this.storage.create();
     
@@ -97,6 +87,12 @@ export class LoginPage implements OnInit {
 
   login(form: any, origin: any) {
     console.log('login function accessed');
+    
+    if (!this.termConditionCheckbox){
+      console.log('You must agree to MVA Terms and Conditions of Use and License to continue.');
+      this.presentToast('You must agree to MVA Terms and Conditions of Use and License to continue.');
+      return false;
+    } 
     
     var headers = new HttpHeaders();
     headers.append("Accept", 'application/json');
@@ -135,5 +131,48 @@ export class LoginPage implements OnInit {
       this.navCtrl.navigateForward('/home');
     }
     return false;
+  }
+
+  checkTermAndConditions(){
+      var data = {
+        _operation: 'terms',
+        username: this.username,
+      };
+
+    var headers = new HttpHeaders();
+    headers.append("Accept", 'application/json');
+    headers.append('Content-Type', 'application/json');
+    headers.append('Access-Control-Allow-Origin', '*');
+
+    this.httpClient.post(this.apiurl + "termsconditions.php", data, {headers: headers, observe: 'response'})
+        .subscribe(data => {
+          this.hideLoading();
+
+          var verified = data['body']['success'];
+
+          if (verified == true) {
+            var userdata = data['body']['data'];
+            
+            if(userdata.termsconditions == 0){
+              this.isTermChecked = false;
+            }else if(userdata.termsconditions == 1){
+              this.isTermChecked = true;
+            }else{
+              console.log('Wrong Username');
+              this.username = '';
+              this.password = '';
+              this.presentToast('Wrong Username. Please try Again');
+            }
+          }else{
+            console.log('Wrong Username');
+            this.username = '';
+            this.password = '';
+            this.presentToast('Wrong Username. Please try Again');
+          }
+      });
+  }
+
+  openTermAndConditions(){
+    console.log('opne pdf')
   }
 }
