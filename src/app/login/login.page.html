@@ -1,50 +1,57 @@
 <ion-content class="loginPage">
-  <form #form="ngForm" (ngSubmit)="login(form, 'manual')" class="pardonTop" validate >
-    <ion-grid style="height: 100%">
-      <ion-row class="ion-align-items-center ion-justify-content-center justify-content-center" color="primary" style="height: 100%">
-        <ion-col class="align-self-center" size-md="6" size-lg="5" size-xs="12">
-          <div class="ion-text-center">
-            <div align="center" style="padding-top:25px; ">
-              <img src="assets/img/MVA_Logo.png" height="100" width="100">
-            </div>
-            <h3 class="loginTitle">Sign in</h3>
-          </div>
-          <div class="ion-padding">
+    <form #form="ngForm" (ngSubmit)="login(form, 'manual')" class="pardonTop" validate>
+        <ion-grid style="height: 100%">
+            <ion-row class="ion-align-items-center ion-justify-content-center justify-content-center" color="primary"
+                     style="height: 100%">
+                <ion-col class="align-self-center" size-md="6" size-lg="5" size-xs="12">
+                    <div class="ion-text-center">
+                        <div align="center" style="padding-top:25px; ">
+                            <img src="assets/img/MVA_Logo.png" height="100" width="100">
+                        </div>
+                        <h3 class="loginTitle">Sign in</h3>
+                    </div>
+                    <div class="ion-padding">
 
-            <ion-item>
-              <ion-icon slot="start" name="mail-outline" color="secondary"></ion-icon>
-              <ion-label position="floating">Your Email</ion-label>
-              <ion-input #un class="transparent" name="username" 
-                         type="email" required autocomplete clear-input 
-                         inputmode="email"
-                         [(ngModel)]="username"
-                         (ionBlur)="checkTermAndConditions()"
-              ></ion-input>
-            </ion-item>
+                        <ion-item>
+                            <ion-icon slot="start" name="mail-outline" color="secondary"></ion-icon>
+                            <ion-label position="floating">Your Email</ion-label>
+                            <ion-input #un class="transparent" name="username"
+                                       type="email" required autocomplete clear-input
+                                       inputmode="email"
+                                       [(ngModel)]="username"
+                                       (ionBlur)="checkTermAndConditions()"
+                            ></ion-input>
+                        </ion-item>
 
-            <ion-item>
-              <ion-icon slot="start" name="lock-closed-outline" color="secondary"></ion-icon>
-              <ion-label position="floating">Your Password</ion-label>
-              <ion-input #pw class="transparent" name="password" type="password" 
-                         required clear-input 
-                         [(ngModel)]="password"></ion-input>
-            </ion-item>
-            
-          </div>
-          <div class="ion-padding" *ngIf="isTermChecked">
-              <label class="checkbox-inline term-block">
-                <ion-checkbox name="termandcondition" [(ngModel)]="termConditionCheckbox"></ion-checkbox>
-                  Click to agree to 
-                <a (ionClick)="openTermAndConditions()">
-                  MVA Terms and Conditions of Use and License.
-                </a>
-              </label>
-          </div>
-          <div class="ion-padding">
-            <ion-button id="submit-button" color="secondary" #ln size="large" type="submit" [disabled]="form.invalid" expand="block">Login</ion-button>
-          </div>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </form>
+                        <ion-item>
+                            <ion-icon slot="start" name="lock-closed-outline" color="secondary"></ion-icon>
+                            <ion-label position="floating">Your Password</ion-label>
+                            <ion-input #pw class="transparent" name="password" type="password"
+                                       required clear-input
+                                       [(ngModel)]="password"></ion-input>
+                        </ion-item>
+
+                    </div>
+
+                    <ion-item *ngIf="!isTermChecked" lines="none" class="ion-padding term-block">
+                        <ion-checkbox name="termandcondition" [(ngModel)]="termConditionCheckbox"></ion-checkbox>
+                        &nbsp;&nbsp;
+                        <ion-label class="checkbox-inline ">
+                            Click to agree to
+                            <a (click)="openTermAndConditions()">
+                                MVA Terms and Conditions of Use and License.
+                            </a>
+                        </ion-label>
+                        <label *ngIf="isTermError" id="lbl_terms_error">You must agree to MVA Terms and Conditions of
+                            Use and License to continue.</label>
+                    </ion-item>
+                    <div class="ion-padding">
+                        <ion-button id="submit-button" color="secondary" #ln size="large" type="submit"
+                                    [disabled]="form.invalid" expand="block">Login
+                        </ion-button>
+                    </div>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </form>
 </ion-content>

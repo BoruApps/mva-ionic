@@ -20,3 +20,17 @@ ion-content.loginPage {
   background-color: rgba(101, 101, 101, 0.51) !important;
   color: white !important;
 }
+
+.term-block {
+  font-size: 15px;
+}
+
+.term-block a{
+  cursor: pointer;
+  color: #007bff;
+}
+
+.term-block ion-label{
+  text-overflow: unset;
+  white-space: unset;
+}
