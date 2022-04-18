@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
-import {ToastController, NavController} from '@ionic/angular';
+import {ToastController, NavController, ModalController} from '@ionic/angular';
 import {HttpHeaders, HttpClient} from '@angular/common/http';
 import {AppConstants} from '../providers/constant/constant';
 import {LoadingController} from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
+import {TermconditionsModal} from '../termconditions/termconditions.page';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +17,11 @@ export class LoginPage implements OnInit {
   apiurl: any;
   vturl: any;
   userdata: Object;
+  username: string;
+  password: string;
+  isTermChecked: boolean = true;
+  termConditionCheckbox: boolean = false;
+  isTermError: boolean = false;
 
   constructor(
       private router: Router,
@@ -24,7 +30,8 @@ export class LoginPage implements OnInit {
       private httpClient: HttpClient,
       public appConst: AppConstants,
       private navCtrl: NavController,
-      public loadingController: LoadingController
+      public loadingController: LoadingController,
+      public modalCtrl: ModalController
   ) {
     this.apiurl = this.appConst.getApiUrl();
     this.vturl = this.appConst.getVtUrl();
@@ -57,20 +64,6 @@ export class LoginPage implements OnInit {
     toast.present();
   }
 
-  movefocus(e, ref) {
-    if (e.key == "Enter") {
-      ref.setFocus();
-    }
-  }
-
-  submit(e, ref) {
-    if (e.key == "Enter") {
-      console.log('submitting');
-      let el: HTMLElement = document.getElementById('submit-button') as HTMLElement;
-      el.click()
-    }
-  }
-
   async ngOnInit() {
     await this.storage.create();
     
@@ -97,6 +90,12 @@ export class LoginPage implements OnInit {
 
   login(form: any, origin: any) {
     console.log('login function accessed');
+    
+    if (!this.isTermChecked && !this.termConditionCheckbox){
+      console.log('You must agree to MVA Terms and Conditions of Use and License to continue.');
+      this.presentToast('You must agree to MVA Terms and Conditions of Use and License to continue.');
+      return false;
+    } 
     
     var headers = new HttpHeaders();
     headers.append("Accept", 'application/json');
@@ -135,5 +134,66 @@ export class LoginPage implements OnInit {
       this.navCtrl.navigateForward('/home');
     }
     return false;
+  }
+
+  checkTermAndConditions() {
+    var data = {
+      _operation: 'terms',
+      username: this.username,
+    };
+
+    if (this.username != '') {
+      var headers = new HttpHeaders();
+      headers.append("Accept", 'application/json');
+      headers.append('Content-Type', 'application/json');
+      headers.append('Access-Control-Allow-Origin', '*');
+
+      this.httpClient.post(this.apiurl + "termsconditions.php", data, {headers: headers, observe: 'response'})
+          .subscribe(data => {
+            this.hideLoading();
+
+            var verified = data['body']['success'];
+
+            if (verified == true) {
+              var userdata = data['body']['data'];
+
+              if (userdata.termsconditions == 0) {
+                this.isTermChecked = false;
+              } else if (userdata.termsconditions == 1) {
+                this.isTermChecked = true;
+              } else {
+                console.log('Wrong Username');
+                this.username = '';
+                this.password = '';
+                this.presentToast('Wrong Username. Please try Again');
+              }
+            } else {
+              console.log('Wrong Username');
+              this.username = '';
+              this.password = '';
+              this.presentToast('Wrong Username. Please try Again');
+            }
+          });
+    }
+  }
+
+  async openTermAndConditions(){    
+    const addItem = await this.modalCtrl.create({
+      component: TermconditionsModal,
+      componentProps: {},
+      cssClass: 'modal-70',
+    });
+
+    addItem.onDidDismiss().then((dataReturned) => {
+      console.log('dataReturned',dataReturned.data)
+      if (dataReturned.data !== null && dataReturned.data != undefined) {
+        if (dataReturned.data.term != undefined && dataReturned.data.term === true){
+          console.log('term and condition agreed')
+          this.termConditionCheckbox = true;
+        }
+      }
+    });
+
+    return await addItem.present();
   }
 }
