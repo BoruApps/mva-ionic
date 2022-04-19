@@ -11,10 +11,11 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import {AppConstants} from './providers/constant/constant';
 import {HttpClientModule} from '@angular/common/http';
+import {TermconditionsModal} from './termconditions/termconditions.page';
 
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
+  declarations: [AppComponent,TermconditionsModal],
+  entryComponents: [TermconditionsModal],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,HttpClientModule , IonicStorageModule.forRoot()],
   providers: [
     Platform,
