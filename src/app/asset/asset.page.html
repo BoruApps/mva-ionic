@@ -10,18 +10,24 @@
 <ion-content>
     <div class="ion-text-center navbar-brand ng-binding navbar_p_spacing">Select Asset</div>
     <ion-card class="action-card">
-        <ion-item>   
-        	<ion-select id="assetfilter" value="serialnumber">
-	            <ion-select-option value = "serialnumber">Serial#</ion-select-option>
-	            <ion-select-option value = "unitid">Unit ID</ion-select-option>
-	            <ion-select-option value = "equipmentid">Equipment Type</ion-select-option>
-	            <ion-select-option value = "substationname">Substation</ion-select-option>
-	        </ion-select>
-            <ion-input class="transparent" name="barcodenumberasset" id="barcodenumberasset" (keyup)="getbarcodenumberasset($event)" type="text" [(ngModel)]="barcodenumberasset" placeholder="Type to search"></ion-input>
-        </ion-item>
+            <ion-grid>
+              <ion-row>
+                <ion-col>
+                      <ion-select id="assetfilter" value="serialnumber">
+                        <ion-select-option value = "serialnumber">Serial#</ion-select-option>
+                        <ion-select-option value = "unitid">Unit ID</ion-select-option>
+                        <ion-select-option value = "equipmentid">Equipment Type</ion-select-option>
+                        <ion-select-option value = "substationname">Substation</ion-select-option>
+                    </ion-select>
+                </ion-col>
+                <ion-col>
+                  <div><ion-input class="transparent" name="barcodenumberasset" id="barcodenumberasset" (keyup)="getbarcodenumberasset($event)" type="text" [(ngModel)]="barcodenumberasset" placeholder="Type to search"></ion-input></div>
+                </ion-col>
+              </ion-row>
+          </ion-grid>
         <ion-card-content>
             <div class="ion-padding">
-                <ion-button id="submit-button" color="secondary" #ln size="large" expand="block">SCAN SERIAL #</ion-button>
+                <ion-button id="submit-button" color="secondary" expand="block">SCAN SERIAL #</ion-button>
             </div>
         </ion-card-content>
     </ion-card>

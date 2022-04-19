@@ -54,11 +54,11 @@ export class HomePage implements OnInit {
         return await this.loading.present();
     }
     async hideLoading() {
-        //setTimeout(() => {
+        setTimeout(() => {
             if(this.loading != undefined){
                 this.loading.dismiss();
             }
-        //}, 1000);
+        }, 1000);
     }
     async presentToast(message: string) {
         var toast = await this.toastController.create({
@@ -108,21 +108,15 @@ export class HomePage implements OnInit {
         }).subscribe(async data => {
             var verified = data['body']['success'];
             if (verified == true) {
-                console.log('IF = ',data);
-                this.hideLoading();
                 this.storage.set('barcode', this.barcodenumber);
                 this.getrelatedAsset(this.barcodenumber);
             } else {
-                console.log('ELSE');
                 this.hideLoading();
-                //this.presentToast('This barcode number does not exist. Please verify the barcode and enter the correct number above.');
                 var message = 'This barcode number does not exist. Please verify the barcode and enter the correct number above.';
                 this.confirmCancelImage('Sample Status',message)
             }
         }, async error => {
-            console.log('Error');
             this.hideLoading();
-            //this.presentToast('This barcode number does not exist. Please verify the barcode and enter the correct number above.');
             var message = 'This barcode number does not exist. Please verify the barcode and enter the correct number above.';
             this.confirmCancelImage('Sample Status',message)
         });
@@ -137,13 +131,12 @@ export class HomePage implements OnInit {
         headers.append("Accept", 'application/json');
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
         headers.append('Access-Control-Allow-Origin', '*');
-        this.showLoading();
         this.httpClient.post(this.apiurl + "OrderTests.php", data, {headers: headers,observe: 'response'
         }).subscribe(data => {
             var verified = data['body']['success'];
             var data = data['body']['data'];
-            console.log('status === ',data.status);
             if (verified == true) {
+                this.router.navigateByUrl('/asset');
                 this.hideLoading();
                 if(data.status){
                     this.confirmCancelImage('Sample Status',data.status);
