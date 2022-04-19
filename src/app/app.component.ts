@@ -39,7 +39,7 @@ export class AppComponent {
       ]
     },{
       title: 'Results',
-      url: 'home',
+      url: 'results',
       icon: 'document'
     },{
       title: 'Profile',
