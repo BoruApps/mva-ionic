@@ -45,3 +45,12 @@
   --width: 95%;
   --height: 70%;
 }
+
+ion-header ion-toolbar {
+  color: #ffffff;
+  --background: #28436f;
+
+  ion-menu-button {
+    color: #fcb426;
+  }
+}
