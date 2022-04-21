@@ -16,7 +16,8 @@ export class ResultsPage implements OnInit {
     vturl: any;
     loading: any;
     userdata: any;
-
+    assetlist: any = [];
+    filterData = [];
     constructor(
       private router: Router,
       public storage: Storage,
@@ -82,6 +83,11 @@ export class ResultsPage implements OnInit {
             var verified = data['body']['success'];
             if (verified == true) {
                 this.hideLoading();
+                var assetdatalites = data['body']['data']['assets']['entries'];
+                for( let i in assetdatalites) {   //Pay attention to the 'in'
+                    this.assetlist.push(assetdatalites[i]);
+                }
+                this.filterData = this.assetlist;
             } else {
                 this.hideLoading();
                 this.presentToast('Not Found.');
@@ -89,6 +95,14 @@ export class ResultsPage implements OnInit {
         }, error => {
             this.hideLoading();
             this.presentToast('Not Found.');
+        });
+    }
+    async setFilteredLocations(event){
+        var searchTerm = event.target.value;
+        this.filterData = this.assetlist.filter((asset) => {
+            if(searchTerm != undefined){
+                return asset.assetname.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
+            }
         });
     }
 }

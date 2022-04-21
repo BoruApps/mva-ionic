@@ -15,6 +15,10 @@ const routes: Routes = [
     loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
   },
   {
+    path: 'samplesummary/:type',
+    loadChildren: () => import('./samplesummary/samplesummary.module').then( m => m.SamplesummaryPageModule)
+  },
+  {
     path: 'results',
     loadChildren: () => import('./results/results.module').then( m => m.ResultsPageModule)
   }
