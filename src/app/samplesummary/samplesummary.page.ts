@@ -6,7 +6,6 @@ import {AppConstants} from '../providers/constant/constant';
 import {LoadingController} from '@ionic/angular';
 import {Storage} from '@ionic/storage-angular';
 
-
 @Component({
     selector: 'app-samplesummary',
     templateUrl: './samplesummary.page.html',
@@ -19,7 +18,8 @@ export class SamplesummaryPage implements OnInit {
     loading: any;
     userdata: any;
     assetNoRecord: boolean = false;
-    assetRecords: any[] = [];
+    assetlist: any = [];
+    assetfilterlist = [];
 
     constructor(
         private router: Router,
@@ -37,7 +37,6 @@ export class SamplesummaryPage implements OnInit {
 
     async ngOnInit() {
         await this.storage.create();
-
         await this.isLogged().then(response => {
             if (response !== false) {
                 this.userdata = response;
@@ -48,9 +47,8 @@ export class SamplesummaryPage implements OnInit {
         });
 
         this.activatedRoute.params.subscribe((userData) => {
-            console.log('userData',userData)
             if (userData.type != undefined && userData.type != '') {
-                // this.loadSample(userData.type);
+                this.loadSample(userData.type);
             }
         })
     }
@@ -77,7 +75,6 @@ export class SamplesummaryPage implements OnInit {
         });
         return await this.loading.present();
     }
-
     async hideLoading() {
         setTimeout(() => {
             if (this.loading != undefined) {
@@ -85,7 +82,6 @@ export class SamplesummaryPage implements OnInit {
             }
         }, 1000);
     }
-
     async presentToast(message: string) {
         var toast = await this.toastController.create({
             message: message,
@@ -95,46 +91,41 @@ export class SamplesummaryPage implements OnInit {
         });
         toast.present();
     }
-    
     async loadSample(type){
-        console.log('this.userdata',this.userdata);
-
         var data = {
             accountid:this.userdata.accountid,
             customerid: this.userdata.id,
             filter : type,
             act : 'assetlist'
         };
-
         var headers = new HttpHeaders();
         headers.append("Accept", 'application/json');
         headers.append('Content-Type', 'application/json');
         headers.append('Access-Control-Allow-Origin', '*');
-
         this.httpClient.post(this.apiurl + "GetAssetList.php", data, {headers: headers, observe: 'response'})
             .subscribe(data => {
                 this.hideLoading();
                 var verified = data['body']['success'];
-                console.log('GetAssetList response was', verified);
-
                 if (verified == true) {
                     var assetRecords = data['body']['data'];
-                    this.assetRecords = assetRecords;
-                    this.assetNoRecord = false;
+                    for( let i in assetRecords){
+                        this.assetlist.push(assetRecords[i]);
+                    }
+                    this.assetfilterlist = this.assetlist;
                 } else {
-                    this.assetNoRecord = true;
-                    console.log('Something went wrong. Please try again');
                     this.presentToast('Something went wrong. Please try again');
                 }
-                
-                console.log('this.assetRecords',this.assetRecords)
             }, error => {
                 this.hideLoading();
                 this.presentToast('Something went wrong. Please try again');
             });
     }
-    
-    async searchAssetList(event){
-        
+    async setFilteredLocations(event){
+        var searchTerm = event.target.value;
+        this.assetfilterlist = this.assetlist.filter((asset) => {
+            if(searchTerm != undefined){
+                return asset.assetname.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
+            }
+        });
     }
 }

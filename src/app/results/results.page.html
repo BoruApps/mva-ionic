@@ -10,13 +10,13 @@
     <div class="ion-text-center navbar-brand ng-binding navbar_p_spacing">Asset Search</div>
     <ion-card class="action-card">
         <ion-item class="ion-padding">
-             <ion-input class="transparent ion-padding" name="serialnumber" id="serialnumber" type="text" (ionInput)="setFilteredLocations($event)" placeholder="Type your Serial Number"></ion-input>
+             <ion-input class="transparent" name="serialnumber" id="serialnumber" type="text" (ionInput)="setFilteredLocations($event)" placeholder="Type your Serial Number"></ion-input>
         </ion-item>
     </ion-card>
     <div class="ion-text-center navbar-brand ng-binding navbar_p_spacing">Assets List</div>
     <div class="mrg_bottom_submit">
         <div class="AllassetList">
-            <a href ="" class="dark white-text result-asset-list barcode_division" id="{{asset.assetid}}" *ngFor="let asset of filterData">
+            <div class="dark white-text result-asset-list barcode_division" id="{{asset.assetid}}" (click)="assetPDF(asset.assetid)" *ngFor="let asset of assetfilterlist">
                 <ion-grid>
                     <ion-row class="row asset-list-item">
                         <ion-col size="6">
@@ -51,8 +51,8 @@
                         </ion-col>
                     </ion-row>
                 </ion-grid>
-            </a>
-            <div *ngIf="assetlist.length == 0">
+            </div>
+            <div *ngIf="assetfilterlist.length == 0">
                 <div class="col-12" style="text-align: center;">
                     <div class="alert alert-warning ng-binding">No records found.</div>
                 </div>

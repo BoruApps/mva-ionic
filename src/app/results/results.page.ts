@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import {Router} from "@angular/router";
-import {ToastController, NavController} from '@ionic/angular';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
+import {ToastController, NavController,Platform} from '@ionic/angular';
 import {HttpHeaders, HttpClient} from '@angular/common/http';
 import {AppConstants} from '../providers/constant/constant';
 import {LoadingController} from '@ionic/angular';
-import { Storage } from '@ionic/storage-angular';
-
+import {Storage} from '@ionic/storage-angular';
 @Component({
   selector: 'app-results',
   templateUrl: './results.page.html',
@@ -17,35 +16,47 @@ export class ResultsPage implements OnInit {
     loading: any;
     userdata: any;
     assetlist: any = [];
-    filterData = [];
+    assetfilterlist = [];
     constructor(
-      private router: Router,
-      public storage: Storage,
-      public toastController: ToastController,
-      private httpClient: HttpClient,
-      public appConst: AppConstants,
-      private navCtrl: NavController,
-      public loadingController: LoadingController
-      ) {
+        private router: Router,
+        public storage: Storage,
+        public toastController: ToastController,
+        private httpClient: HttpClient,
+        public appConst: AppConstants,
+        private navCtrl: NavController,
+        private activatedRoute: ActivatedRoute,
+        public loadingController: LoadingController
+    ) {
         this.apiurl = this.appConst.getApiUrl();
         this.vturl = this.appConst.getVtUrl();
     }
-
     async ngOnInit() {
         await this.storage.create();
-        var response = await this.storage.get('userdata').then((data) => {
-            if (data && data.length !== 0) {
-                return data;
+        await this.isLogged().then(response => {
+            if (response !== false) {
+                this.userdata = response;
+            } else {
+                this.presentToast('Login failed. Please try again');
+                this.logoutUser();
+            }
+        });
+        this.activatedRoute.params.subscribe((userData) => {
+            this.getSerialAsset();
+        })
+    }
+    async isLogged() {
+        var log_status = this.storage.get('userdata').then((userdata) => {
+            if (userdata && userdata.length !== 0) {
+                return userdata;
             } else {
                 return false;
             }
-        })
-        if(response){
-            this.userdata = response;
-        }else{
-            this.presentToast('Login failed. Please try again');
-        }
-        this.getSerialAsset();
+        });
+        return log_status;
+    }
+    logoutUser() {
+        this.storage.set("userdata", null);
+        this.router.navigateByUrl('/');
     }
     async showLoading() {
         this.loading = await this.loadingController.create({
@@ -83,26 +94,79 @@ export class ResultsPage implements OnInit {
             var verified = data['body']['success'];
             if (verified == true) {
                 this.hideLoading();
-                var assetdatalites = data['body']['data']['assets']['entries'];
-                for( let i in assetdatalites) {   //Pay attention to the 'in'
-                    this.assetlist.push(assetdatalites[i]);
+                var assetdatalist = data['body']['data']['assets']['entries'];
+                for( let i in assetdatalist){
+                    this.assetlist.push(assetdatalist[i]);
                 }
-                this.filterData = this.assetlist;
+                this.assetfilterlist = this.assetlist;
             } else {
                 this.hideLoading();
-                this.presentToast('Not Found.');
+                this.presentToast('Something went wrong. Please try again');
             }
         }, error => {
             this.hideLoading();
-            this.presentToast('Not Found.');
+            this.presentToast('Something went wrong. Please try again');
         });
     }
     async setFilteredLocations(event){
         var searchTerm = event.target.value;
-        this.filterData = this.assetlist.filter((asset) => {
+        this.assetfilterlist = this.assetlist.filter((asset) => {
             if(searchTerm != undefined){
                 return asset.assetname.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
             }
+        });
+    }
+    async assetPDF(selectassetsid){
+        var data = {
+            selectassetsid: selectassetsid
+        };
+        var headers = new HttpHeaders();
+        headers.append("Accept", 'application/json');
+        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+        headers.append('Access-Control-Allow-Origin', '*');
+        this.showLoading();
+        this.httpClient.post(this.apiurl + "AssetPdf.php", data, {headers: headers,observe: 'response'
+        }).subscribe(data => {
+            var verified = data['body']['success'];
+            if (verified == true) {
+                 this.hideLoading();
+                // var url = data['body']['pdfFilePath'];
+                // if (this.platform.is('ios')) {
+                //     var path = this.file.documentsDirectory;
+                // } else {
+                //     var path = this.file.dataDirectory;
+                // }
+
+                // this.http.sendRequest(url, {method: "get", responseType: "arraybuffer"}).then(
+                //     httpResponse => {
+                //         var downloadedFile = new Blob([httpResponse.data], {type: 'application/pdf'});
+
+                //         this.file.writeFile(path, "download.pdf", downloadedFile, {replace: true}).then(createdFile => {
+                //             this.fileOpener.showOpenWithDialog(path + 'download.pdf', 'application/pdf')
+                //                 .then(() => {
+                //                     this.hideLoading();
+                //                     console.log('File is opened');
+                //                 })
+                //                 .catch(e => {
+                //                     this.hideLoading();
+                //                     console.log('Error opening file', e)
+                //                 });
+                //         }).catch(err => {
+                //             this.hideLoading();
+                //             console.log('Error creating file', err)
+                //         });
+                //     }
+                // ).catch(err => {
+                //     this.hideLoading();
+                //     console.log('Error getting file', err)
+                // })
+            } else {
+                this.hideLoading();
+                this.presentToast('Something went wrong. Please try again');
+            }
+        }, error => {
+            this.hideLoading();
+            this.presentToast('Something went wrong. Please try again');
         });
     }
 }
