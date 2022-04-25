@@ -64,3 +64,12 @@ a {
     border: 1px solid transparent;
     border-radius: 0.25rem;
 }
+.ion-padding {
+    padding-top: var(--ion-padding, 0px);
+    padding-bottom: var(--ion-padding, 5px);
+}
+.asset-list-value {
+    font-weight: 400;
+    text-overflow: ellipsis;
+    color: black;
+}

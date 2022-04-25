@@ -5,6 +5,9 @@ import {HttpHeaders, HttpClient} from '@angular/common/http';
 import {AppConstants} from '../providers/constant/constant';
 import {LoadingController} from '@ionic/angular';
 import {Storage} from '@ionic/storage-angular';
+import { File } from '@awesome-cordova-plugins/file/ngx';
+import { HTTP } from '@awesome-cordova-plugins/http/ngx';
+import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
 @Component({
   selector: 'app-results',
   templateUrl: './results.page.html',
@@ -25,7 +28,11 @@ export class ResultsPage implements OnInit {
         public appConst: AppConstants,
         private navCtrl: NavController,
         private activatedRoute: ActivatedRoute,
-        public loadingController: LoadingController
+        public loadingController: LoadingController,
+        private platform: Platform,
+        private file: File,
+        private http: HTTP,
+        private fileOpener: FileOpener
     ) {
         this.apiurl = this.appConst.getApiUrl();
         this.vturl = this.appConst.getVtUrl();
@@ -91,16 +98,15 @@ export class ResultsPage implements OnInit {
         this.showLoading();
         this.httpClient.post(this.apiurl + "scanAssetSerial.php", data, {headers: headers,observe: 'response'
         }).subscribe(data => {
+            this.hideLoading();
             var verified = data['body']['success'];
             if (verified == true) {
-                this.hideLoading();
                 var assetdatalist = data['body']['data']['assets']['entries'];
                 for( let i in assetdatalist){
                     this.assetlist.push(assetdatalist[i]);
                 }
                 this.assetfilterlist = this.assetlist;
-            } else {
-                this.hideLoading();
+            }else if(verified == false && data['body']['data'] != 'Not Found') {
                 this.presentToast('Something went wrong. Please try again');
             }
         }, error => {
@@ -127,39 +133,38 @@ export class ResultsPage implements OnInit {
         this.showLoading();
         this.httpClient.post(this.apiurl + "AssetPdf.php", data, {headers: headers,observe: 'response'
         }).subscribe(data => {
+            this.hideLoading();
             var verified = data['body']['success'];
             if (verified == true) {
-                 this.hideLoading();
-                // var url = data['body']['pdfFilePath'];
-                // if (this.platform.is('ios')) {
-                //     var path = this.file.documentsDirectory;
-                // } else {
-                //     var path = this.file.dataDirectory;
-                // }
+                var url = data['body']['pdfFilePath'];
+                if (this.platform.is('ios')) {
+                    var path = this.file.documentsDirectory;
+                } else {
+                    var path = this.file.dataDirectory;
+                }
+                this.http.sendRequest(url, {method: "get", responseType: "arraybuffer"}).then(
+                    httpResponse => {
+                        var downloadedFile = new Blob([httpResponse.data], {type: 'application/pdf'});
 
-                // this.http.sendRequest(url, {method: "get", responseType: "arraybuffer"}).then(
-                //     httpResponse => {
-                //         var downloadedFile = new Blob([httpResponse.data], {type: 'application/pdf'});
-
-                //         this.file.writeFile(path, "download.pdf", downloadedFile, {replace: true}).then(createdFile => {
-                //             this.fileOpener.showOpenWithDialog(path + 'download.pdf', 'application/pdf')
-                //                 .then(() => {
-                //                     this.hideLoading();
-                //                     console.log('File is opened');
-                //                 })
-                //                 .catch(e => {
-                //                     this.hideLoading();
-                //                     console.log('Error opening file', e)
-                //                 });
-                //         }).catch(err => {
-                //             this.hideLoading();
-                //             console.log('Error creating file', err)
-                //         });
-                //     }
-                // ).catch(err => {
-                //     this.hideLoading();
-                //     console.log('Error getting file', err)
-                // })
+                        this.file.writeFile(path, "download.pdf", downloadedFile, {replace: true}).then(createdFile => {
+                            this.fileOpener.showOpenWithDialog(path + 'download.pdf', 'application/pdf')
+                                .then(() => {
+                                    this.hideLoading();
+                                    console.log('File is opened');
+                                })
+                                .catch(e => {
+                                    this.hideLoading();
+                                    console.log('Error opening file', e)
+                                });
+                        }).catch(err => {
+                            this.hideLoading();
+                            console.log('Error creating file', err)
+                        });
+                    }
+                ).catch(err => {
+                    this.hideLoading();
+                    console.log('Error getting file', err)
+                })
             } else {
                 this.hideLoading();
                 this.presentToast('Something went wrong. Please try again');

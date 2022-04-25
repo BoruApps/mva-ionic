@@ -12,6 +12,9 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 import {AppConstants} from './providers/constant/constant';
 import {HttpClientModule} from '@angular/common/http';
 import {TermconditionsModal} from './termconditions/termconditions.page';
+import { File } from '@awesome-cordova-plugins/file/ngx';
+import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
+import { HTTP } from '@awesome-cordova-plugins/http/ngx';
 
 @NgModule({
   declarations: [AppComponent,TermconditionsModal],
@@ -25,7 +28,10 @@ import {TermconditionsModal} from './termconditions/termconditions.page';
       provide: RouteReuseStrategy, 
       useClass: IonicRouteStrategy 
     },
-    AppConstants
+    AppConstants,
+    File,
+    FileOpener,
+    HTTP
   ],
   bootstrap: [AppComponent],
 })
