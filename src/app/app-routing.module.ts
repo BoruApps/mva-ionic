@@ -17,6 +17,14 @@ const routes: Routes = [
   {
     path: 'asset',
     loadChildren: () => import('./asset/asset.module').then( m => m.AssetPageModule)
+  },
+  {
+    path: 'samplesummary/:type',
+    loadChildren: () => import('./samplesummary/samplesummary.module').then( m => m.SamplesummaryPageModule)
+  },
+  {
+    path: 'results',
+    loadChildren: () => import('./results/results.module').then( m => m.ResultsPageModule)
   }
 ];
 @NgModule({

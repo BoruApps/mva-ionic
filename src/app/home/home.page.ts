@@ -34,19 +34,33 @@ export class HomePage implements OnInit {
     }
     async ngOnInit() {
         await this.storage.create();
-        var response = await this.storage.get('userdata').then((data) => {
-            if (data && data.length !== 0) {
-                return data;
+
+        this.isLogged().then(response => {
+            if(response !== false){
+                this.userdata = response;
+            }else{
+                this.presentToast('Login failed. Please try again');
+                this.logoutUser();
+            }
+        });
+    }
+
+    async isLogged() {
+        var log_status = this.storage.get('userdata').then((userdata) => {
+            if (userdata && userdata.length !== 0) {
+                return userdata;
             } else {
                 return false;
             }
-        })
-        if(response){
-            this.userdata = response;
-        }else{
-            this.presentToast('Login failed. Please try again');
-        }
+        });
+        return log_status;
     }
+
+    logoutUser(){
+        this.storage.set("userdata", null);
+        this.router.navigateByUrl('/');
+    }
+    
     async showLoading() {
         this.loading = await this.loadingController.create({
             message: 'Loading ...'
@@ -71,10 +85,8 @@ export class HomePage implements OnInit {
     }
     async getbarcodenumber() {
         var barcode = this.barcodenumber;
-        if(barcode.length > 8){
+        if(barcode.length >= 8){
             var value = barcode.toLowerCase().trim();
-            this.scansample();
-        }else if(barcode.length == 8) {
             this.scansample();
         }
     }

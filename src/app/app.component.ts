@@ -20,26 +20,32 @@ export class AppComponent {
     {
       title: 'Dashboard',
       url: 'home',
-      icon: 'albums'
+      icon: 'home'
     },{
       title: 'Sample Summary',
-      url: 'home',
+      isSubmenuShow: true,
       icon: 'albums',
+      submenuShow: false,
       submenu:[
         {
-          title: 'tab1',
-          url: 'home',
-          icon: 'albums'
+          title: 'Today',
+          url: 'samplesummary/today',
+          icon: 'calendar-clear'
         },
         {
-          title: 'tab2',
-          url: 'home',
-          icon: 'albums'
+          title: 'Week',
+          url: 'samplesummary/week',
+          icon: 'calendar'
+        },
+        {
+          title: 'Month',
+          url: 'samplesummary/month',
+          icon: 'calendar-number'
         }
       ]
     },{
       title: 'Results',
-      url: 'home',
+      url: 'results',
       icon: 'document'
     },{
       title: 'Profile',
