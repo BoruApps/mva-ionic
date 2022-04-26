@@ -145,18 +145,56 @@ export class HomePage implements OnInit {
         headers.append('Access-Control-Allow-Origin', '*');
         this.httpClient.post(this.apiurl + "OrderTests.php", data, {headers: headers,observe: 'response'
         }).subscribe(data => {
-            var verified = data['body']['success'];
-            var data = data['body']['data'];
-            if (verified == true) {
-                this.router.navigateByUrl('/asset');
-                this.hideLoading();
-                if(data.status){
-                    this.confirmCancelImage('Sample Status',data.status);
-                }
-            } else {
-                this.hideLoading();
-                this.presentToast('Not Found.');
+            var responseData = data['body']['data'];
+            this.hideLoading();
+            if(responseData.status){
+                this.confirmCancelImage('Sample Status',responseData.status);
+                return false
             }
+            var res = [];
+            for (var x in responseData.assets.entries){
+                    responseData.assets.entries.hasOwnProperty(x) && res.push(responseData.assets.entries[x]);
+                }
+                this.storage.set('assetsentries',res);
+                console.log('assetsentrieselected',responseData.assetid);
+                this.storage.set('assetsentrieselected',responseData.assetid);
+                /*this.storage.set('assetnameentrieselected',responseData.assetname);
+                this.storage.set('equipmenttype',responseData.cf_922);*/
+
+                
+               /* console.log('assetsentrieselected === ',this.storage.get('assetsentrieselected'));
+                console.log('assetnameentrieselected === ',this.storage.get('assetnameentrieselected'));
+                console.log('equipmenttype === ',this.storage.get('equipmenttype'));*/
+
+
+                var res0 = [];
+                for (var x in responseData.list_locations){
+                    responseData.list_locations.hasOwnProperty(x) && res0.push(responseData.list_locations[x]);
+                }
+                this.storage.set('list_locations',res0);
+                var res1 = [];
+                for (var x in responseData.tests.values){
+                    responseData.tests.values.hasOwnProperty(x) && res1.push(responseData.tests.values[x]);
+                }
+                this.storage.set('assetstestcheckbox',res1);
+                
+                var res2 = [];
+                for (var x in responseData.tests1.values){
+                    responseData.tests1.values.hasOwnProperty(x) && res2.push(responseData.tests1.values[x]);
+                }
+                console.log('res2 ==== ',res2);
+                this.storage.set('assetstestcheckbox1',res2);
+                /*this.storage.set('sample_date',JSON.stringify(responseData.cf_1110));
+                this.storage.set('sample_due_date',JSON.stringify(responseData.cf_1161));
+                this.storage.set('sample_oil_temperature',JSON.stringify(responseData.cf_1107));
+                this.storage.set('identification_comments',JSON.stringify(responseData.cf_idcomments));*/
+                if(responseData.message){
+                    this.storage.set('assetsmessage',responseData.message);
+                }else{
+                    this.storage.set('assetsmessage','TEST');
+                }
+
+            this.router.navigateByUrl('/asset');
         }, error => {
             this.hideLoading();
             this.presentToast('Not Found.');

@@ -13,7 +13,7 @@
             <ion-grid>
               <ion-row>
                 <ion-col>
-                      <ion-select id="assetfilter" value="serialnumber">
+                      <ion-select id="assetfilter" [(ngModel)]="assetfilter" value="serialnumber">
                         <ion-select-option value = "serialnumber">Serial#</ion-select-option>
                         <ion-select-option value = "unitid">Unit ID</ion-select-option>
                         <ion-select-option value = "equipmentid">Equipment Type</ion-select-option>
@@ -21,7 +21,7 @@
                     </ion-select>
                 </ion-col>
                 <ion-col>
-                  <div><ion-input class="transparent" name="barcodenumberasset" id="barcodenumberasset" (keyup)="getbarcodenumberasset($event)" type="text" [(ngModel)]="barcodenumberasset" placeholder="Type to search"></ion-input></div>
+                  <div><ion-input class="transparent" name="barcodenumberasset" id="barcodenumberasset" (ionInput)="getbarcodenumberasset($event)" type="text" [(ngModel)]="barcodenumberasset" placeholder="Type to search"></ion-input></div>
                 </ion-col>
               </ion-row>
           </ion-grid>
@@ -31,5 +31,129 @@
             </div>
         </ion-card-content>
     </ion-card>
+    <div class="ion-text-center navbar-brand ng-binding navbar_p_spacing">Assets List</div>
+    <div class="mrg_bottom_submit">
+        <div class="AllassetList">
+            <div class="dark white-text result-asset-list barcode_division" [ngClass]="assetsentrieselected > '0' && asset.assetid == assetsentrieselected ? (assetsentrieselected == '') ? '' : 'selected': (assetsentrieselected == '') ? '' : ''" class="dark white-text barcode_division asset-list" id="{{asset.assetid}}" *ngFor="let asset of assetfilterlist">
+                <ion-grid>
+                    <ion-row class="row asset-list-item">
+                        <ion-col size="6">
+                            <strong class="bolder asset-list-title">Serial#: </strong>
+                        </ion-col>
+                        <ion-col size="6" class="asset-list-value serialnumber">
+                            {{asset.assetname}}
+                        </ion-col>
+                    </ion-row>
+                    <ion-row class="row asset-list-item">
+                        <ion-col size="6">
+                            <strong class="bolder asset-list-title">Unit ID: </strong>
+                        </ion-col>
+                        <ion-col size="6">
+                            {{asset.cf_1164}}
+                        </ion-col>
+                    </ion-row>
+                    <ion-row class="row asset-list-item">
+                        <ion-col size="6">
+                            <strong class="bolder asset-list-title">Equipment Type: </strong>
+                        </ion-col>
+                        <ion-col size="6">
+                            {{asset.cf_922}}
+                        </ion-col>
+                    </ion-row>
+                    <ion-row class="row asset-list-item">
+                        <ion-col size="6">
+                            <strong class="bolder asset-list-title">Substation: </strong>
+                        </ion-col>
+                        <ion-col size="6">
+                            {{asset.multiaddressid}}
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </div>
+            <div *ngIf="assetsentries.length == 0">
+                <div class="col-12" style="text-align: center;">
+                    <div class="alert alert-warning ng-binding">No records found.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row vertical-align asset_error_message" *ngIf="searchassetflag == 1">
+        <ion-col size="6" class="ion-padding">
+            <ion-item lines="none">
+                <ion-label class="ion-text-wrap ion-text-center ng-binding">
+                    <strong> No asset found. Please either re-scan serial number or create new asset.</strong>
+                </ion-label>
+            </ion-item>
+            <ion-card-content>
+                <div class="ion-padding">
+                    <ion-button id="submit-button" color="secondary" expand="block" (click) = "createasset();">Create New Asset</ion-button>
+                </div>
+            </ion-card-content>
+        </ion-col>
+    </div>
+    <div [ngClass]="assetsentrieselected > '0' ? '' : 'hide' ">
+        <ion-card class="action-card">
+            <div class="ion-text-center navbar-brand ng-binding">Select Tests</div>
+            <ion-card-content>
+                <div class="ion-padding">
+                    <ion-button id="submit-button" color="secondary" expand="block">Clear Tests for This Sample</ion-button>
+                </div>
+            </ion-card-content>
+            <ion-grid>
+                <ion-row class="row">
+                    <ion-radio-group value="grape" style="display: flex" (ionChange)="checkTest($event)">
+                    <ion-col size="6">
+                        <div class="holder asset-check-list">
+                            <div class="dark black-text asset-check" *ngFor="let assetcheckbox of assetstestcheckbox" >
+                                <div class="row asset-check-item" *ngIf="assetcheckbox.isbundle == 0">
+                                    <div class="col-2 asset-list-value assetcheckboxname">
+                                        <ion-checkbox checked="{{assetcheckbox.checkboxvalue}}" name="sel_tests" value="{{assetcheckbox.fieldname}}" id="{{assetcheckbox.fieldname}}" ionChange="checkTest(this);"></ion-checkbox>
+                                    </div>
+                                    <div class="col-10" style="padding-right: 0px !important;">
+                                        <strong class="asset-check-title">{{assetcheckbox.checkboxname}} </strong>
+                                    </div>
+                                </div>
+
+                                <div class="row asset-check-item" *ngIf="assetcheckbox.isbundle == 1">
+                                    
+                                    <ion-item>
+                                      <ion-label>{{assetcheckbox.checkboxname}}</ion-label>
+                                      <ion-radio slot="start" color="success" name="sel_bundles" value="{{assetcheckbox.fieldname}}" id="{{assetcheckbox.fieldname}}" ></ion-radio>
+                                    </ion-item>
+                                  
+                                </div>
+                            </div>
+                        </div>
+                    </ion-col>
+
+                    <ion-col size="6">
+                        <div class="holder asset-check-list">
+                            <div class="dark black-text asset-check" *ngFor="let assetcheckbox of assetstestcheckbox1" >
+                                <div class="row asset-check-item" *ngIf="assetcheckbox.isbundle == 0">
+                                    <div class="col-2 asset-list-value assetcheckboxname">
+                                        <ion-checkbox checked="{{assetcheckbox.checkboxvalue}}" name="sel_tests" value="{{assetcheckbox.fieldname}}" id="{{assetcheckbox.fieldname}}" ionChange="checkTest(this);"></ion-checkbox>
+                                    </div>
+                                    <div class="col-10" style="padding-right: 0px !important;">
+                                        <strong class="asset-check-title">{{assetcheckbox.checkboxname}} </strong>
+                                    </div>
+                                </div>
+
+                                <div class="row asset-check-item" *ngIf="assetcheckbox.isbundle == 1">
+                                    
+                                    <ion-item>
+                                      <ion-label>{{assetcheckbox.checkboxname}}</ion-label>
+                                      <ion-radio slot="start" color="success" name="sel_bundles" value="{{assetcheckbox.fieldname}}" id="{{assetcheckbox.fieldname}}" ></ion-radio>
+                                    </ion-item>
+                                  
+                                </div>
+                            </div>
+                        </div>
+                    </ion-col>
+                    </ion-radio-group>
+                </ion-row>
+            </ion-grid>
+        </ion-card>
+    </div>
+    
 </ion-content>
 
