@@ -57,6 +57,7 @@ export class AssetPage implements OnInit {
         this.storage.get('assetsentries').then((assetsentries) => {
           this.assetsentries = assetsentries;
           this.assetfilterlist = assetsentries;
+          console.log('this.assetfilterlist == ',this.assetfilterlist);
         });
         this.storage.get('assetsentrieselected').then((assetsentrieselected) => {
           this.assetsentrieselected = assetsentrieselected;
@@ -72,6 +73,12 @@ export class AssetPage implements OnInit {
         this.storage.get('assetstestcheckbox').then((assetstestcheckbox) => {
           this.assetstestcheckbox = assetstestcheckbox;
           console.log('this.assetstestcheckbox == ',this.assetstestcheckbox);
+        });
+        this.storage.get('userdata').then((userdata) => {
+          console.log('this.userdata - Asset == ',userdata);
+        });
+        this.storage.get('barcode').then((barcode) => {
+          console.log('this.barcode - Asset == ',barcode);
         });
         this.storage.get('assetsmessage').then((assetsmessage) => {
           if(assetsmessage != 'TEST'){
@@ -153,16 +160,23 @@ export class AssetPage implements OnInit {
       }
       console.log('this.assetstestcheckbox1 - after',this.assetstestcheckbox1);
     }
+
     async createasset(){
+      console.log('barcodenumberasset == ',this.barcodenumberasset);
       const modal_createasset = await this.modalCtrl.create({
         component: CreateassetPage,
         componentProps: {
           paramTitle: 'Create Your Asset',
           list_locations: this.list_locations,
+          selectedbarcode: this.barcodenumberasset,
         },
       });
       modal_createasset.onDidDismiss().then((dataReturned) => {
-          console.log('dataReturned', dataReturned);
+          if(dataReturned['data']['newasset'][0] !== undefined){
+            this.assetfilterlist.push(dataReturned['data']['newasset'][0]);
+            this.assetsentries.push(dataReturned['data']['newasset'][0]);
+            this.searchassetflag = 0;
+          }
       });
       return await modal_createasset.present();
     }

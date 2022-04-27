@@ -1,39 +1,64 @@
 import { Component, OnInit} from '@angular/core';
 import { ModalController, NavParams, ToastController, PickerController, NavController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
+import {Storage} from '@ionic/storage-angular';
+import {HttpHeaders, HttpClient} from '@angular/common/http';
+import {AppConstants} from '../providers/constant/constant';
+
 @Component({
   selector: 'app-createasset',
   templateUrl: './createasset.page.html',
   styleUrls: ['./createasset.page.scss'],
 })
 export class CreateassetPage implements OnInit {
+	apiurl: any;
+    vturl: any;
 	modalTitle: string;
+	selectedbarcode: string;
+	barcode: string;
 	AssetfieldList: any[] = [];
 	list_locations: any[] = [];
+	userdata = [];
   constructor(
   	private navParams: NavParams,
+  	public storage: Storage,
   	public toastController: ToastController,
   	public loadingController: LoadingController,
   	private modalController: ModalController,
-  ) { }
+  	private httpClient: HttpClient,
+  	public appConst: AppConstants,
+  ) { 
+  	this.apiurl = this.appConst.getApiUrl();
+    this.vturl = this.appConst.getVtUrl();
+  }
 
-  ngOnInit() {
+  async ngOnInit() {
   	this.modalTitle = this.navParams.data.paramTitle;
   	this.list_locations = this.navParams.data.list_locations;
+  	this.selectedbarcode = this.navParams.data.selectedbarcode;
   	console.log('list_locations == ',this.list_locations);
+  	await this.storage.get('userdata').then((userdata) => {
+  		this.userdata = userdata;
+    });
+    await this.storage.get('barcode').then((barcode) => {
+      this.barcode = barcode;
+    });
+  	console.log('userdata',this.userdata)
+  	console.log('userdata-accountid',this.userdata['accountid'])
+  	console.log('userdata-accountname',this.userdata['accountname'])
   	this.AssetfieldList = [];
   	this.AssetfieldList.push({ 
         label : 'Serial Number',
         fieldname : 'assetname',
         uitype : 1,
         typeofdata : 'V~M',
-        value : ''
+        value : this.selectedbarcode
     },{ 
         label : 'Company',
-        fieldname : 'account',
-        uitype : 1,
+        fieldname : 'account_display',
+        uitype : 11,
         typeofdata : 'V~0',
-        value : ''
+        value : this.userdata['accountname']
     },{ 
         label : 'Substation Location',
         fieldname : 'multiaddressid',
@@ -185,44 +210,59 @@ export class CreateassetPage implements OnInit {
 	        }
 	    }	
 	}
-	async submitinstallationcompletionform(){
+	async submitform(){
         var formflag = await this.checkrequiredfields();
+
         console.log('formflag = ', formflag);
-        /*if(formflag){
-            console.log('this.InstallfieldList = ',this.InstallfieldList);
+        console.log('AssetfieldList = ', this.AssetfieldList);
+        var formdata = {};
+        for (var i = 0; i < this.AssetfieldList.length; ++i) {
+        	if(this.AssetfieldList[i]["value"] == undefined){
+        		this.AssetfieldList[i]["value"] = '';
+        	}
+        	formdata[this.AssetfieldList[i].fieldname] = this.AssetfieldList[i]["value"];
+        }
+        formdata['account'] = this.userdata['accountid'];
+        formdata['selectedbarcode'] = this.barcode;
+        console.log('formdata = ', formdata);
+        console.log('apiurl = ', this.apiurl);
+        if(formflag){
             var headers = new HttpHeaders();
             headers.append("Accept", "application/json");
             headers.append("Content-Type", "application/x-www-form-urlencoded");
             headers.append("Access-Control-Allow-Origin", "*");
-            const base64Data = this.signaturePad.toDataURL();
-            this.signatureImg = base64Data;
-            var base64Datapost = base64Data.split(',')[1];
-            // 'base64Image': base64Datapost,
             this.showLoading();
-            var params = {
-                'base64Image': base64Datapost,
-                'InstallfieldList': JSON.stringify(this.InstallfieldList),
-                'recordid': this.serviceid,
-                'logged_in_user': this.user_id,
-                'blockname': this.blockname,
-            };
-            this.httpClient
-            .post(this.apiurl + "saveInstallationform.php", params, {
+            console.log('formdata-stringify-formdata = ',formdata);
+            console.log('formdata-stringify = ',JSON.stringify(formdata));
+            this.httpClient.post(this.apiurl + "createasset.php", JSON.stringify(formdata), {
               headers: headers,
               observe: "response",
             })
             .subscribe(
               (data) => {
                 this.hideLoading();
+                console.log('create asset data = ',data)
                 var success = data["body"]["success"];
                 console.log(data["body"]);
                 if (success == true) {
-                    console.log("Saved and updated data for workorder");
-                    //localStorage.removeItem(this.localInstallform);
-                    this.clearPad();
-                    localStorage.setItem(this.localInstallform, JSON.stringify(this.InstallfieldList));
-                    localStorage.setItem(this.localInstallformdate, this.currentdate);
-                    this.modalController.dismiss({'formsubmitted':true});
+					this.presentToast("Asset created successfully");
+					var newasset = [];
+				  	newasset.push({
+						assetid: data["body"]['data'],
+						assetname: formdata['assetname'],
+						cf_922: formdata['cf_922'],
+						cf_923: formdata['cf_923'],
+						cf_924: formdata['cf_924'],
+						cf_925: formdata['cf_925'],
+						cf_927: formdata['cf_927'],
+						cf_928: formdata['cf_928'],
+						cf_929: formdata['cf_929'],
+						cf_1150: formdata['cf_1150'],
+						cf_1164: formdata['cf_1164'],
+						multiaddressid: formdata['multiaddressid']
+					});
+				  	console.log('newasset == ',newasset);
+                    this.modalController.dismiss({'newasset':newasset});
                 } else {
                   this.presentToast("Failed to save due to an error");
                   console.log("failed to save record, response was false");
@@ -235,7 +275,7 @@ export class CreateassetPage implements OnInit {
                 console.log("failed to save record", error.message);
               }
             );
-        }*/
+        }
     }
 	async checkrequiredfields(){
 	    var fieldlist = [];
