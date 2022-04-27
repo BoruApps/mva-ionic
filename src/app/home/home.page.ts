@@ -139,6 +139,7 @@ export class HomePage implements OnInit {
             accountid: this.userdata.accountid,
             act: 'search_barcode',
         };
+        console.log('data ====== ',data);
         var headers = new HttpHeaders();
         headers.append("Accept", 'application/json');
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
@@ -158,14 +159,8 @@ export class HomePage implements OnInit {
                 this.storage.set('assetsentries',res);
                 console.log('assetsentrieselected',responseData.assetid);
                 this.storage.set('assetsentrieselected',responseData.assetid);
-                /*this.storage.set('assetnameentrieselected',responseData.assetname);
-                this.storage.set('equipmenttype',responseData.cf_922);*/
-
-                
-               /* console.log('assetsentrieselected === ',this.storage.get('assetsentrieselected'));
-                console.log('assetnameentrieselected === ',this.storage.get('assetnameentrieselected'));
-                console.log('equipmenttype === ',this.storage.get('equipmenttype'));*/
-
+                this.storage.set('assetnameentrieselected',responseData.assetname);
+                this.storage.set('equipmenttype',responseData.cf_922);
 
                 var res0 = [];
                 for (var x in responseData.list_locations){

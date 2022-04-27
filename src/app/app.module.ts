@@ -12,10 +12,10 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 import {AppConstants} from './providers/constant/constant';
 import {HttpClientModule} from '@angular/common/http';
 import {TermconditionsModal} from './termconditions/termconditions.page';
-
+import {CreateassetPage} from "./createasset/createasset.page";
 @NgModule({
-  declarations: [AppComponent,TermconditionsModal],
-  entryComponents: [TermconditionsModal],
+  declarations: [AppComponent,TermconditionsModal,CreateassetPage],
+  entryComponents: [TermconditionsModal,CreateassetPage],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,HttpClientModule , IonicStorageModule.forRoot()],
   providers: [
     Platform,

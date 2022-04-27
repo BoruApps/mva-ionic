@@ -5,7 +5,8 @@ import {HttpHeaders, HttpClient} from '@angular/common/http';
 import {AppConstants} from '../providers/constant/constant';
 import {LoadingController} from '@ionic/angular';
 import {Storage} from '@ionic/storage-angular';
-import { AlertController } from '@ionic/angular';
+import { AlertController,ModalController } from '@ionic/angular';
+import { CreateassetPage } from "../createasset/createasset.page";
 
 @Component({
   selector: 'app-asset',
@@ -36,7 +37,8 @@ export class AssetPage implements OnInit {
         private navCtrl: NavController,
         private activatedRoute: ActivatedRoute,
         public alertController: AlertController,
-        public loadingController: LoadingController
+        public loadingController: LoadingController,
+        public modalCtrl: ModalController,
     ) {
         this.apiurl = this.appConst.getApiUrl();
         this.vturl = this.appConst.getVtUrl();
@@ -152,7 +154,17 @@ export class AssetPage implements OnInit {
       console.log('this.assetstestcheckbox1 - after',this.assetstestcheckbox1);
     }
     async createasset(){
-      this.iscreateasset = 1;
+      const modal_createasset = await this.modalCtrl.create({
+        component: CreateassetPage,
+        componentProps: {
+          paramTitle: 'Create Your Asset',
+          list_locations: this.list_locations,
+        },
+      });
+      modal_createasset.onDidDismiss().then((dataReturned) => {
+          console.log('dataReturned', dataReturned);
+      });
+      return await modal_createasset.present();
     }
     async getbarcodenumberasset(event){
         var searchTerm = event.target.value;

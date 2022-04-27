@@ -4,16 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { AssetPageRoutingModule } from './asset-routing.module';
-import { AssetPage } from './asset.page';
+import { CreateassetPageRoutingModule } from './createasset-routing.module';
+
+import { CreateassetPage } from './createasset.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    AssetPageRoutingModule
+    CreateassetPageRoutingModule
   ],
-  declarations: [AssetPage]
+  declarations: [CreateassetPage]
 })
-export class AssetPageModule {}
+export class CreateassetPageModule {}
