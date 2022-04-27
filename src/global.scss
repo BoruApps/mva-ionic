@@ -45,7 +45,11 @@
   --width: 95%;
   --height: 70%;
 }
-
+.modal-80 {
+  background: rgba(0, 0, 0, 0.5) !important;
+  --width: 95%;
+  --height: 80%;
+}
 ion-header ion-toolbar {
   color: #ffffff;
   --background: #28436f;

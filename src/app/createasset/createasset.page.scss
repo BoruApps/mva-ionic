@@ -73,3 +73,20 @@ a {
 .redColor{
 	color: red;
 }
+.lblasset {
+    text-align: right;
+    width: 40%;
+}
+.form-table td, .form-table th {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.form-table{
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529; 
+}

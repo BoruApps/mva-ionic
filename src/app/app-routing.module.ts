@@ -25,6 +25,10 @@ const routes: Routes = [
   {
     path: 'results',
     loadChildren: () => import('./results/results.module').then( m => m.ResultsPageModule)
+  },
+  {
+    path: 'create-location',
+    loadChildren: () => import('./create-location/create-location.module').then( m => m.CreateLocationPageModule)
   }
 ];
 @NgModule({
