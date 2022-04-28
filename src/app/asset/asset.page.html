@@ -154,6 +154,84 @@
             </ion-grid>
         </ion-card>
     </div>
-    
+    <ion-card class="action-card">
+        <ion-grid>
+            <ion-row>
+                <ion-col>
+                    Sample Date
+                </ion-col>
+                <ion-col>
+                    <ion-item>
+                        <ion-datetime name="sample_date" displayFormat="MM/DD/YYYY" min="1994-03-14" max="2052-12-09"  value="{{sample_date}}"></ion-datetime>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+                    Sample Oil Temperature (°C)
+                </ion-col>
+                <ion-col>
+                    <ion-input name="sample_oil_temperature" id="sample_oil_temperature" type="text" [(ngModel)]="sample_oil_temperature"></ion-input>
+                </ion-col>
+            </ion-row>
+            <ion-row *ngIf="istapcounterreading == 1">
+                <ion-col>
+                    Tap Counter Reading
+                </ion-col>
+                <ion-col>
+                    <ion-input name="top_counter" id="top_counter" type="text" [(ngModel)]="opcounter"></ion-input>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+                    Comments
+                </ion-col>
+                <ion-col>
+                    <ion-input name="identification_comments" id="identification_comments" type="text" [(ngModel)]="identification_comments"></ion-input>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+                    Sample Due Date
+                </ion-col>
+                <ion-col>
+                    <ion-datetime name="sample_due_date" onkeydown="return false" displayFormat="MM/DD/YYYY" min="1994-03-14" max="2052-12-09"  value="{{sample_due_date}}"></ion-datetime>
+                </ion-col>
+            </ion-row>
+      </ion-grid>
+    </ion-card>  
+    <ion-card-content>
+            <div class="ion-padding">
+                <ion-button id="submit-button" color="secondary" expand="block" (click) = "createinspection();">Inspection Report</ion-button>
+            </div>
+        </ion-card-content>
+    <ion-card color="primary">
+        <ion-grid>
+            <ion-row>
+                <ion-col>
+                    Barcode Number
+                </ion-col>
+                <ion-col>
+                    {{barcodenumberasset}}
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+                    Equipment Type
+                </ion-col>
+                <ion-col>
+                    {{equipmenttype}}
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+                    Serial Number
+                </ion-col>
+                <ion-col>
+                    {{assetnameentrieselected}}
+                </ion-col>
+            </ion-row>
+      </ion-grid>
+    </ion-card>
 </ion-content>
 

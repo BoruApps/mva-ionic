@@ -179,10 +179,10 @@ export class HomePage implements OnInit {
                 }
                 console.log('res2 ==== ',res2);
                 this.storage.set('assetstestcheckbox1',res2);
-                /*this.storage.set('sample_date',JSON.stringify(responseData.cf_1110));
-                this.storage.set('sample_due_date',JSON.stringify(responseData.cf_1161));
-                this.storage.set('sample_oil_temperature',JSON.stringify(responseData.cf_1107));
-                this.storage.set('identification_comments',JSON.stringify(responseData.cf_idcomments));*/
+                this.storage.set('sample_date',responseData.cf_1110);
+                this.storage.set('sample_due_date',responseData.cf_1161);
+                this.storage.set('sample_oil_temperature',responseData.cf_1107);
+                this.storage.set('identification_comments',responseData.cf_idcomments);
                 if(responseData.message){
                     this.storage.set('assetsmessage',responseData.message);
                 }else{

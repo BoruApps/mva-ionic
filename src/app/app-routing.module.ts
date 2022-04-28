@@ -25,6 +25,10 @@ const routes: Routes = [
   {
     path: 'results',
     loadChildren: () => import('./results/results.module').then( m => m.ResultsPageModule)
+  },
+  {
+    path: 'createinspection',
+    loadChildren: () => import('./createinspection/createinspection.module').then( m => m.CreateinspectionPageModule)
   }
 ];
 @NgModule({

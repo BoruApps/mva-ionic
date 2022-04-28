@@ -18,6 +18,12 @@ export class AssetPage implements OnInit {
   apiurl: any;
     vturl: any;
     loading: any;
+    sample_date: any;
+    sample_due_date: any;
+    sample_oil_temperature: any;
+    assetnameentrieselected: any;
+    equipmenttype: any;
+    identification_comments: any;
     userdata: any;
     assetfilter: any = 'serialnumber';
     assetsentrieselected: any;
@@ -28,6 +34,7 @@ export class AssetPage implements OnInit {
     list_locations = [];
     searchassetflag = 0;
     iscreateasset = 0;
+    istapcounterreading = 0;
     constructor(
         private router: Router,
         public storage: Storage,
@@ -54,31 +61,53 @@ export class AssetPage implements OnInit {
                 this.logoutUser();
             }
         });
-        this.storage.get('assetsentries').then((assetsentries) => {
-          this.assetsentries = assetsentries;
-          this.assetfilterlist = assetsentries;
-          console.log('this.assetfilterlist == ',this.assetfilterlist);
-        });
         this.storage.get('assetsentrieselected').then((assetsentrieselected) => {
           this.assetsentrieselected = assetsentrieselected;
         });
+        this.storage.get('assetsentries').then((assetsentries) => {
+          this.assetsentries = assetsentries;
+          this.assetfilterlist = assetsentries;
+          for(var i = 0; i<this.assetfilterlist.length;i++){
+            if(this.assetfilterlist[i].assetid == this.assetsentrieselected){
+                var imortant_note = this.assetfilterlist.splice(i,1);
+                this.assetfilterlist.unshift(imortant_note[0]);
+            }
+          }
+        });
+        
+        
+        
+
+        this.storage.get('assetnameentrieselected').then((assetnameentrieselected) => {
+          this.assetnameentrieselected = assetnameentrieselected;
+        });
+        this.storage.get('equipmenttype').then((equipmenttype) => {
+          this.equipmenttype = equipmenttype;
+        });
+        this.storage.get('sample_date').then((sample_date) => {
+          this.sample_date = sample_date;
+        });
+        this.storage.get('sample_due_date').then((sample_due_date) => {
+          this.sample_due_date = sample_due_date;
+        });
+        this.storage.get('sample_oil_temperature').then((sample_oil_temperature) => {
+          this.sample_oil_temperature = sample_oil_temperature;
+        });
+        this.storage.get('identification_comments').then((identification_comments) => {
+          this.identification_comments = identification_comments;
+        });
         this.storage.get('assetstestcheckbox1').then((assetstestcheckbox1) => {
           this.assetstestcheckbox1 = assetstestcheckbox1;
-          console.log('this.assetstestcheckbox1 == ',this.assetstestcheckbox1);
         });
         this.storage.get('list_locations').then((list_locations) => {
           this.list_locations = list_locations;
-          console.log('this.list_locations == ',this.list_locations);
         });
         this.storage.get('assetstestcheckbox').then((assetstestcheckbox) => {
           this.assetstestcheckbox = assetstestcheckbox;
-          console.log('this.assetstestcheckbox == ',this.assetstestcheckbox);
         });
         this.storage.get('userdata').then((userdata) => {
-          console.log('this.userdata - Asset == ',userdata);
         });
         this.storage.get('barcode').then((barcode) => {
-          console.log('this.barcode - Asset == ',barcode);
         });
         this.storage.get('assetsmessage').then((assetsmessage) => {
           if(assetsmessage != 'TEST'){
@@ -161,6 +190,9 @@ export class AssetPage implements OnInit {
       console.log('this.assetstestcheckbox1 - after',this.assetstestcheckbox1);
     }
 
+    async createinspection(){
+        console.log('createinspection');
+    }
     async createasset(){
       console.log('barcodenumberasset == ',this.barcodenumberasset);
       const modal_createasset = await this.modalCtrl.create({
