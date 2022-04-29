@@ -29,7 +29,9 @@
     "@ionic-native/status-bar": "^5.36.0",
     "@ionic/angular": "^6.0.0",
     "@ionic/storage-angular": "^3.0.6",
+    "jquery": "^3.6.0",
     "rxjs": "~6.6.0",
+    "select2": "^4.1.0-rc.0",
     "tslib": "^2.2.0",
     "zone.js": "~0.11.4"
   },

@@ -29,6 +29,10 @@ const routes: Routes = [
   {
     path: 'createinspection',
     loadChildren: () => import('./createinspection/createinspection.module').then( m => m.CreateinspectionPageModule)
+  },
+  {
+    path: 'create-location',
+    loadChildren: () => import('./create-location/create-location.module').then( m => m.CreateLocationPageModule)
   }
 ];
 @NgModule({

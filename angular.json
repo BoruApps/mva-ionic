@@ -31,8 +31,8 @@
                 "output": "./svg"
               }
             ],
-            "styles": ["src/theme/variables.scss", "src/global.scss"],
-            "scripts": [],
+            "styles": ["src/theme/variables.scss", "src/global.scss","node_modules/select2/dist/css/select2.css"],
+            "scripts": ["node_modules/jquery/dist/jquery.min.js","node_modules/select2/dist/js/select2.full.js"],
             "aot": false,
             "vendorChunk": true,
             "extractLicenses": false,
@@ -52,6 +52,7 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
+              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
@@ -98,8 +99,8 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "styles": [],
-            "scripts": [],
+            "styles": ["src/theme/variables.scss", "src/global.scss","node_modules/select2/dist/css/select2.css"],
+            "scripts": ["node_modules/jquery/dist/jquery.min.js","node_modules/select2/dist/js/select2.full.js"],
             "assets": [
               {
                 "glob": "favicon.ico",

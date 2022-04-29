@@ -4,6 +4,11 @@ import { LoadingController } from '@ionic/angular';
 import {Storage} from '@ionic/storage-angular';
 import {HttpHeaders, HttpClient} from '@angular/common/http';
 import {AppConstants} from '../providers/constant/constant';
+import {CreateLocationPage} from '../create-location/create-location.page';
+
+import jQuery from 'jquery'
+import {TermconditionsModal} from "../termconditions/termconditions.page";
+declare var jQuery: jQuery
 
 @Component({
   selector: 'app-createasset',
@@ -140,6 +145,40 @@ export class CreateassetPage implements OnInit {
         picklistvalues: ['-- Not Reported --','Sealed','Free Breather','Conservator','Free Breather with Desiccant']
     });
   }
+    ngAfterViewInit(){
+        var self = this;
+        
+        jQuery("#multiaddressid").select2({
+            "dropdownParent": jQuery("#multiaddressiddiv"),
+            "language": {
+                "noResults": function(){
+                    return "No Results Found<ion-button type='button' color='secondary' size='small' id='createNewSubStation'>Create New</ion-button>";
+                }
+            }, escapeMarkup: function (markup) {
+                return markup;
+            }
+        });
+
+        jQuery('#multiaddressiddiv').on('click','#createNewSubStation', async function () {
+            const addLocation = await self.modalController.create({
+                component: CreateLocationPage,
+                componentProps: {},
+                cssClass: 'modal-80',
+            });
+
+            addLocation.onDidDismiss().then((dataReturned) => {
+                console.log('dataReturned', dataReturned.data)
+                if (dataReturned.data !== null && dataReturned.data != undefined) {
+                    var html = '<option value="'+dataReturned.data.id+'" class="ng-binding ng-scope">'+dataReturned.data.name+'</option>';
+                    jQuery('#multiaddressid').append(html);
+                    jQuery('#multiaddressid').val(dataReturned.data.id).trigger("change");
+                }
+            });
+
+            return await addLocation.present();
+        });
+    }
+    
   	loading: any;
 
     async showLoading() {
@@ -283,7 +322,7 @@ export class CreateassetPage implements OnInit {
 	    for (var i = 0; i < this.AssetfieldList.length; ++i) {
 	        if((this.AssetfieldList[i]["value"] == '' || this.AssetfieldList[i]["value"] == undefined) && this.AssetfieldList[i]["typeofdata"] == 'V~M'){
 	            fieldlist.push(this.AssetfieldList[i]["fieldname"]);
-	            fieldlistmassge += 'This field is Required '+this.AssetfieldList[i]["label"] +'\n <br>';
+                fieldlistmassge += this.AssetfieldList[i]["label"] + ' is Required\n <br>';
 	        }
 	    }
 	    if(fieldlistmassge == ''){
