@@ -7,6 +7,7 @@ import {LoadingController} from '@ionic/angular';
 import {Storage} from '@ionic/storage-angular';
 import { AlertController,ModalController } from '@ionic/angular';
 import { CreateassetPage } from "../createasset/createasset.page";
+import { CreateinspectionPage } from "../createinspection/createinspection.page";
 
 @Component({
   selector: 'app-asset',
@@ -15,7 +16,7 @@ import { CreateassetPage } from "../createasset/createasset.page";
 })
 export class AssetPage implements OnInit {
 	barcodenumberasset:any;
-  apiurl: any;
+    apiurl: any;
     vturl: any;
     loading: any;
     sample_date: any;
@@ -24,9 +25,12 @@ export class AssetPage implements OnInit {
     assetnameentrieselected: any;
     equipmenttype: any;
     identification_comments: any;
+    topcounter: any;
     userdata: any;
+    barcode: any;
     assetfilter: any = 'serialnumber';
     assetsentrieselected: any;
+    selectedbundle: any;
     assetsentries: any = [];
     assetfilterlist = [];
     assetstestcheckbox = [];
@@ -98,22 +102,36 @@ export class AssetPage implements OnInit {
         });
         this.storage.get('assetstestcheckbox1').then((assetstestcheckbox1) => {
           this.assetstestcheckbox1 = assetstestcheckbox1;
+          for (var x in this.assetstestcheckbox1){
+                var tmp = this.assetstestcheckbox1[x];
+                if(tmp.isbundle == 1 && this.assetstestcheckbox1[x].checkboxvalue){
+                    this.selectedbundle = this.assetstestcheckbox1[x].fieldname;
+                }
+            }
         });
         this.storage.get('list_locations').then((list_locations) => {
           this.list_locations = list_locations;
         });
         this.storage.get('assetstestcheckbox').then((assetstestcheckbox) => {
           this.assetstestcheckbox = assetstestcheckbox;
+          for (var x in this.assetstestcheckbox){
+                var tmp = this.assetstestcheckbox[x];
+                if(tmp.isbundle == 1 && this.assetstestcheckbox[x].checkboxvalue){
+                    this.selectedbundle = this.assetstestcheckbox[x].fieldname;
+                }
+            }
         });
         this.storage.get('userdata').then((userdata) => {
         });
         this.storage.get('barcode').then((barcode) => {
+          this.barcode = barcode;
         });
         this.storage.get('assetsmessage').then((assetsmessage) => {
           if(assetsmessage != 'TEST'){
             this.confirmCancelImage('Warning message',assetsmessage);
           }
         });
+        
   }
   async isLogged() {
         var log_status = this.storage.get('userdata').then((userdata) => {
@@ -168,30 +186,212 @@ export class AssetPage implements OnInit {
 
         await alert.present();
     }
+    async SaveTests(){
+        var fieldval = 'true';
+        var fieldname = [];
+        for (var x in this.assetstestcheckbox){
+            var tmp = this.assetstestcheckbox[x];
+            if(this.assetstestcheckbox[x].checkboxvalue){
+                fieldname.push(this.assetstestcheckbox[x].fieldname);
+            }
+        }
+        for (var x in this.assetstestcheckbox1){
+            var tmp = this.assetstestcheckbox1[x];
+            if(this.assetstestcheckbox1[x].checkboxvalue){
+                fieldname.push(this.assetstestcheckbox1[x].fieldname);
+            }
+        }
+        if(this.topcounter == undefined){
+            this.topcounter = '';
+        }
+        var postdata = {
+            barcode: this.barcode,
+            accountid: this.userdata.accountid,
+            act: 'save_sample',
+            fieldname: fieldname,
+            fieldval: fieldval,
+            selectedSerialnumber: this.assetnameentrieselected,
+            sample_date : this.sample_date,
+            top_counter : this.topcounter,
+            sample_oil_temperature : this.sample_oil_temperature,
+            identification_comments : this.identification_comments,
+            sample_due_date : this.sample_due_date,
+            sample_id : this.barcode,
+            asset_name : this.assetsentrieselected,
+            contactid : this.userdata.username,
+            customerid: this.userdata.id,
+        };
+        console.log('postdata === ',postdata);
+        var headers = new HttpHeaders();
+            headers.append("Accept", "application/json");
+            headers.append("Content-Type", "application/x-www-form-urlencoded");
+            headers.append("Access-Control-Allow-Origin", "*");
+        this.showLoading();
+        this.httpClient.post(this.apiurl + "OrderTests.php", JSON.stringify(postdata), {
+          headers: headers,
+          observe: "response",
+        }).subscribe(async (data) => {
+            this.hideLoading();
+            var success = data["body"]["success"];
+            console.log('save == ',data);
+            console.log('save-success == ',success);
+            if(success){
+                this.router.navigateByUrl('/home');
+            }
+        });
+    }
+    async clearTests(event){
+        for (var x in this.assetstestcheckbox){
+            var tmp = this.assetstestcheckbox[x];
+            if(tmp.isbundle == 0){
+                this.assetstestcheckbox[x].checkboxvalue = 0;
+            }
+        }
+        for (var x in this.assetstestcheckbox1){
+            var tmp = this.assetstestcheckbox1[x];
+            if(tmp.isbundle == 0){
+                this.assetstestcheckbox1[x].checkboxvalue = 0;
+            }
+        }
+    }
     async checkTest(event){
       var asset_id = this.assetsentrieselected;
       if(asset_id == '') {
         this.presentToast('Please select an existing asset or create new one.');
-        //document.getElementById(obj.id).checked = false;
             return;
         }
       var a_temp = event.target.value;
       var a_tempArr = a_temp.split(',');
-      console.log('a_temp === ',a_temp);
-      console.log('a_tempArr === ',a_tempArr);
-      console.log('this.assetstestcheckbox1 - brfore',this.assetstestcheckbox1);
-      for (var x in this.assetstestcheckbox1){
-        var tmp = this.assetstestcheckbox1[x];
-          if(tmp.isbundle == 0){
-            this.assetstestcheckbox1[x].checkboxvalue = 0;
-          console.log('========== tmp.isbundle == ',tmp.isbundle);
+      if(a_tempArr.length > 1){
+        for (var x in this.assetstestcheckbox){
+          if(this.assetstestcheckbox[x].isbundle == 0 && a_tempArr.indexOf(this.assetstestcheckbox[x].fieldname) !== -1) {
+            this.assetstestcheckbox[x].checkboxvalue = 1;
+          }else{
+            if(this.assetstestcheckbox[x].isbundle == 1 && this.assetstestcheckbox[x].fieldname == a_temp){
+                this.assetstestcheckbox[x].checkboxvalue = 1;
+            }else{
+                this.assetstestcheckbox[x].checkboxvalue = 0;
+            }
           }
+        }
+
+        for (var x in this.assetstestcheckbox1){
+          if(this.assetstestcheckbox1[x].isbundle == 0 && a_tempArr.indexOf(this.assetstestcheckbox1[x].fieldname) !== -1) {
+            this.assetstestcheckbox1[x].checkboxvalue = 1;
+          }else{
+            if(this.assetstestcheckbox1[x].isbundle == 1 && this.assetstestcheckbox1[x].fieldname == a_temp){
+                this.assetstestcheckbox1[x].checkboxvalue = 1;
+            }else{
+                this.assetstestcheckbox1[x].checkboxvalue = 0;
+            }
+          }
+        }
       }
-      console.log('this.assetstestcheckbox1 - after',this.assetstestcheckbox1);
     }
 
     async createinspection(){
-        console.log('createinspection');
+      var postdata = {
+        asset_id: this.assetsentrieselected,
+        mode:'GetAssetData'
+      };
+        var headers = new HttpHeaders();
+            headers.append("Accept", "application/json");
+            headers.append("Content-Type", "application/x-www-form-urlencoded");
+            headers.append("Access-Control-Allow-Origin", "*");
+        this.showLoading();
+        this.httpClient.post(this.apiurl + "UpdateAsset.php", JSON.stringify(postdata), {
+          headers: headers,
+          observe: "response",
+        })
+        .subscribe(async (data) => {
+            this.hideLoading();
+            var success = data["body"]["success"];
+            
+            if (success == true) {
+              var cf_937 = data["body"]['data']['cf_937'];
+              var cf_938 = data["body"]['data']['cf_938'];
+              var cf_939 = data["body"]['data']['cf_939'];
+              var cf_1148 = data["body"]['data']['cf_1148'];
+              var cf_1149 = data["body"]['data']['cf_1149'];
+              var cf_1150 = data["body"]['data']['cf_1150'];
+              var cf_1151 = data["body"]['data']['cf_1151'];
+              var cf_1152 = data["body"]['data']['cf_1152'];
+              var cf_1153 = data["body"]['data']['cf_1153'];
+              var cf_1154 = data["body"]['data']['cf_1154'];
+              var cf_1156 = data["body"]['data']['cf_1156'];
+              const modal_createinspection = await this.modalCtrl.create({
+                component: CreateinspectionPage,
+                componentProps: {
+                  paramTitle: 'Create Your Inspection',
+                  assetsentrieselected : this.assetsentrieselected,
+                  cf_937 : cf_937,
+                  cf_938 : cf_938,
+                  cf_939 : cf_939,
+                  cf_1148 : cf_1148,
+                  cf_1149 : cf_1149,
+                  cf_1150 : cf_1150,
+                  cf_1151 : cf_1151,
+                  cf_1152 : cf_1152,
+                  cf_1153 : cf_1153,
+                  cf_1154 : cf_1154,
+                  cf_1156 : cf_1156,
+                },
+              });
+              modal_createinspection.onDidDismiss().then((dataReturned) => {
+                console.log('Inspection-Form-dataReturned = ',dataReturned);
+              });
+              return await modal_createinspection.present();
+            }
+        });
+    }
+    async selecteasset(assetid){
+      
+      this.assetsentrieselected = assetid;
+      this.assetfilterlist = this.assetsentries.filter((asset) => {
+            if(assetid === undefined){
+              return false
+            }
+            return asset.assetid.toLowerCase().indexOf(assetid.toLowerCase()) > -1;
+            
+        });
+      this.equipmenttype = this.assetfilterlist[0]['cf_922'];
+      this.assetnameentrieselected = this.assetfilterlist[0]['assetname'];
+      var postdata = {
+        act:'list_tests',
+        asset_name: this.assetsentrieselected,
+        sample_id: this.barcode
+      };
+        var headers = new HttpHeaders();
+            headers.append("Accept", "application/json");
+            headers.append("Content-Type", "application/x-www-form-urlencoded");
+            headers.append("Access-Control-Allow-Origin", "*");
+        this.showLoading();
+        this.httpClient.post(this.apiurl + "OrderTests.php", JSON.stringify(postdata), {
+        headers: headers,
+        observe: "response",
+        })
+        .subscribe(async (data) => {
+            this.hideLoading();
+            var success = data["body"]["success"];
+            var response = data["body"]['data'];
+            if(success){
+                if(response['cf_opcounter_type']){
+                    this.topcounter = response['cf_opcounter'];
+                    this.istapcounterreading = 1;
+                }else{
+                    this.topcounter = '';
+                    this.istapcounterreading = 0;
+                }
+
+                for(var i = 0; i<this.assetfilterlist.length;i++){
+                    if(this.assetfilterlist[i].assetid == this.assetsentrieselected){
+                        var imortant_note = this.assetfilterlist.splice(i,1);
+                        this.assetfilterlist.unshift(imortant_note[0]);
+                    }
+                }
+            }
+
+        });
     }
     async createasset(){
       console.log('barcodenumberasset == ',this.barcodenumberasset);
@@ -232,6 +432,12 @@ export class AssetPage implements OnInit {
           this.searchassetflag = 1;
         }else{
           this.searchassetflag = 0;
+        }
+        for(var i = 0; i<this.assetfilterlist.length;i++){
+            if(this.assetfilterlist[i].assetid == this.assetsentrieselected){
+                var imortant_note = this.assetfilterlist.splice(i,1);
+                this.assetfilterlist.unshift(imortant_note[0]);
+            }
         }
     }
 }

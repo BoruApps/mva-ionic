@@ -13,9 +13,10 @@ import {AppConstants} from './providers/constant/constant';
 import {HttpClientModule} from '@angular/common/http';
 import {TermconditionsModal} from './termconditions/termconditions.page';
 import {CreateassetPage} from "./createasset/createasset.page";
+import {CreateinspectionPage} from "./createinspection/createinspection.page";
 @NgModule({
-  declarations: [AppComponent,TermconditionsModal,CreateassetPage],
-  entryComponents: [TermconditionsModal,CreateassetPage],
+  declarations: [AppComponent,TermconditionsModal,CreateassetPage,CreateinspectionPage],
+  entryComponents: [TermconditionsModal,CreateassetPage,CreateinspectionPage],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,HttpClientModule , IonicStorageModule.forRoot()],
   providers: [
     Platform,
