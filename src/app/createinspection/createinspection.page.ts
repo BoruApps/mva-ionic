@@ -104,20 +104,6 @@ export class CreateinspectionPage implements OnInit {
 	        value : this.cf_1149,
 	        picklistvalues : ['-- Not Reported --','Yes','No','None']
 	    },{ 
-	        label : 'Phases',
-	        fieldname : 'cf_1150',
-	        uitype : 15,
-	        typeofdata : 'V~0',
-	        value : this.cf_1150,
-	        picklistvalues : ['-- Not Reported --','1','3']
-	    },{ 
-	        label : 'Breather Configuration',
-	        fieldname : 'cf_1151',
-	        uitype : 15,
-	        typeofdata : 'V~0',
-	        value: this.cf_1151,
-	        picklistvalues : ['-- Not Reported --','Sealed','Free Breather','Conservator','Free Breather with Dessicant']
-	    },{ 
 	        label : 'Bushings Enclosed',
 	        fieldname : 'cf_1152',
 	        uitype : 15,

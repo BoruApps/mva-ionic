@@ -43,7 +43,7 @@ a {
 .bolder {
     font-weight: 900;
 }
-.order-list-item, .asset-list-item {
+.test-list-sample {
     font-size: 15px;
 }
 .mrg_bottom_submit{
@@ -69,4 +69,22 @@ a {
     box-shadow: 0 0 5px #dadada;
     font-size: 16px;
     font-weight: 400;
+}
+
+.lblasset {
+    text-align: right;
+    width: 40%;
+}
+.form-table td, .form-table th {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.form-table{
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529; 
 }

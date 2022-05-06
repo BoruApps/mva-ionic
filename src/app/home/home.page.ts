@@ -7,6 +7,7 @@ import {LoadingController} from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { AlertController } from '@ionic/angular';
 import { TestBed, async } from '@angular/core/testing';
+import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
 
 @Component({
     selector: 'app-home',
@@ -27,6 +28,7 @@ export class HomePage implements OnInit {
       public appConst: AppConstants,
       private navCtrl: NavController,
       public alertController: AlertController,
+      private barcodeScanner: BarcodeScanner,
       public loadingController: LoadingController
       ) {
         this.apiurl = this.appConst.getApiUrl();
@@ -89,6 +91,14 @@ export class HomePage implements OnInit {
             var value = barcode.toLowerCase().trim();
             this.scansample();
         }
+    }
+    scanBarcode() {
+        this.barcodeScanner.scan().then(barcodeData => {
+            console.log('Barcode data', barcodeData);
+            
+        }).catch(err => {
+            console.log('Error', err);
+        });
     }
     async confirmCancelImage(header,message){
         const alert = await this.alertController.create({

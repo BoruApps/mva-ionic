@@ -14,6 +14,11 @@ import {HttpClientModule} from '@angular/common/http';
 import {TermconditionsModal} from './termconditions/termconditions.page';
 import {CreateassetPage} from "./createasset/createasset.page";
 import {CreateinspectionPage} from "./createinspection/createinspection.page";
+import { File } from '@awesome-cordova-plugins/file/ngx';
+import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
+import { HTTP } from '@awesome-cordova-plugins/http/ngx';
+import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
+
 @NgModule({
   declarations: [AppComponent,TermconditionsModal,CreateassetPage,CreateinspectionPage],
   entryComponents: [TermconditionsModal,CreateassetPage,CreateinspectionPage],
@@ -26,7 +31,11 @@ import {CreateinspectionPage} from "./createinspection/createinspection.page";
       provide: RouteReuseStrategy, 
       useClass: IonicRouteStrategy 
     },
-    AppConstants
+    AppConstants,
+    File,
+    FileOpener,
+    HTTP,
+    BarcodeScanner
   ],
   bootstrap: [AppComponent],
 })

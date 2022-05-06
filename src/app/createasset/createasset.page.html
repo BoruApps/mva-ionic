@@ -41,7 +41,7 @@
                         </ion-select>
                     </div>
                     <div *ngIf="fieldDetail.uitype == '155'" id="{{fieldDetail.fieldname}}div" class="picklist-drowpdown">
-                        <select id="{{fieldDetail.fieldname}}" class="select2" style="width: 100%;height: 1em;"name="{{fieldDetail.fieldname}}" value="{{fieldDetail.value}}">
+                        <select id="{{fieldDetail.fieldname}}" class="select2" style="width: 100%;height: 2em;"name="{{fieldDetail.fieldname}}" value="{{fieldDetail.value}}">
                             <option value="" selected="selected">Choose An Option</option>
                             <option *ngFor="let picklist of fieldDetail.picklistvalues" value="{{picklist.crmid}}">{{picklist.address1}}</option>
                         </select>

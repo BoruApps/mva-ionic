@@ -394,7 +394,6 @@ export class AssetPage implements OnInit {
         });
     }
     async createasset(){
-      console.log('barcodenumberasset == ',this.barcodenumberasset);
       const modal_createasset = await this.modalCtrl.create({
         component: CreateassetPage,
         componentProps: {
@@ -415,9 +414,10 @@ export class AssetPage implements OnInit {
     async getbarcodenumberasset(event){
         var searchTerm = event.target.value;
         this.assetfilterlist = this.assetsentries.filter((asset) => {
-            if(searchTerm === undefined){
+            if(searchTerm === undefined || asset.cf_922 == null || asset.assetname == null || asset.cf_1164 == null || asset.multiaddressid == null){
               return false
             }
+            
             if(this.assetfilter == 'serialnumber'){
               return asset.assetname.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
             }else if(this.assetfilter == 'unitid'){
