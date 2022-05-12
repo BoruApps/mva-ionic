@@ -38,7 +38,6 @@
     "cordova-plugin-file": "^6.0.2",
     "cordova-plugin-file-transfer": "^1.7.1",
     "file-system": "^1.2.2",
-    "paulstelzer-ionic-angular-toolkit": "^2.0.0",
     "rxjs": "~6.6.0",
     "select2": "^4.1.0-rc.0",
     "tslib": "^2.2.0",
