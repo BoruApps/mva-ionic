@@ -45,6 +45,7 @@ export class HomePage implements OnInit {
                 this.logoutUser();
             }
         });
+        document.body.classList.toggle('light', false);
     }
 
     async isLogged() {
@@ -95,6 +96,11 @@ export class HomePage implements OnInit {
     scanBarcode() {
         this.barcodeScanner.scan().then(barcodeData => {
             console.log('Barcode data', barcodeData);
+            console.log('barcodeData.text', barcodeData.text);
+            if(barcodeData.text){
+                this.barcodenumber = barcodeData.text
+                this.scansample();
+            }
             
         }).catch(err => {
             console.log('Error', err);
