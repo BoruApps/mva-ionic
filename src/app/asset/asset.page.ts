@@ -8,6 +8,11 @@ import {Storage} from '@ionic/storage-angular';
 import { AlertController,ModalController } from '@ionic/angular';
 import { CreateassetPage } from "../createasset/createasset.page";
 import { CreateinspectionPage } from "../createinspection/createinspection.page";
+import { Crop } from '@ionic-native/crop/ngx';
+import { Camera, CameraOptions } from '@awesome-cordova-plugins/camera/ngx';
+import { File } from '@awesome-cordova-plugins/file/ngx';
+
+
 
 @Component({
   selector: 'app-asset',
@@ -31,6 +36,7 @@ export class AssetPage implements OnInit {
     assetfilter: any = 'serialnumber';
     assetsentrieselected: any;
     selectedbundle: any;
+    croppedImagepath = "";
     assetsentries: any = [];
     assetfilterlist = [];
     assetstestcheckbox = [];
@@ -39,6 +45,11 @@ export class AssetPage implements OnInit {
     searchassetflag = 0;
     iscreateasset = 0;
     istapcounterreading = 0;
+    
+    buttonLabels = ['Take Photo', 'Upload from Library'];
+    public subSection: number;
+    public sectionKey: number;
+
     constructor(
         private router: Router,
         public storage: Storage,
@@ -50,6 +61,9 @@ export class AssetPage implements OnInit {
         public alertController: AlertController,
         public loadingController: LoadingController,
         public modalCtrl: ModalController,
+        private crop: Crop,
+        private camera: Camera,
+        private file: File
     ) {
         this.apiurl = this.appConst.getApiUrl();
         this.vturl = this.appConst.getVtUrl();
@@ -439,5 +453,48 @@ export class AssetPage implements OnInit {
                 this.assetfilterlist.unshift(imortant_note[0]);
             }
         }
+    }
+    openActionSheet(index, section) {
+        var options: CameraOptions = {
+          quality: 100,
+          sourceType: this.camera.PictureSourceType.CAMERA,
+          destinationType: this.camera.DestinationType.FILE_URI,
+          encodingType: this.camera.EncodingType.JPEG,
+          mediaType: this.camera.MediaType.PICTURE
+        }
+
+        this.camera.getPicture(options).then((imageData) => {
+            this.cropImage(imageData)
+        }, (err) => {
+            this.presentToast('Error in showing image' + err);
+        });
+    }
+    cropImage(fileUrl) {
+        console.log("IN cropImage--",fileUrl)
+
+        this.crop.crop(fileUrl, { quality: 50 })
+            .then(
+                newPath => {
+                this.showCroppedImage(fileUrl.split('?')[0])
+            },
+            error => {
+                this.presentToast('Error cropping image' + error);
+            }
+        );
+    }
+
+    showCroppedImage(ImagePath) {
+        console.log("IN showCroppedImage")
+        var copyPath = ImagePath;
+        var splitPath = copyPath.split('/');
+        var imageName = splitPath[splitPath.length - 1];
+        var filePath = ImagePath.split(imageName)[0];
+
+        this.file.readAsDataURL(filePath, imageName).then(base64 => {
+        console.log("IN base64",base64)
+        this.croppedImagepath = base64;
+        }, error => {
+            this.presentToast('Error in showing image' + error);
+        });
     }
 }

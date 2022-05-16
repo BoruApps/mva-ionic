@@ -14,10 +14,14 @@ import {HttpClientModule} from '@angular/common/http';
 import {TermconditionsModal} from './termconditions/termconditions.page';
 import {CreateassetPage} from "./createasset/createasset.page";
 import {CreateinspectionPage} from "./createinspection/createinspection.page";
+import { Crop } from '@ionic-native/crop/ngx';
+import { Camera, CameraOptions } from '@awesome-cordova-plugins/camera/ngx';
 import { File } from '@awesome-cordova-plugins/file/ngx';
 import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
 import { HTTP } from '@awesome-cordova-plugins/http/ngx';
 import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
+
+
 
 @NgModule({
   declarations: [AppComponent,TermconditionsModal,CreateassetPage,CreateinspectionPage],
@@ -32,10 +36,12 @@ import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
       useClass: IonicRouteStrategy 
     },
     AppConstants,
+    Crop,
+    Camera,
     File,
     FileOpener,
     HTTP,
-    BarcodeScanner
+    BarcodeScanner,
   ],
   bootstrap: [AppComponent],
 })
