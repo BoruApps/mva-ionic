@@ -146,19 +146,7 @@ export class ResultsPage implements OnInit {
                     var path = this.file.dataDirectory;
                 }
 
-                const filePath = this.file.dataDirectory + 'somepicture.pdf'; 
-                this.http.downloadFile(url, this.file.dataDirectory,{},filePath).then(response => {
-                    // prints 200
-                    console.log('response.status == ',response.status);
-                  })
-                  .catch(response => {
-                    // prints 403
-                    console.log('response-catch1 = ',response);
-                    console.log('response.status-catch = ',response.status);
-                    // prints Permission denied
-                    console.log('response.error-catch = ',response.error);
-                  });
-/*                this.http.sendRequest(url, {method: "get", responseType: "arraybuffer"}).then(
+                this.http.sendRequest(url, {method: "get", responseType: "arraybuffer"}).then(
                     httpResponse => {
                         var downloadedFile = new Blob([httpResponse.data], {type: 'application/pdf'});
 
@@ -180,7 +168,7 @@ export class ResultsPage implements OnInit {
                 ).catch(err => {
                     this.hideLoading();
                     console.log('Error getting file', err)
-                })*/
+                })
             } else {
                 this.hideLoading();
                 this.presentToast('Something went wrong. Please try again');
