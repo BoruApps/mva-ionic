@@ -3,7 +3,7 @@
     <name>MVA</name>
     <description>Manage your Work Orders with ease.</description>
     <author email="appdev@boruapps.com" href="https://boruapps.com">Boru Apps</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://localhost:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />

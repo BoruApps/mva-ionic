@@ -33,6 +33,10 @@ const routes: Routes = [
   {
     path: 'create-location',
     loadChildren: () => import('./create-location/create-location.module').then( m => m.CreateLocationPageModule)
+  },
+  {
+    path: 'imageeditor',
+    loadChildren: () => import('./imageeditor/imageeditor.module').then( m => m.ImageeditorPageModule)
   }
 ];
 @NgModule({
