@@ -139,7 +139,6 @@ export class ResultsPage implements OnInit {
             if (verified == true) {
                  this.hideLoading();
                 var url = data['body']['pdfFilePath'];
-                var url = 'https://devl06.borugroup.com/mvagit/phoneapi_ionic/storage/PDFMaker/ASSET40312.pdf';
                 if (this.platform.is('ios')) {
                     var path = this.file.documentsDirectory;
                 } else {

@@ -22,6 +22,8 @@
                 <td>
                     <ion-input *ngIf="fieldDetail.uitype == '1'" type="text" name="{{fieldDetail.fieldname}}"  id="{{fieldDetail.fieldname}}" placeholder="Press Here To Type" (ionChange)="addUpdate($event)" value="{{fieldDetail.value}}">
                     </ion-input>
+                    <ion-input *ngIf="fieldDetail.uitype == '11'" type="text" name="{{fieldDetail.fieldname}}"  id="{{fieldDetail.fieldname}}" placeholder="Press Here To Type" (ionChange)="addUpdate($event)" value="{{fieldDetail.value}}" disabled="true">
+                    </ion-input>
                     <div *ngIf="fieldDetail.uitype == '2'">
 
                         <ion-label position="floating">hh:mm A</ion-label>

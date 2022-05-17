@@ -267,6 +267,7 @@ export class AssetPage implements OnInit {
                 this.assetstestcheckbox1[x].checkboxvalue = 0;
             }
         }
+        this.selectedbundle = '';
     }
     async checkTest(event){
       var asset_id = this.assetsentrieselected;

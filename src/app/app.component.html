@@ -7,7 +7,7 @@
                 </ion-toolbar>
             </ion-header>
             <ion-content color="primary">
-                <ion-list id="inbox-list">
+                <ion-list id="inbox-list" class ="ion-no-padding">
                     <div *ngFor="let pages of Pages; let i = index">
                         <ion-menu-toggle *ngIf="pages.url">
                             <ion-item *ngIf="pages.url != 'logout' "
@@ -34,7 +34,7 @@
                             <ion-label>{{ pages.title }}</ion-label>
                         </ion-item>
 
-                        <ion-list *ngIf="pages.submenuShow">
+                        <ion-list *ngIf="pages.submenuShow" class ="ion-no-padding">
                             <ion-menu-toggle>
                                 <ion-item *ngFor="let subMenu of pages.submenu;" [hidden]="!pages.submenuShow"
                                           [routerLink]="[subMenu.url]"
