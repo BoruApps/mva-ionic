@@ -17,6 +17,7 @@ export class SamplesummaryPage implements OnInit {
     vturl: any;
     loading: any;
     userdata: any;
+    barcodenumber: any;
     assetNoRecord: boolean = false;
     assetlist: any = [];
     assetfilterlist = [];
@@ -91,6 +92,12 @@ export class SamplesummaryPage implements OnInit {
         });
         toast.present();
     }
+    async doRefresh(event) {
+        this.barcodenumber = '';
+        this.ngOnInit();
+        event.target.complete();
+
+    }
     async loadSample(type){
         var data = {
             accountid:this.userdata.accountid,
@@ -112,19 +119,16 @@ export class SamplesummaryPage implements OnInit {
                         this.assetlist.push(assetRecords[i]);
                     }
                     this.assetfilterlist = this.assetlist;
-                } else {
-                    this.presentToast('Something went wrong. Please try again');
                 }
             }, error => {
                 this.hideLoading();
                 this.presentToast('Something went wrong. Please try again');
             });
     }
-    async setFilteredLocations(event){
-        var searchTerm = event.target.value;
+    async setFilteredLocations(){
         this.assetfilterlist = this.assetlist.filter((asset) => {
-            if(searchTerm != undefined){
-                return asset.assetname.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
+            if(this.barcodenumber != undefined && this.barcodenumber != ''){
+                return asset.assetname.toLowerCase().indexOf(this.barcodenumber.toLowerCase()) > -1;
             }
         });
     }

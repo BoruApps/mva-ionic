@@ -50,7 +50,11 @@ export class ProfilePage implements OnInit {
             }
         });
     }
+    async doRefresh(event) {
+        this.ngOnInit();
+        event.target.complete();
 
+    }
     async isLogged() {
         var log_status = this.storage.get('userdata').then((userdata) => {
             if (userdata && userdata.length !== 0) {

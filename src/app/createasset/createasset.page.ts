@@ -21,6 +21,7 @@ export class CreateassetPage implements OnInit {
 	modalTitle: string;
 	selectedbarcode: string;
 	barcode: string;
+    selectedlistlocations: string = '';
 	AssetfieldList: any[] = [];
 	list_locations: any[] = [];
 	userdata = [];
@@ -69,6 +70,7 @@ export class CreateassetPage implements OnInit {
         fieldname : 'multiaddressid',
         uitype : 155,
         typeofdata : 'V~M',
+        value : this.selectedlistlocations,
         picklistvalues : this.list_locations,
     },{ 
         label : 'Unit ID',
@@ -147,18 +149,24 @@ export class CreateassetPage implements OnInit {
   }
     ngAfterViewInit(){
         var self = this;
-        
-        jQuery("#multiaddressid").select2({
-            "dropdownParent": jQuery("#multiaddressiddiv"),
-            "language": {
-                "noResults": function(){
-                    return "No Results Found<ion-button type='button' color='secondary' size='small' id='createNewSubStation'>Create New</ion-button>";
+        setTimeout(()=>{
+            console.log('---------- Test -------------',jQuery("#multiaddressid"))
+            jQuery("#multiaddressid").select2({
+                "dropdownParent": jQuery("#multiaddressiddiv"),
+                "dropdownPosition": 'below',
+                "language": {
+                    "noResults": function(){
+                        return "No Results Found<ion-button type='button' color='secondary' size='small' id='createNewSubStation'>Create New</ion-button>";
+                    }
+                }, escapeMarkup: function (markup) {
+                    return markup;
                 }
-            }, escapeMarkup: function (markup) {
-                return markup;
-            }
+            });
+        jQuery('#multiaddressid').on('change', async function () {
+            console.log('change',jQuery(this).val());
+            self.selectedlistlocations = jQuery(this).val();
+            self.setValuetoInstallfield('multiaddressid', self.selectedlistlocations);
         });
-
         jQuery('#multiaddressiddiv').on('click','#createNewSubStation', async function () {
             const addLocation = await self.modalController.create({
                 component: CreateLocationPage,
@@ -177,6 +185,8 @@ export class CreateassetPage implements OnInit {
 
             return await addLocation.present();
         });
+        },1000)
+
     }
     
   	loading: any;
@@ -198,15 +208,18 @@ export class CreateassetPage implements OnInit {
     async closeModal(changes='') {
         await this.modalController.dismiss({'formsubmitted':false});
     }
-    async presentToast(message: string) {
+    async presentToast(message: string, color = 'danger') {
         var toast = await this.toastController.create({
           message: message,
           duration: 2000,
           position: "top",
-          color: "danger",
+          color: color,
         });
         toast.present();
       }
+    updatemultilocation(){
+        console.log('updatemultilocation == ',jQuery('#multiaddressid').val());
+    }
   	addUpdate(event, extra=null) {
         var fieldname = event.target.name;
         if (!fieldname || fieldname == "" || fieldname == undefined) {
@@ -252,8 +265,6 @@ export class CreateassetPage implements OnInit {
 	async submitform(){
         var formflag = await this.checkrequiredfields();
 
-        console.log('formflag = ', formflag);
-        console.log('AssetfieldList = ', this.AssetfieldList);
         var formdata = {};
         for (var i = 0; i < this.AssetfieldList.length; ++i) {
         	if(this.AssetfieldList[i]["value"] == undefined){
@@ -263,58 +274,92 @@ export class CreateassetPage implements OnInit {
         }
         formdata['account'] = this.userdata['accountid'];
         formdata['selectedbarcode'] = this.barcode;
-        console.log('formdata = ', formdata);
-        console.log('apiurl = ', this.apiurl);
+
         if(formflag){
             var headers = new HttpHeaders();
             headers.append("Accept", "application/json");
             headers.append("Content-Type", "application/x-www-form-urlencoded");
             headers.append("Access-Control-Allow-Origin", "*");
             this.showLoading();
-            console.log('formdata-stringify-formdata = ',formdata);
-            console.log('formdata-stringify = ',JSON.stringify(formdata));
-            this.httpClient.post(this.apiurl + "createasset.php", JSON.stringify(formdata), {
+
+            var dataCheck = {
+                act : 'check_exist',
+                asset_name : formdata['assetname'],
+                equipment_type : formdata['cf_922'],
+                accountid: this.userdata['accountid']
+            };
+
+            this.httpClient.post(this.apiurl + "OrderTests.php", JSON.stringify(dataCheck), {
               headers: headers,
               observe: "response",
-            })
-            .subscribe(
+            }).subscribe(
               (data) => {
                 this.hideLoading();
-                console.log('create asset data = ',data)
                 var success = data["body"]["success"];
-                console.log(data["body"]);
-                if (success == true) {
-					this.presentToast("Asset created successfully");
-					var newasset = [];
-				  	newasset.push({
-						assetid: data["body"]['data'],
-						assetname: formdata['assetname'],
-						cf_922: formdata['cf_922'],
-						cf_923: formdata['cf_923'],
-						cf_924: formdata['cf_924'],
-						cf_925: formdata['cf_925'],
-						cf_927: formdata['cf_927'],
-						cf_928: formdata['cf_928'],
-						cf_929: formdata['cf_929'],
-						cf_1150: formdata['cf_1150'],
-						cf_1164: formdata['cf_1164'],
-						multiaddressid: formdata['multiaddressid']
-					});
-				  	console.log('newasset == ',newasset);
-                    this.modalController.dismiss({'newasset':newasset});
-                } else {
+
+                if (success == true && data["body"]['data']["SerialNumber"] == 'NON-EXIST') {
+                    this.createAsset(formdata);
+                } else if(data["body"]['data']["SerialNumber"] == 'EXIST') {
+                  this.presentToast("There is already another asset with this serial number.");
+                }else{
                   this.presentToast("Failed to save due to an error");
-                  console.log("failed to save record, response was false");
                 }
               },
               (error) => {
                 this.presentToast(
                   "Failed to save due to an error \n" + error.message
                 );
-                console.log("failed to save record", error.message);
               }
             );
         }
+    }
+
+    async createAsset(formdata){
+        var headers = new HttpHeaders();
+            headers.append("Accept", "application/json");
+            headers.append("Content-Type", "application/x-www-form-urlencoded");
+            headers.append("Access-Control-Allow-Origin", "*");
+
+        this.httpClient.post(this.apiurl + "createasset.php", JSON.stringify(formdata), {
+              headers: headers,
+              observe: "response",
+            })
+            .subscribe(
+              (data) => {
+                this.hideLoading();
+                var success = data["body"]["success"];
+               
+                if (success == true) {
+                    this.presentToast("Asset created successfully", 'success');
+                    var newasset = [];
+                    newasset.push({
+                        assetid: data["body"]['data'].toString(),
+                        assetname: formdata['assetname'],
+                        cf_922: formdata['cf_922'],
+                        cf_923: formdata['cf_923'],
+                        cf_924: formdata['cf_924'],
+                        cf_925: formdata['cf_925'],
+                        cf_927: formdata['cf_927'],
+                        cf_928: formdata['cf_928'],
+                        cf_929: formdata['cf_929'],
+                        cf_1150: formdata['cf_1150'],
+                        cf_1164: formdata['cf_1164'],
+                        multiaddressid: formdata['multiaddressid']
+                    });
+                    this.modalController.dismiss({'newasset':newasset});
+                } else if(data["body"]["existassert"] == 'EXIST') {
+                  this.presentToast("There is already another asset with this serial number.");
+
+                }else{
+                  this.presentToast("Failed to save due to an error");
+                }
+              },
+              (error) => {
+                this.presentToast(
+                  "Failed to save due to an error \n" + error.message
+                );
+              }
+            );
     }
 	async checkrequiredfields(){
 	    var fieldlist = [];
@@ -328,9 +373,7 @@ export class CreateassetPage implements OnInit {
 	    if(fieldlistmassge == ''){
 	        return true;
 	    }else{
-	        console.log('fieldlist = ',fieldlist);
 	       	var input = document.getElementById(fieldlist[0]);
-            console.log('input == ',input);
             input.scrollIntoView(true);
 	        this.presentToast(
 	            fieldlistmassge

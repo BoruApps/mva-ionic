@@ -18,6 +18,7 @@ export class ResultsPage implements OnInit {
     apiurl: any;
     vturl: any;
     loading: any;
+    serialnumber: any;
     userdata: any;
     assetlist: any = [];
     assetfilterlist = [];
@@ -88,6 +89,12 @@ export class ResultsPage implements OnInit {
         });
         toast.present();
     }
+    async doRefresh(event) {
+        this.serialnumber = '';
+        this.ngOnInit();
+        event.target.complete();
+
+    }
     async getSerialAsset(){
         var data = {
             accountid: this.userdata.accountid
@@ -116,11 +123,10 @@ export class ResultsPage implements OnInit {
             this.presentToast('Something went wrong. Please try again');
         });
     }
-    async setFilteredLocations(event){
-        var searchTerm = event.target.value;
+    async setFilteredLocations(){
         this.assetfilterlist = this.assetlist.filter((asset) => {
-            if(searchTerm != undefined){
-                return asset.assetname.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
+            if(this.serialnumber != undefined && this.serialnumber != ''){
+                return asset.assetname.toLowerCase().indexOf(this.serialnumber.toLowerCase()) > -1;
             }
         });
     }

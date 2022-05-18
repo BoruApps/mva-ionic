@@ -19,22 +19,21 @@
                     </ion-label>
                 </td>
                 <td>
-                    <ion-input *ngIf="fieldDetail.uitype == '1'" type="text" name="{{fieldDetail.fieldname}}"  id="{{fieldDetail.fieldname}}" placeholder="Press Here To Type" (ionChange)="addUpdate($event)" value="{{fieldDetail.value}}">
+                    <ion-input class="ioninput" *ngIf="fieldDetail.uitype == '1'" type="text" name="{{fieldDetail.fieldname}}"  id="{{fieldDetail.fieldname}}" placeholder="Press Here To Type" (ionChange)="addUpdate($event)" value="{{fieldDetail.value}}">
                     </ion-input>
                     <div *ngIf="fieldDetail.uitype == '2'">
                         <ion-label position="floating">hh:mm A</ion-label>
-                        <ion-datetime id="{{fieldDetail.fieldname}}" name="{{fieldDetail.fieldname}}" displayFormat="hh:mm A" min="1994-03-14" max="2052-12-09"  (ionChange)="addUpdate($event,'time')" value="{{fieldDetail.value}}"></ion-datetime>
+                        <ion-datetime class="ioninput" id="{{fieldDetail.fieldname}}" name="{{fieldDetail.fieldname}}" displayFormat="hh:mm A" min="1994-03-14" max="2052-12-09"  (ionChange)="addUpdate($event,'time')" value="{{fieldDetail.value}}"></ion-datetime>
                     </div>
                     <div *ngIf="fieldDetail.uitype == '5'">
                         <ion-label position="floating">MM/DD/YYYY</ion-label>
-                        <ion-datetime id="{{fieldDetail.fieldname}}" name="{{fieldDetail.fieldname}}" displayFormat="MM/DD/YYYY" min="1994-03-14" max="2052-12-09"  (ionChange)="addUpdate($event,'date')" value="{{fieldDetail.value}}"></ion-datetime>
+                        <ion-datetime class="ioninput" id="{{fieldDetail.fieldname}}" name="{{fieldDetail.fieldname}}" displayFormat="MM/DD/YYYY" min="1994-03-14" max="2052-12-09"  (ionChange)="addUpdate($event,'date')" value="{{fieldDetail.value}}"></ion-datetime>
                     </div>
                     <div *ngIf="fieldDetail.uitype == '10'">
-                        <input type="text" name="{{fieldDetail.fieldname}}_display" id="{{fieldDetail.fieldname}}_display" class="form-control" value="{{fieldDetail.displayValue}}" readonly="readonly">
-                        <input type="hidden" name="{{fieldDetail.fieldname}}" id="{{fieldDetail.fieldname}}" value="{{fieldDetail.value}}">
+                        <ion-input class="ioninput" type="text" name="{{fieldDetail.fieldname}}_display" id="{{fieldDetail.fieldname}}_display" class="form-control" value="{{fieldDetail.displayValue}}" disabled="true"></ion-input>
                     </div>
                     <div *ngIf="fieldDetail.uitype == '15'" class="picklist-drowpdown">
-                        <ion-select id="{{fieldDetail.fieldname}}" lines="none" (ionChange)="addUpdate($event)" name="{{fieldDetail.fieldname}}" value="{{fieldDetail.value}}">
+                        <ion-select class="ioninput" id="{{fieldDetail.fieldname}}" lines="none" (ionChange)="addUpdate($event)" name="{{fieldDetail.fieldname}}" value="{{fieldDetail.value}}">
                             <ion-select-option value="" selected="selected">Choose An Option</ion-select-option>
                             <div *ngFor="let picklist of fieldDetail.picklistvalues">
                                 <ion-select-option value="{{picklist}}">{{picklist}}</ion-select-option>
@@ -55,6 +54,6 @@
         </table>
     </form>
     <div class="ion-padding">
-        <ion-button type="button" expand="block" color="secondary" size="large" stack="right" (click)="submitLocationForm()">Save</ion-button>
+        <ion-button type="button" expand="block" color="secondary" stack="right" (click)="submitLocationForm()">Save</ion-button>
     </div>
 </ion-content>

@@ -39,6 +39,7 @@
             "styles": [
               "src/theme/variables.scss",
               "src/global.scss",
+              "node_modules/select2/dist/css/select2.min.css",
               {
                 "input": "node_modules/@ionic/angular/css/core.css"
               },
@@ -139,7 +140,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "styles": [],
+            "styles": ["node_modules/select2/dist/css/select2.min.css"],
             "scripts": ["node_modules/jquery/dist/jquery.min.js","node_modules/select2/dist/js/select2.full.js"],
             "assets": [
               {

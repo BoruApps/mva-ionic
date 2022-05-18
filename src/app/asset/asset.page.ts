@@ -19,7 +19,7 @@ import {ImageeditorPage} from "../imageeditor/imageeditor.page";
     styleUrls: ['./asset.page.scss'],
 })
 export class AssetPage implements OnInit {
-    barcodenumberasset: any;
+    barcodenumberasset: any = '';
     apiurl: any;
     vturl: any;
     loading: any;
@@ -204,7 +204,12 @@ export class AssetPage implements OnInit {
 
         await alert.present();
     }
+    async doRefresh(event) {
+        this.barcodenumberasset = '';
+        this.ngOnInit();
+        event.target.complete();
 
+    }
     async SaveTests() {
         var fieldval = 'true';
         var fieldname = [];
@@ -255,6 +260,7 @@ export class AssetPage implements OnInit {
             console.log('save == ', data);
             console.log('save-success == ', success);
             if (success) {
+                this.assetfilterlist = this.assetsentries;
                 this.router.navigateByUrl('/home');
             }
         });
@@ -370,7 +376,10 @@ export class AssetPage implements OnInit {
     async selecteasset(assetid) {
 
         this.assetsentrieselected = assetid;
+        console.log('selecteasset - assetsentries-assetid = ',assetid);
+        console.log('selecteasset - assetsentries = ',this.assetsentries);
         this.assetfilterlist = this.assetsentries.filter((asset) => {
+        console.log('selecteasset - assetsentries- asset = ',asset);
             if (assetid === undefined) {
                 return false
             }
@@ -436,20 +445,33 @@ export class AssetPage implements OnInit {
         return await modal_createasset.present();
     }
 
-    async getbarcodenumberasset(event) {
-        var searchTerm = event.target.value;
+    async getbarcodenumberasset() {
+        var searchTerm = this.barcodenumberasset;
+        console.log('this.barcodenumberasset == ',this.barcodenumberasset)
+        console.log('this.assetsentries == ',this.assetsentries)
         this.assetfilterlist = this.assetsentries.filter((asset) => {
-            if (searchTerm === undefined || asset.cf_922 == null || asset.assetname == null || asset.cf_1164 == null || asset.multiaddressid == null) {
+            if (searchTerm === undefined) {
                 return false
             }
-
             if (this.assetfilter == 'serialnumber') {
+                if(asset.assetname == null){
+                    return false
+                }
                 return asset.assetname.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
             } else if (this.assetfilter == 'unitid') {
+                if(asset.cf_1164 == null){
+                    return false
+                }
                 return asset.cf_1164.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
             } else if (this.assetfilter == 'equipmentid') {
+                if(asset.cf_922 == null){
+                    return false
+                }
                 return asset.cf_922.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
             } else if (this.assetfilter == 'substationname') {
+                if(asset.multiaddressid == null){
+                    return false
+                }
                 return asset.multiaddressid.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
             }
         });
@@ -468,10 +490,10 @@ export class AssetPage implements OnInit {
 
     openActionSheet(index, section) {
         var options: CameraOptions = {
-            quality: 100,
+            quality: 70,
             sourceType: this.camera.PictureSourceType.CAMERA,
             destinationType: this.camera.DestinationType.DATA_URL,
-            encodingType: this.camera.EncodingType.JPEG,
+            encodingType: this.camera.EncodingType.PNG,
             mediaType: this.camera.MediaType.PICTURE
         }
 
@@ -502,27 +524,41 @@ export class AssetPage implements OnInit {
         return await modal_createasset.present();
     }
 
+    dataURLtoBlob(dataurl) {
+        var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new Blob([u8arr], {type: mime});
+    }
+
     async ocrScanImage(base64Image) {
-        var postdata = {
-            image: base64Image,
-            name: 'imagefromapp',
-        };
+        var blob = await this.dataURLtoBlob(base64Image);
+        var formData = new FormData();
+            formData.append("blob", blob);
+            formData.append("name", 'imagefromapp');
+        
 
         var headers = new HttpHeaders();
         headers.append("Accept", "application/json");
         headers.append("Content-Type", "application/x-www-form-urlencoded");
         headers.append("Access-Control-Allow-Origin", "*");
         this.showLoading();
-        this.httpClient.post(this.apiurl + "scanImage.php", JSON.stringify(postdata), {
+        this.httpClient.post(this.apiurl + "scanImage.php", formData, {
             headers: headers,
             observe: "response",
         })
             .subscribe(async (data) => {
                 this.hideLoading();
                 var success = data["body"]["success"];
-                var response = data["body"]['data'];
-                console.log('success', success)
-                console.log('response', response)
+                if(success){
+                    var response = data["body"]['message'];
+                    this.barcodenumberasset = response;
+                }else{
+                    this.presentToast(data["body"]['message']);
+                    return;
+                }
             });
     }
 }

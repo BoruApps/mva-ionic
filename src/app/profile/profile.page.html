@@ -7,6 +7,13 @@
     </ion-toolbar>
 </ion-header>
 <ion-content>
+    <ion-refresher slot ="fixed" disabled="false" (ionRefresh)="doRefresh($event)" pullFactor="0.5" pullMin="100" pullMax="200">
+        <ion-refresher-content
+                pullingIcon="arrow-down"
+                pullingText="Pull to refresh"
+                refreshingSpinner="bubbles"
+                refreshingText="Refreshing....."></ion-refresher-content>
+    </ion-refresher>
     <ion-card class="action-card">
         <ion-item>
             <ion-icon name='id-card-outline' color="secondary"></ion-icon>

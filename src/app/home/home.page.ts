@@ -15,7 +15,7 @@ import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
     styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-    barcodenumber:any;
+    barcodenumber:any = '';
     apiurl: any;
     vturl: any;
     loading: any;
@@ -45,7 +45,8 @@ export class HomePage implements OnInit {
                 this.logoutUser();
             }
         });
-        document.body.classList.toggle('light', false);
+        this.barcodenumber = '';
+        console.log('barcodenumber----');
     }
 
     async isLogged() {
@@ -122,6 +123,11 @@ export class HomePage implements OnInit {
         });
 
         await alert.present();
+    }
+    async doRefresh(event) {
+        this.barcodenumber = '';
+        event.target.complete();
+
     }
     async scansample(){
         var data = {

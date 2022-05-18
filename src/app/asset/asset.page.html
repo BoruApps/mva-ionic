@@ -8,6 +8,13 @@
 </ion-header>
 
 <ion-content>
+    <ion-refresher slot ="fixed" disabled="false" (ionRefresh)="doRefresh($event)" pullFactor="0.5" pullMin="100" pullMax="200">
+        <ion-refresher-content
+                pullingIcon="arrow-down"
+                pullingText="Pull to refresh"
+                refreshingSpinner="bubbles"
+                refreshingText="Refreshing....."></ion-refresher-content>
+    </ion-refresher>
     <div class="ion-text-center navbar-brand ng-binding navbar_p_spacing">Select Asset</div>
     <ion-card class="action-card">
             <ion-grid>
@@ -21,7 +28,7 @@
                     </ion-select>
                 </ion-col>
                 <ion-col>
-                  <div><ion-input class="transparent" name="barcodenumberasset" id="barcodenumberasset" (ionInput)="getbarcodenumberasset($event)" type="text" [(ngModel)]="barcodenumberasset" placeholder="Type to search"></ion-input></div>
+                  <div><ion-input class="transparent" name="barcodenumberasset" id="barcodenumberasset" (ionChange)="getbarcodenumberasset()" type="text" [(ngModel)]="barcodenumberasset" placeholder="Type to search"></ion-input></div>
                 </ion-col>
               </ion-row>
           </ion-grid>
@@ -148,7 +155,7 @@
                             </ion-label>
                         </td>
                         <td>
-                            <ion-input name="sample_date" id="sample_date" type="date" [(ngModel)]="sample_date"></ion-input>
+                            <ion-input class="ioninput" name="sample_date" id="sample_date" type="date" [(ngModel)]="sample_date"></ion-input>
                         </td>
                     </tr>
                     <tr>
@@ -158,7 +165,7 @@
                             </ion-label>
                         </td>
                         <td>
-                            <ion-input name="sample_oil_temperature" id="sample_oil_temperature" type="text" [(ngModel)]="sample_oil_temperature"></ion-input>
+                            <ion-input class="ioninput" name="sample_oil_temperature" id="sample_oil_temperature" type="text" [(ngModel)]="sample_oil_temperature"></ion-input>
                         </td>
                     </tr>
                     <tr *ngIf="istapcounterreading == 1">
@@ -168,7 +175,7 @@
                             </ion-label>
                         </td>
                         <td>
-                            <ion-input name="top_counter" id="top_counter" type="text" [(ngModel)]="topcounter"></ion-input>
+                            <ion-input class="ioninput" name="top_counter" id="top_counter" type="text" [(ngModel)]="topcounter"></ion-input>
                         </td>
                     </tr>
                     <tr>
@@ -178,7 +185,7 @@
                             </ion-label>
                         </td>
                         <td>
-                            <ion-input name="identification_comments" id="identification_comments" type="text" [(ngModel)]="identification_comments"></ion-input>
+                            <ion-input class="ioninput" name="identification_comments" id="identification_comments" type="text" [(ngModel)]="identification_comments"></ion-input>
                         </td>
                     </tr>
                     <tr>
@@ -188,7 +195,7 @@
                             </ion-label>
                         </td>
                         <td>
-                            <ion-input name="sample_due_date" id="sample_due_date" type="date" [(ngModel)]="sample_due_date"></ion-input>
+                            <ion-input class="ioninput" name="sample_due_date" id="sample_due_date" type="date" [(ngModel)]="sample_due_date"></ion-input>
                         </td>
                     </tr>
                 </tbody>
