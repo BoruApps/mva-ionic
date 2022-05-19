@@ -83,12 +83,14 @@ export class CreateassetPage implements OnInit {
         fieldname : 'assetstatus',
         uitype : 15,
         typeofdata : 'V~0',
+        value:'In Service',
         picklistvalues: ['In Service','Out-of-service']
     },{ 
         label : 'Equipment Type',
         fieldname : 'cf_922',
         uitype : 15,
         typeofdata : 'V~0',
+        value : 'Transformer',
         picklistvalues: ['Transformer','Oil Circuit Breaker','Voltage Regulator','Furnace Transformer','Network Transformer','Current or Potential Transformer',
         'Recloser','Switch','Drum/Tank/Tote','Bushing','LTC - Unknown','LTC - Arcing Tap Changer, Selector Compartment','LTC - Arcing Tap Changer, Transfer Compartment','LTC - Arcing Tap Changer, Contacts in Single Compartment','LTC - Vacuum','Reactor','Exciter','Series','Cable','Rectifier/Precipitator','Other']
     },{ 
@@ -96,6 +98,7 @@ export class CreateassetPage implements OnInit {
         fieldname : 'cf_923',
         uitype : 15,
         typeofdata : 'V~0',
+        value : '--None--',
         picklistvalues: ['--None--','Westinghouse','WEG','Waukesha','Wagner','Virginia Transformer','Viking','VanTran','US Transformer','Toshiba','Tamini','TR Electric','T&amp;amp;R Electric','Square D','Sunbelt','Standard','Southwest Electric','Solomon Transformer','Sola Basic','SMIT','Siemens','SGB','SD Myers','Schneider','RTE','RE Uptegraff','Reinhausen','Pioneer','Pennsylvania Transformer','Pauwels','Packard','NWL','OTC','Ohio Transformer','Other','North American Transformer','Niagara Transformer','NEI','Moloney Electric','Mitsibushi','McGraw Edison','Magnetech','Kuhlman','JSHP','Jordan','Jerry&amp;#039;s Electric','ITE','Interstate','ILJIN','Hyundai','Hyosung','Howard','HK Porter','HICO','Hevi Duty','General Electric','GE Prolec','Fuji','Fortune Electric','Ferranti Packard','Ferranti','Federal Pacific','Fayetteville','ERMCO','Elgin','Elin','Efacec','Eaton','Delta Star','Cutler Hammer','Crompton Greaves','Cooper','Central Moloney','Carte','Brown Broveri','ATSCO','Asea','Areva','Alstom','Allis Chalmers','ABB','-- Not Reported --']
     },{ 
         label : 'Yr',
@@ -132,18 +135,21 @@ export class CreateassetPage implements OnInit {
         fieldname : 'cf_929',
         uitype : 15,
         typeofdata : 'V~0',
+        value: 'Mineral Oil',
         picklistvalues: ['Mineral Oil','Natural Ester','Silicone','R-Temp','Perchloroethylene','Askarel','Synthetic Ester','Other']
     },{ 
         label : 'Phases',
         fieldname : 'cf_1150',
         uitype : 15,
         typeofdata : 'V~0',
+        value:'-- Not Reported --',
         picklistvalues: ['-- Not Reported --','1','3']
     },{ 
         label : 'Breather Configuration',
         fieldname : 'cf_1151',
         uitype : 15,
         typeofdata : 'V~0',
+        value : '-- Not Reported --',
         picklistvalues: ['-- Not Reported --','Sealed','Free Breather','Conservator','Free Breather with Desiccant']
     });
   }

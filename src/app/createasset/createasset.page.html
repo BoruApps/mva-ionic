@@ -36,7 +36,6 @@
                     </div>
                     <div *ngIf="fieldDetail.uitype == '15'" class="picklist-drowpdown">
                         <ion-select class="ioninput" id="{{fieldDetail.fieldname}}" lines="none" (ionChange)="addUpdate($event)" name="{{fieldDetail.fieldname}}" value="{{fieldDetail.value}}">
-                            <ion-select-option value="" selected="selected">Choose An Option</ion-select-option>
                             <div *ngFor="let picklist of fieldDetail.picklistvalues">
                                 <ion-select-option value="{{picklist}}">{{picklist}}</ion-select-option>
                             </div>

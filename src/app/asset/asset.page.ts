@@ -288,6 +288,9 @@ export class AssetPage implements OnInit {
             this.presentToast('Please select an existing asset or create new one.');
             return;
         }
+        if(this.selectedbundle == event.target.value){
+            return;
+        }
         var a_temp = event.target.value;
         var a_tempArr = a_temp.split(',');
         if (a_tempArr.length > 1) {
@@ -440,6 +443,7 @@ export class AssetPage implements OnInit {
                 this.assetfilterlist.push(dataReturned['data']['newasset'][0]);
                 this.assetsentries.push(dataReturned['data']['newasset'][0]);
                 this.searchassetflag = 0;
+                this.selecteasset(dataReturned['data']['newasset'][0]['assetid']);
             }
         });
         return await modal_createasset.present();
@@ -447,8 +451,6 @@ export class AssetPage implements OnInit {
 
     async getbarcodenumberasset() {
         var searchTerm = this.barcodenumberasset;
-        console.log('this.barcodenumberasset == ',this.barcodenumberasset)
-        console.log('this.assetsentries == ',this.assetsentries)
         this.assetfilterlist = this.assetsentries.filter((asset) => {
             if (searchTerm === undefined) {
                 return false
@@ -506,7 +508,6 @@ export class AssetPage implements OnInit {
     }
 
     async cropImage(imageData) {
-        console.log('cropImage imageData', imageData)
         const modal_createasset = await this.modalCtrl.create({
             component: ImageeditorPage,
             componentProps: {

@@ -99,6 +99,7 @@ export class SamplesummaryPage implements OnInit {
 
     }
     async loadSample(type){
+        this.showLoading();
         var data = {
             accountid:this.userdata.accountid,
             customerid: this.userdata.id,
