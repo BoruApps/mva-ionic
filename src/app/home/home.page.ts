@@ -100,7 +100,6 @@ export class HomePage implements OnInit {
             console.log('barcodeData.text', barcodeData.text);
             if(barcodeData.text){
                 this.barcodenumber = barcodeData.text
-                this.scansample();
             }
             
         }).catch(err => {
