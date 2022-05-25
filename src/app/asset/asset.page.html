@@ -101,7 +101,7 @@
             </ion-col>
         </ion-card>
     </div>
-    <div [ngClass]="assetsentrieselected > '0' ? '' : 'hide' ">
+    <div *ngIf="assetsentrieselected > 0">
         <ion-row>
           <ion-col style="display: flex;">
             <ion-label class="navbar-brand" color="primary" style="margin:auto;">Select Tests</ion-label>
@@ -143,102 +143,103 @@
                 </ion-radio-group>
             </ion-card-content>
         </ion-card>
+    
+        <ion-card class="action-card">
+            <ion-grid>
+                <table class="assetcreatetable form-table">
+                    <tbody>
+                        <tr>
+                            <td class="lblasset">
+                                <ion-label color="primary">
+                                    Sample Date
+                                </ion-label>
+                            </td>
+                            <td>
+                                <ion-input class="ioninput" name="sample_date" id="sample_date" type="date" [(ngModel)]="sample_date"></ion-input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="lblasset">
+                                <ion-label>
+                                    Sample Oil Temperature (°C)
+                                </ion-label>
+                            </td>
+                            <td>
+                                <ion-input class="ioninput" name="sample_oil_temperature" id="sample_oil_temperature" type="text" [(ngModel)]="sample_oil_temperature"></ion-input>
+                            </td>
+                        </tr>
+                        <tr *ngIf="istapcounterreading == 1">
+                            <td class="lblasset">
+                                <ion-label>
+                                    Tap Counter Reading
+                                </ion-label>
+                            </td>
+                            <td>
+                                <ion-input class="ioninput" name="top_counter" id="top_counter" type="text" [(ngModel)]="topcounter"></ion-input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="lblasset">
+                                <ion-label>
+                                    Comments
+                                </ion-label>
+                            </td>
+                            <td>
+                                <ion-input class="ioninput" name="identification_comments" id="identification_comments" type="text" [(ngModel)]="identification_comments"></ion-input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="lblasset">
+                                <ion-label>
+                                    Sample Due Date
+                                </ion-label>
+                            </td>
+                            <td>
+                                <ion-input class="ioninput" name="sample_due_date" id="sample_due_date" type="date" [(ngModel)]="sample_due_date"></ion-input>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+          </ion-grid>
+        </ion-card>  
+        <ion-card> 
+            <ion-card-content class="ion-padding">
+                <ion-button id="submit-button" color="secondary" expand="block" (click) = "createinspection();">Inspection Report</ion-button>
+            </ion-card-content>
+        </ion-card> 
+        <ion-card color="primary">
+            <ion-grid>
+                <ion-row>
+                    <ion-col>
+                        Barcode Number
+                    </ion-col>
+                    <ion-col>
+                        {{barcode}}
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col>
+                        Equipment Type
+                    </ion-col>
+                    <ion-col>
+                        {{equipmenttype}}
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col>
+                        Serial Number
+                    </ion-col>
+                    <ion-col>
+                        {{assetnameentrieselected}}
+                    </ion-col>
+                </ion-row>
+          </ion-grid>
+        </ion-card>
+        <ion-card> 
+            <ion-card-content class="ion-padding">
+                <ion-button id="submit-button" color="secondary" expand="block" (click) = "SaveTests();">Save</ion-button>
+            </ion-card-content>
+        </ion-card>
     </div>
-    <ion-card class="action-card">
-        <ion-grid>
-            <table class="assetcreatetable form-table">
-                <tbody>
-                    <tr>
-                        <td class="lblasset">
-                            <ion-label color="primary">
-                                Sample Date
-                            </ion-label>
-                        </td>
-                        <td>
-                            <ion-input class="ioninput" name="sample_date" id="sample_date" type="date" [(ngModel)]="sample_date"></ion-input>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="lblasset">
-                            <ion-label>
-                                Sample Oil Temperature (°C)
-                            </ion-label>
-                        </td>
-                        <td>
-                            <ion-input class="ioninput" name="sample_oil_temperature" id="sample_oil_temperature" type="text" [(ngModel)]="sample_oil_temperature"></ion-input>
-                        </td>
-                    </tr>
-                    <tr *ngIf="istapcounterreading == 1">
-                        <td class="lblasset">
-                            <ion-label>
-                                Tap Counter Reading
-                            </ion-label>
-                        </td>
-                        <td>
-                            <ion-input class="ioninput" name="top_counter" id="top_counter" type="text" [(ngModel)]="topcounter"></ion-input>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="lblasset">
-                            <ion-label>
-                                Comments
-                            </ion-label>
-                        </td>
-                        <td>
-                            <ion-input class="ioninput" name="identification_comments" id="identification_comments" type="text" [(ngModel)]="identification_comments"></ion-input>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="lblasset">
-                            <ion-label>
-                                Sample Due Date
-                            </ion-label>
-                        </td>
-                        <td>
-                            <ion-input class="ioninput" name="sample_due_date" id="sample_due_date" type="date" [(ngModel)]="sample_due_date"></ion-input>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-      </ion-grid>
-    </ion-card>  
-    <ion-card> 
-        <ion-card-content class="ion-padding">
-            <ion-button id="submit-button" color="secondary" expand="block" (click) = "createinspection();">Inspection Report</ion-button>
-        </ion-card-content>
-    </ion-card> 
-    <ion-card color="primary">
-        <ion-grid>
-            <ion-row>
-                <ion-col>
-                    Barcode Number
-                </ion-col>
-                <ion-col>
-                    {{barcode}}
-                </ion-col>
-            </ion-row>
-            <ion-row>
-                <ion-col>
-                    Equipment Type
-                </ion-col>
-                <ion-col>
-                    {{equipmenttype}}
-                </ion-col>
-            </ion-row>
-            <ion-row>
-                <ion-col>
-                    Serial Number
-                </ion-col>
-                <ion-col>
-                    {{assetnameentrieselected}}
-                </ion-col>
-            </ion-row>
-      </ion-grid>
-    </ion-card>
-    <ion-card> 
-        <ion-card-content class="ion-padding">
-            <ion-button id="submit-button" color="secondary" expand="block" (click) = "SaveTests();">Save</ion-button>
-        </ion-card-content>
-    </ion-card>
 </ion-content>
 
