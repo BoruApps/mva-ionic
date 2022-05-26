@@ -220,7 +220,7 @@
   },
   "cli": {
     "analytics": "a06e756f-1ed7-410f-a161-7f883b2e2216",
-    "defaultCollection": "@ionic/cordova-builders"
+    "defaultCollection": "@ionic/angular-toolkit"
   },
   "schematics": {
     "@ionic/cordova-builders:component": {

@@ -174,18 +174,25 @@ export class CreateassetPage implements OnInit {
             self.setValuetoInstallfield('multiaddressid', self.selectedlistlocations);
         });
         jQuery('#multiaddressiddiv').on('click','#createNewSubStation', async function () {
+            var multiaddress = jQuery('.select2-search__field').val();
             const addLocation = await self.modalController.create({
                 component: CreateLocationPage,
-                componentProps: {},
+                componentProps: {multiaddress: multiaddress},
                 cssClass: 'modal-80',
             });
 
             addLocation.onDidDismiss().then((dataReturned) => {
-                console.log('dataReturned', dataReturned.data)
+                console.log('dataReturned - location', dataReturned.data)
                 if (dataReturned.data !== null && dataReturned.data != undefined) {
                     var html = '<option value="'+dataReturned.data.id+'" class="ng-binding ng-scope">'+dataReturned.data.name+'</option>';
                     jQuery('#multiaddressid').append(html);
                     jQuery('#multiaddressid').val(dataReturned.data.id).trigger("change");
+                    console.log('befor- list_locations = ',self.list_locations);
+                    self.list_locations.push({ 
+                        crmid : dataReturned.data.id,
+                        address1 : dataReturned.data.name
+                    });
+                    console.log('after- list_locations = ',self.list_locations);
                 }
             });
 

@@ -12,6 +12,7 @@ import {Crop} from '@ionic-native/crop/ngx';
 import {Camera, CameraOptions} from '@awesome-cordova-plugins/camera/ngx';
 import {File} from '@awesome-cordova-plugins/file/ngx';
 import {ImageeditorPage} from "../imageeditor/imageeditor.page";
+import { HomeService } from '../home/home.service';
 
 @Component({
     selector: 'app-asset',
@@ -62,20 +63,21 @@ export class AssetPage implements OnInit {
         public modalCtrl: ModalController,
         private crop: Crop,
         private camera: Camera,
-        private file: File
+        private file: File,
+        public homeService: HomeService
     ) {
         this.apiurl = this.appConst.getApiUrl();
         this.vturl = this.appConst.getVtUrl();
     }
 
     async ngOnInit() {
+        console.log('asset - ngOnInit');
         await this.storage.create();
-        await this.isLogged().then(response => {
-            if (response !== false) {
-                this.userdata = response;
+        this.userdata = this.storage.get('userdata').then((userdata) => {
+            if (userdata && userdata.length !== 0) {
+                return userdata;
             } else {
-                this.presentToast('Login failed. Please try again');
-                this.logoutUser();
+                return false;
             }
         });
         this.storage.get('assetsentrieselected').then((assetsentrieselected) => {
@@ -91,6 +93,7 @@ export class AssetPage implements OnInit {
                 }
             }
         });
+        console.log('asset-assetfilterlist', this.assetfilterlist);
 
 
         this.storage.get('assetnameentrieselected').then((assetnameentrieselected) => {
@@ -139,73 +142,15 @@ export class AssetPage implements OnInit {
         });
         this.storage.get('assetsmessage').then((assetsmessage) => {
             if (assetsmessage != 'TEST') {
-                this.confirmCancelImage('Warning message', assetsmessage);
+                this.homeService.confirmCancelImage('Warning message', assetsmessage);
             }
         });
 
     }
 
-    async isLogged() {
-        var log_status = this.storage.get('userdata').then((userdata) => {
-            if (userdata && userdata.length !== 0) {
-                return userdata;
-            } else {
-                return false;
-            }
-        });
-        return log_status;
-    }
-
-    logoutUser() {
-        this.storage.set("userdata", null);
-        this.router.navigateByUrl('/');
-    }
-
-    async showLoading() {
-        this.loading = await this.loadingController.create({
-            message: 'Loading ...'
-        });
-        return await this.loading.present();
-    }
-
-    async hideLoading() {
-        setTimeout(() => {
-            if (this.loading != undefined) {
-                this.loading.dismiss();
-            }
-        }, 1000);
-    }
-
-    async presentToast(message: string) {
-        var toast = await this.toastController.create({
-            message: message,
-            duration: 3500,
-            position: "top",
-            color: "danger"
-        });
-        toast.present();
-    }
-
-    async confirmCancelImage(header, message) {
-        const alert = await this.alertController.create({
-            cssClass: 'my-custom-class',
-            header: header,
-            message: message,
-            buttons: [
-                {
-                    text: 'OK',
-                    role: 'cancel',
-                    cssClass: 'secondary',
-                    handler: (blah) => {
-                    }
-                },
-            ]
-        });
-
-        await alert.present();
-    }
     async doRefresh(event) {
         this.barcodenumberasset = '';
+        this.homeService.getrelatedAsset(this.barcode);
         this.ngOnInit();
         event.target.complete();
 
@@ -245,20 +190,17 @@ export class AssetPage implements OnInit {
             contactid: this.userdata.username,
             customerid: this.userdata.id,
         };
-        console.log('postdata === ', postdata);
         var headers = new HttpHeaders();
         headers.append("Accept", "application/json");
         headers.append("Content-Type", "application/x-www-form-urlencoded");
         headers.append("Access-Control-Allow-Origin", "*");
-        this.showLoading();
+        this.homeService.showLoading();
         this.httpClient.post(this.apiurl + "OrderTests.php", JSON.stringify(postdata), {
             headers: headers,
             observe: "response",
         }).subscribe(async (data) => {
-            this.hideLoading();
+            this.homeService.hideLoading();
             var success = data["body"]["success"];
-            console.log('save == ', data);
-            console.log('save-success == ', success);
             if (success) {
                 this.assetfilterlist = this.assetsentries;
                 this.router.navigateByUrl('/home');
@@ -285,7 +227,7 @@ export class AssetPage implements OnInit {
     async checkTest(event) {
         var asset_id = this.assetsentrieselected;
         if (asset_id == '') {
-            this.presentToast('Please select an existing asset or create new one.');
+            this.homeService.presentToast('Please select an existing asset or create new one.');
             return;
         }
         if(this.selectedbundle == event.target.value){
@@ -329,13 +271,13 @@ export class AssetPage implements OnInit {
         headers.append("Accept", "application/json");
         headers.append("Content-Type", "application/x-www-form-urlencoded");
         headers.append("Access-Control-Allow-Origin", "*");
-        this.showLoading();
+        this.homeService.showLoading();
         this.httpClient.post(this.apiurl + "UpdateAsset.php", JSON.stringify(postdata), {
             headers: headers,
             observe: "response",
         })
             .subscribe(async (data) => {
-                this.hideLoading();
+                this.homeService.hideLoading();
                 var success = data["body"]["success"];
 
                 if (success == true) {
@@ -379,10 +321,7 @@ export class AssetPage implements OnInit {
     async selecteasset(assetid) {
 
         this.assetsentrieselected = assetid;
-        console.log('selecteasset - assetsentries-assetid = ',assetid);
-        console.log('selecteasset - assetsentries = ',this.assetsentries);
         this.assetfilterlist = this.assetsentries.filter((asset) => {
-        console.log('selecteasset - assetsentries- asset = ',asset);
             if (assetid === undefined) {
                 return false
             }
@@ -400,13 +339,13 @@ export class AssetPage implements OnInit {
         headers.append("Accept", "application/json");
         headers.append("Content-Type", "application/x-www-form-urlencoded");
         headers.append("Access-Control-Allow-Origin", "*");
-        this.showLoading();
+        this.homeService.showLoading();
         this.httpClient.post(this.apiurl + "OrderTests.php", JSON.stringify(postdata), {
             headers: headers,
             observe: "response",
         })
             .subscribe(async (data) => {
-                this.hideLoading();
+                this.homeService.hideLoading();
                 var success = data["body"]["success"];
                 var response = data["body"]['data'];
                 if (success) {
@@ -503,7 +442,7 @@ export class AssetPage implements OnInit {
             let base64Image = 'data:image/png;base64,' + imageData;
             this.cropImage(base64Image)
         }, (err) => {
-            this.presentToast('Error in showing image' + err);
+            this.homeService.presentToast('Error in showing image' + err);
         });
     }
 
@@ -545,19 +484,19 @@ export class AssetPage implements OnInit {
         headers.append("Accept", "application/json");
         headers.append("Content-Type", "application/x-www-form-urlencoded");
         headers.append("Access-Control-Allow-Origin", "*");
-        this.showLoading();
+        this.homeService.showLoading();
         this.httpClient.post(this.apiurl + "scanImage.php", formData, {
             headers: headers,
             observe: "response",
         })
             .subscribe(async (data) => {
-                this.hideLoading();
+                this.homeService.hideLoading();
                 var success = data["body"]["success"];
                 if(success){
                     var response = data["body"]['message'];
                     this.barcodenumberasset = response;
                 }else{
-                    this.presentToast(data["body"]['message']);
+                    this.homeService.presentToast(data["body"]['message']);
                     return;
                 }
             });

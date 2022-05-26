@@ -17,6 +17,7 @@ export class CreateLocationPage implements OnInit {
     vturl: any;
     contactId: any;
     userdata: any;
+    multiaddress: any = '';
     LocationfieldList: any[] = [];
 
     constructor(
@@ -35,7 +36,7 @@ export class CreateLocationPage implements OnInit {
 
     async ngOnInit() {
         await this.storage.create();
-
+        this.multiaddress = this.navParams.data.multiaddress;
         await this.isLogged().then(response => {
             if (response !== false) {
                 this.userdata = response;
@@ -51,7 +52,7 @@ export class CreateLocationPage implements OnInit {
             fieldname: 'address1',
             uitype: 1,
             typeofdata: 'V~M',
-            value: ''
+            value: this.multiaddress
         }, {
             label: 'Address Line 2',
             fieldname: 'address2',
@@ -106,7 +107,8 @@ export class CreateLocationPage implements OnInit {
     }
 
     async closeModal(changes = '') {
-        await this.modalController.dismiss({'formsubmitted': false});
+        console.log('closeModal - location');
+        await this.modalController.dismiss();
     }
 
     async presentToast(message: string) {
