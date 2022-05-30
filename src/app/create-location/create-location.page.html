@@ -30,7 +30,7 @@
                         <ion-datetime class="ioninput" id="{{fieldDetail.fieldname}}" name="{{fieldDetail.fieldname}}" displayFormat="MM/DD/YYYY" min="1994-03-14" max="2052-12-09"  (ionChange)="addUpdate($event,'date')" value="{{fieldDetail.value}}"></ion-datetime>
                     </div>
                     <div *ngIf="fieldDetail.uitype == '10'">
-                        <ion-input class="ioninput" type="text" name="{{fieldDetail.fieldname}}_display" id="{{fieldDetail.fieldname}}_display" class="form-control" value="{{fieldDetail.displayValue}}" disabled="true"></ion-input>
+                        <ion-input class="ioninput" type="text" name="{{fieldDetail.fieldname}}_display" id="{{fieldDetail.fieldname}}_display" value="{{fieldDetail.displayValue}}" disabled="true"></ion-input>
                     </div>
                     <div *ngIf="fieldDetail.uitype == '15'" class="picklist-drowpdown">
                         <ion-select class="ioninput" id="{{fieldDetail.fieldname}}" lines="none" (ionChange)="addUpdate($event)" name="{{fieldDetail.fieldname}}" value="{{fieldDetail.value}}">

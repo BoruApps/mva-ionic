@@ -113,6 +113,7 @@ export class ResultsPage implements OnInit {
                 for( let i in assetdatalist){
                     this.assetlist.push(assetdatalist[i]);
                 }
+                this.assetlist = this.assetlist.reverse();
                 this.assetfilterlist = this.assetlist;
             } else {
                 this.hideLoading();
@@ -127,8 +128,11 @@ export class ResultsPage implements OnInit {
         this.assetfilterlist = this.assetlist.filter((asset) => {
             if(this.serialnumber != undefined && this.serialnumber != ''){
                 return asset.assetname.toLowerCase().indexOf(this.serialnumber.toLowerCase()) > -1;
+            }else{
+                return this.assetlist;
             }
         });
+
     }
     async assetPDF(selectassetsid){
         var data = {

@@ -73,7 +73,7 @@ export class AssetPage implements OnInit {
     async ngOnInit() {
         console.log('asset - ngOnInit');
         await this.storage.create();
-        this.userdata = this.storage.get('userdata').then((userdata) => {
+        this.userdata = await  this.storage.get('userdata').then((userdata) => {
             if (userdata && userdata.length !== 0) {
                 return userdata;
             } else {
@@ -84,6 +84,7 @@ export class AssetPage implements OnInit {
             this.assetsentrieselected = assetsentrieselected;
         });
         this.storage.get('assetsentries').then((assetsentries) => {
+            assetsentries = assetsentries.reverse();
             this.assetsentries = assetsentries;
             this.assetfilterlist = assetsentries;
             for (var i = 0; i < this.assetfilterlist.length; i++) {
@@ -291,6 +292,7 @@ export class AssetPage implements OnInit {
                     var cf_1152 = data["body"]['data']['cf_1152'];
                     var cf_1153 = data["body"]['data']['cf_1153'];
                     var cf_1154 = data["body"]['data']['cf_1154'];
+                    var cf_1155 = data["body"]['data']['cf_1155'];
                     var cf_1156 = data["body"]['data']['cf_1156'];
                     const modal_createinspection = await this.modalCtrl.create({
                         component: CreateinspectionPage,
@@ -307,6 +309,7 @@ export class AssetPage implements OnInit {
                             cf_1152: cf_1152,
                             cf_1153: cf_1153,
                             cf_1154: cf_1154,
+                            cf_1155: cf_1155,
                             cf_1156: cf_1156,
                         },
                     });

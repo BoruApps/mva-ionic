@@ -26,6 +26,7 @@ export class CreateinspectionPage implements OnInit {
 	cf_1152 : any;
 	cf_1153 : any;
 	cf_1154 : any;
+	cf_1155 : any;
 	cf_1156 : any;
 	barcode : any;
 	assetsentrieselected : any;
@@ -68,6 +69,7 @@ export class CreateinspectionPage implements OnInit {
 		this.cf_1152 = this.navParams.data.cf_1152;
 		this.cf_1153 = this.navParams.data.cf_1153;
 		this.cf_1154 = this.navParams.data.cf_1154;
+		this.cf_1155 = this.navParams.data.cf_1155;
 		this.cf_1156 = this.navParams.data.cf_1156;
 		this.inspectionfieldList = [];
 
@@ -123,6 +125,13 @@ export class CreateinspectionPage implements OnInit {
 	        uitype : 15,
 	        typeofdata : 'V~0',
 	        value: this.cf_1154,
+	        picklistvalues : ['-- Not Reported --','Yes','No']
+	    },{
+	        label : 'Service Energized',
+	        fieldname : 'cf_1155',
+	        uitype : 15,
+	        typeofdata : 'V~0',
+	        value: this.cf_1155,
 	        picklistvalues : ['-- Not Reported --','Yes','No']
 	    },{ 
 	        label : 'Compartments',

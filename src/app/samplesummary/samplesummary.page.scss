@@ -64,3 +64,13 @@ a {
     border: 1px solid transparent;
     border-radius: 0.25rem;
 }
+.searchshow:nth-child(odd) {
+    background: #193667;
+    color: white;
+}
+.sample-list {
+    display: block;
+    background-color: orange;
+    color: #193667;
+    margin: 10px 4%;
+}

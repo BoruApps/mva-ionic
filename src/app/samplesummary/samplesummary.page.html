@@ -19,49 +19,46 @@
             <ion-input class="transparent" name="barcodenumber" (ionChange)="setFilteredLocations()" [(ngModel)]="barcodenumber" type="text" placeholder="Barcode Search"></ion-input>
         </ion-item>
     </ion-card>
-    <div class="mrg_bottom_submit">
-        <div class="AllassetList">
-            <div class="dark white-text result-asset-list barcode_division" id="{{asset.assetid}}" *ngFor="let asset of assetfilterlist">
-                <ion-grid>
-                    <ion-row class="row asset-list-item">
+    <ion-list class ="ion-no-padding searchshow sample-list" id="{{asset.assetid}}" *ngFor="let asset of assetfilterlist" color="primary">
+                <div style="padding: 0px 10px;">
+                    <ion-row>
                         <ion-col size="6">
-                            <strong class="bolder asset-list-title">Serial#: </strong>
+                            <strong>Barcode: </strong>
                         </ion-col>
-                        <ion-col size="6" class="asset-list-value serialnumber">
-                            {{asset.assetname}}
+                        <ion-col size="6">
+                            {{asset.chimneyname}}
                         </ion-col>
                     </ion-row>
-                    <ion-row class="row asset-list-item">
+                    <ion-row>
                         <ion-col size="6">
-                            <strong class="bolder asset-list-title">Unit ID: </strong>
-                        </ion-col>
-                        <ion-col size="6">
-                            {{asset.cf_1164}}
-                        </ion-col>
-                    </ion-row>
-                    <ion-row class="row asset-list-item">
-                        <ion-col size="6">
-                            <strong class="bolder asset-list-title">Equipment Type: </strong>
+                            <strong>Equipment Type: </strong>
                         </ion-col>
                         <ion-col size="6">
                             {{asset.cf_922}}
                         </ion-col>
                     </ion-row>
-                    <ion-row class="row asset-list-item">
+                    <ion-row>
                         <ion-col size="6">
-                            <strong class="bolder asset-list-title">Substation: </strong>
+                            <strong>Serial Number: </strong>
                         </ion-col>
                         <ion-col size="6">
-                            {{asset.multiaddressid}}
+                            {{asset.assetname}}
                         </ion-col>
                     </ion-row>
-                </ion-grid>
-            </div>
+                    
+                    <ion-row>
+                        <ion-col size="6">
+                            <strong>Unit ID: </strong>
+                        </ion-col>
+                        <ion-col size="6">
+                            {{asset.cf_1164}}
+                        </ion-col>
+                    </ion-row>
+                </div>
             <div *ngIf="assetfilterlist.length == 0">
                 <div class="col-12" style="text-align: center;">
                     <div class="alert alert-warning ng-binding">No records found.</div>
                 </div>
             </div>
-        </div>
-    </div>
+    </ion-list>
 </ion-content>

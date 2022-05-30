@@ -80,6 +80,7 @@ export class HomePage implements OnInit {
                 var message = 'This barcode number does not exist. Please verify the barcode and enter the correct number above.';
                 this.homeService.confirmCancelImage('Sample Status',message)
             }
+            this.barcodenumber = '';
         }, async error => {
             var message = 'This barcode number does not exist. Please verify the barcode and enter the correct number above.';
             this.homeService.confirmCancelImage('Sample Status',message)

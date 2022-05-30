@@ -21,6 +21,7 @@ export class SamplesummaryPage implements OnInit {
     assetNoRecord: boolean = false;
     assetlist: any = [];
     assetfilterlist = [];
+    items = ["chimneyname","cf_922", "assetname","cf_1164"];
 
     constructor(
         private router: Router,
@@ -113,6 +114,8 @@ export class SamplesummaryPage implements OnInit {
         this.httpClient.post(this.apiurl + "GetAssetList.php", data, {headers: headers, observe: 'response'})
             .subscribe(data => {
                 this.hideLoading();
+                this.assetlist = [];
+                this.assetfilterlist = [];
                 var verified = data['body']['success'];
                 if (verified == true) {
                     var assetRecords = data['body']['data'];
@@ -129,7 +132,14 @@ export class SamplesummaryPage implements OnInit {
     async setFilteredLocations(){
         this.assetfilterlist = this.assetlist.filter((asset) => {
             if(this.barcodenumber != undefined && this.barcodenumber != ''){
-                return asset.assetname.toLowerCase().indexOf(this.barcodenumber.toLowerCase()) > -1;
+                for( let i in this.items){
+                    var item = this.items[i];
+                    if(asset[item].toLowerCase().indexOf(this.barcodenumber.toLowerCase()) > -1){
+                        return asset[item].toLowerCase().indexOf(this.barcodenumber.toLowerCase()) > -1;
+                    }
+                }
+            }else{
+                return this.assetlist;
             }
         });
     }
