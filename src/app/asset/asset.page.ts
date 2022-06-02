@@ -71,7 +71,6 @@ export class AssetPage implements OnInit {
     }
 
     async ngOnInit() {
-        console.log('asset - ngOnInit');
         await this.storage.create();
         this.userdata = await  this.storage.get('userdata').then((userdata) => {
             if (userdata && userdata.length !== 0) {
@@ -174,6 +173,11 @@ export class AssetPage implements OnInit {
         if (this.topcounter == undefined) {
             this.topcounter = '';
         }
+        if(fieldname.length == 0){
+            var message = 'Please select at least one test before proceeding.';
+            this.homeService.confirmCancelImage('Asset Sample Error',message)
+            return false;
+        }
         var postdata = {
             barcode: this.barcode,
             accountid: this.userdata.accountid,
@@ -211,18 +215,12 @@ export class AssetPage implements OnInit {
 
     async clearTests(event) {
         for (var x in this.assetstestcheckbox) {
-            var tmp = this.assetstestcheckbox[x];
-            if (tmp.isbundle == 0) {
                 this.assetstestcheckbox[x].checkboxvalue = 0;
-            }
         }
         for (var x in this.assetstestcheckbox1) {
-            var tmp = this.assetstestcheckbox1[x];
-            if (tmp.isbundle == 0) {
-                this.assetstestcheckbox1[x].checkboxvalue = 0;
-            }
+            this.assetstestcheckbox1[x].checkboxvalue = 0;
         }
-        this.selectedbundle = '';
+        this.selectedbundle = false;
     }
 
     async checkTest(event) {
@@ -231,10 +229,10 @@ export class AssetPage implements OnInit {
             this.homeService.presentToast('Please select an existing asset or create new one.');
             return;
         }
-        if(this.selectedbundle == event.target.value){
-            return;
+        if(this.selectedbundle === false){
+            return true;
         }
-        var a_temp = event.target.value;
+        var a_temp = this.selectedbundle;
         var a_tempArr = a_temp.split(',');
         if (a_tempArr.length > 1) {
             for (var x in this.assetstestcheckbox) {

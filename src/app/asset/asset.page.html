@@ -114,7 +114,7 @@
                 </div>
             </ion-card-content>
             <ion-card-content>
-                <ion-radio-group value="{{selectedbundle}}" style="display: flex" (ionChange)="checkTest($event)">
+                <ion-radio-group [(ngModel)]="selectedbundle" style="display: flex" (ionChange)="checkTest($event)">
                 <ion-col size="6">
                     <div *ngFor="let assetcheckbox of assetstestcheckbox" >
                         <ion-item *ngIf="assetcheckbox.isbundle == 0" class="ion-no-padding" lines="none">

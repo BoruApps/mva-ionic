@@ -7,6 +7,7 @@ import {AppConstants} from '../providers/constant/constant';
 import {LoadingController} from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { AlertController } from '@ionic/angular';
+import { Platform } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,7 @@ export class HomeService {
 		private navCtrl: NavController,
 		public alertController: AlertController,
 		public loadingController: LoadingController,
+        private platform: Platform
 		) 
 	  {
   		this.apiurl = this.appConst.getApiUrl();
@@ -40,6 +42,9 @@ export class HomeService {
                 this.logoutUser();
             }
         });
+        this.platform.backButton.subscribeWithPriority(10, () => {
+            this.navCtrl.navigateForward('/home');
+          });
 	  }
 	  
 
