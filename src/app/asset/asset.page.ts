@@ -232,6 +232,9 @@ export class AssetPage implements OnInit {
         if(this.selectedbundle === false){
             return true;
         }
+        if(event.target.tagName == 'ION-CHECKBOX'){
+            return true;
+        }
         var a_temp = this.selectedbundle;
         var a_tempArr = a_temp.split(',');
         if (a_tempArr.length > 1) {
