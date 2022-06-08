@@ -14,8 +14,8 @@
     <preference name="target-device" value="handset" />
     <preference name="ScrollEnabled" value="false" />
     <preference name="android-minSdkVersion" value="22" />
-    <preference name="android-compileSdkVersion" value="29" />
-    <preference name="android-targetSdkVersion" value="29" />
+    <preference name="android-compileSdkVersion" value="30" />
+    <preference name="android-targetSdkVersion" value="30" />
     <preference name="BackupWebStorage" value="none" />
     <preference name="SplashMaintainAspectRatio" value="true" />
     <preference name="FadeSplashScreenDuration" value="300" />
