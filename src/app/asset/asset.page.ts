@@ -30,6 +30,7 @@ export class AssetPage implements OnInit {
     assetnameentrieselected: any;
     equipmenttype: any;
     identification_comments: any;
+    cf_job_number: any;
     topcounter: any;
     userdata: any;
     barcode: any;
@@ -114,6 +115,10 @@ export class AssetPage implements OnInit {
         this.storage.get('identification_comments').then((identification_comments) => {
             this.identification_comments = identification_comments;
         });
+        this.storage.get('cf_job_number').then((cf_job_number) => {
+            this.cf_job_number = cf_job_number;
+            console.log('this.cf_job_number = ',this.cf_job_number);
+        });
         this.storage.get('assetstestcheckbox1').then((assetstestcheckbox1) => {
             this.assetstestcheckbox1 = assetstestcheckbox1;
             for (var x in this.assetstestcheckbox1) {
@@ -189,6 +194,7 @@ export class AssetPage implements OnInit {
             top_counter: this.topcounter,
             sample_oil_temperature: this.sample_oil_temperature,
             identification_comments: this.identification_comments,
+            cf_job_number: this.cf_job_number,
             sample_due_date: this.sample_due_date,
             sample_id: this.barcode,
             asset_name: this.assetsentrieselected,

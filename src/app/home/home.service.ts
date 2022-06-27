@@ -135,6 +135,7 @@ export class HomeService {
                 this.storage.set('sample_due_date',responseData.cf_1161);
                 this.storage.set('sample_oil_temperature',responseData.cf_1107);
                 this.storage.set('identification_comments',responseData.cf_idcomments);
+                this.storage.set('cf_job_number',responseData.cf_job_number);
                 if(responseData.message){
                     this.storage.set('assetsmessage',responseData.message);
                 }else{
