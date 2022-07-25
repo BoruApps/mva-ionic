@@ -150,7 +150,8 @@ export class ResultsPage implements OnInit {
                  this.hideLoading();
                 var url = data['body']['pdfFilePath'];
                 if (this.platform.is('ios')) {
-                    var path = this.file.documentsDirectory;
+                    //var path = this.file.documentsDirectory;
+                    var path = this.file.dataDirectory;
                 } else {
                     var path = this.file.dataDirectory;
                 }

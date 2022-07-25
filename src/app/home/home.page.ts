@@ -8,6 +8,7 @@ import { Storage } from '@ionic/storage-angular';
 import { AlertController } from '@ionic/angular';
 import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
 import { HomeService } from '../home/home.service';
+import { Platform } from '@ionic/angular';
 
 @Component({
     selector: 'app-home',
@@ -29,10 +30,14 @@ export class HomePage implements OnInit {
       public alertController: AlertController,
       private barcodeScanner: BarcodeScanner,
       public loadingController: LoadingController,
-      public homeService: HomeService
+      public homeService: HomeService,
+      private platform: Platform
       ) {
         this.apiurl = this.appConst.getApiUrl();
         this.vturl = this.appConst.getVtUrl();
+        this.platform.backButton.subscribeWithPriority(10, () => {
+            this.navCtrl.navigateForward('/home');
+        });
     }
     async ngOnInit() {
         await this.storage.create();

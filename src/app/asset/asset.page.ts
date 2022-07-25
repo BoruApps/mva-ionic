@@ -119,6 +119,16 @@ export class AssetPage implements OnInit {
             this.cf_job_number = cf_job_number;
             console.log('this.cf_job_number = ',this.cf_job_number);
         });
+        this.storage.get('assetstestcheckbox').then((assetstestcheckbox) => {
+            this.assetstestcheckbox = assetstestcheckbox;
+            for (var x in this.assetstestcheckbox) {
+                var tmp = this.assetstestcheckbox[x];
+                if (tmp.isbundle == 1 && this.assetstestcheckbox[x].checkboxvalue) {
+                    this.selectedbundle = this.assetstestcheckbox[x].fieldname;
+                }
+            }
+        });
+        
         this.storage.get('assetstestcheckbox1').then((assetstestcheckbox1) => {
             this.assetstestcheckbox1 = assetstestcheckbox1;
             for (var x in this.assetstestcheckbox1) {
@@ -131,15 +141,7 @@ export class AssetPage implements OnInit {
         this.storage.get('list_locations').then((list_locations) => {
             this.list_locations = list_locations;
         });
-        this.storage.get('assetstestcheckbox').then((assetstestcheckbox) => {
-            this.assetstestcheckbox = assetstestcheckbox;
-            for (var x in this.assetstestcheckbox) {
-                var tmp = this.assetstestcheckbox[x];
-                if (tmp.isbundle == 1 && this.assetstestcheckbox[x].checkboxvalue) {
-                    this.selectedbundle = this.assetstestcheckbox[x].fieldname;
-                }
-            }
-        });
+        
         this.storage.get('userdata').then((userdata) => {
         });
         this.storage.get('barcode').then((barcode) => {
