@@ -150,8 +150,7 @@ export class ResultsPage implements OnInit {
                  this.hideLoading();
                 var url = data['body']['pdfFilePath'];
                 if (this.platform.is('ios')) {
-                    //var path = this.file.documentsDirectory;
-                    var path = this.file.dataDirectory;
+                    var path = this.file.documentsDirectory;
                 } else {
                     var path = this.file.dataDirectory;
                 }
@@ -169,15 +168,18 @@ export class ResultsPage implements OnInit {
                                 .catch(e => {
                                     this.hideLoading();
                                     console.log('Error opening file', e)
+                                    this.presentToast('Error opening file');
                                 });
                         }).catch(err => {
                             this.hideLoading();
                             console.log('Error creating file', err)
+                            this.presentToast('Error creating file');
                         });
                     }
                 ).catch(err => {
                     this.hideLoading();
                     console.log('Error getting file', err)
+                    this.presentToast('Error getting file');
                 })
             } else {
                 this.hideLoading();
