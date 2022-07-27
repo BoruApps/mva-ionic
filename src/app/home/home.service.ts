@@ -124,13 +124,17 @@ export class HomeService {
                 for (var x in responseData.tests.values){
                     responseData.tests.values.hasOwnProperty(x) && res1.push(responseData.tests.values[x]);
                 }
+                this.storage.remove('assetstestcheckbox');
                 this.storage.set('assetstestcheckbox',res1);
+                console.log('home-assetstestcheckbox = ',res1);
                 
                 var res2 = [];
                 for (var x in responseData.tests1.values){
                     responseData.tests1.values.hasOwnProperty(x) && res2.push(responseData.tests1.values[x]);
                 }
+                this.storage.remove('assetstestcheckbox1');
                 this.storage.set('assetstestcheckbox1',res2);
+                console.log('home-assetstestcheckbox1 = ',res2);
                 this.storage.set('sample_date',responseData.cf_1110);
                 this.storage.set('sample_due_date',responseData.cf_1161);
                 this.storage.set('sample_oil_temperature',responseData.cf_1107);
@@ -142,7 +146,11 @@ export class HomeService {
                     this.storage.set('assetsmessage','TEST');
                 }
 
-            this.router.navigateByUrl('/asset');
+                var params = {
+                    assetstestcheckbox: res1,
+                    assetstestcheckbox1: res2
+                };
+                this.router.navigateByUrl('/asset',{ state: params });
         }, error => {
             this.hideLoading();
             this.presentToast('Not Found.');

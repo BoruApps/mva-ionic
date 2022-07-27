@@ -42,6 +42,8 @@ export class HomePage implements OnInit {
     async ngOnInit() {
         await this.storage.create();
         this.barcodenumber = '';
+        this.storage.remove('assetstestcheckbox1');
+        this.storage.remove('assetstestcheckbox');
     }
     
     async getbarcodenumber() {

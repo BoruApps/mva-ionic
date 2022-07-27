@@ -40,6 +40,8 @@ export class AssetPage implements OnInit {
     croppedImagepath = "";
     assetsentries: any = [];
     assetfilterlist = [];
+    assetstestcheckboxconstruct = [];
+    assetstestcheckboxconstruct1 = [];
     assetstestcheckbox = [];
     assetstestcheckbox1 = [];
     list_locations = [];
@@ -69,6 +71,14 @@ export class AssetPage implements OnInit {
     ) {
         this.apiurl = this.appConst.getApiUrl();
         this.vturl = this.appConst.getVtUrl();
+        if (router.getCurrentNavigation().extras.state) {
+            const assetstestcheckboxArr = this.router.getCurrentNavigation().extras.state;
+            this.assetstestcheckboxconstruct = assetstestcheckboxArr['assetstestcheckbox'];
+            this.assetstestcheckboxconstruct1 = assetstestcheckboxArr['assetstestcheckbox1'];
+            console.log('---- constructor ----');
+            console.log('constructor - this.assetstestcheckboxconstruct == ',this.assetstestcheckboxconstruct);
+            console.log('constructor - this.assetstestcheckboxconstruct1 == ',this.assetstestcheckboxconstruct1);
+        }
     }
 
     async ngOnInit() {
@@ -119,25 +129,13 @@ export class AssetPage implements OnInit {
             this.cf_job_number = cf_job_number;
             console.log('this.cf_job_number = ',this.cf_job_number);
         });
-        this.storage.get('assetstestcheckbox').then((assetstestcheckbox) => {
-            this.assetstestcheckbox = assetstestcheckbox;
-            for (var x in this.assetstestcheckbox) {
-                var tmp = this.assetstestcheckbox[x];
-                if (tmp.isbundle == 1 && this.assetstestcheckbox[x].checkboxvalue) {
-                    this.selectedbundle = this.assetstestcheckbox[x].fieldname;
-                }
-            }
-        });
-        
-        this.storage.get('assetstestcheckbox1').then((assetstestcheckbox1) => {
-            this.assetstestcheckbox1 = assetstestcheckbox1;
-            for (var x in this.assetstestcheckbox1) {
-                var tmp = this.assetstestcheckbox1[x];
-                if (tmp.isbundle == 1 && this.assetstestcheckbox1[x].checkboxvalue) {
-                    this.selectedbundle = this.assetstestcheckbox1[x].fieldname;
-                }
-            }
-        });
+        console.log('init - this.assetstestcheckboxconstruct == ',this.assetstestcheckboxconstruct);
+        console.log('init - this.assetstestcheckboxconstruct1 == ',this.assetstestcheckboxconstruct1);
+
+        this.assetstestcheckbox = this.assetstestcheckboxconstruct;
+        this.assetstestcheckbox1 = this.assetstestcheckboxconstruct1;
+        console.log('assetstestcheckbox == ',this.assetstestcheckbox);
+        console.log('assetstestcheckbox1 == ',this.assetstestcheckbox1);
         this.storage.get('list_locations').then((list_locations) => {
             this.list_locations = list_locations;
         });
@@ -156,9 +154,13 @@ export class AssetPage implements OnInit {
     }
 
     async doRefresh(event) {
+        this.storage.remove('assetstestcheckbox1');
+        this.storage.remove('assetstestcheckbox');
         this.barcodenumberasset = '';
-        this.homeService.getrelatedAsset(this.barcode);
-        this.ngOnInit();
+        await this.homeService.getrelatedAsset(this.barcode,true);
+        await this.ngOnInit();
+        console.log('doRefresh-assetstestcheckbox == ',this.assetstestcheckbox);
+        console.log('doRefresh-assetstestcheckbox1 == ',this.assetstestcheckbox1);
         event.target.complete();
 
     }

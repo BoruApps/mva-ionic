@@ -167,8 +167,8 @@ export class ResultsPage implements OnInit {
                                 })
                                 .catch(e => {
                                     this.hideLoading();
-                                    console.log('Error opening file', e)
-                                    this.presentToast('Error opening file');
+                                    console.log('Error opening file', e);
+                                    this.presentToast('Error opening file :: status = ' + e['status'] + ' || message = ' + e['message']);
                                 });
                         }).catch(err => {
                             this.hideLoading();
