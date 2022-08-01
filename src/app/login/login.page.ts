@@ -6,6 +6,7 @@ import {AppConstants} from '../providers/constant/constant';
 import {LoadingController} from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import {TermconditionsModal} from '../termconditions/termconditions.page';
+import { IonRouterOutlet } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -31,7 +32,8 @@ export class LoginPage implements OnInit {
       public appConst: AppConstants,
       private navCtrl: NavController,
       public loadingController: LoadingController,
-      public modalCtrl: ModalController
+      public modalCtrl: ModalController,
+      private routerOutlet: IonRouterOutlet
   ) {
     this.apiurl = this.appConst.getApiUrl();
     this.vturl = this.appConst.getVtUrl();
@@ -66,6 +68,7 @@ export class LoginPage implements OnInit {
 
   async ngOnInit() {
     await this.storage.create();
+    this.routerOutlet.swipeGesture = false;
     
     this.isLogged().then(result => {
       if (!(result == false)) {
@@ -76,7 +79,13 @@ export class LoginPage implements OnInit {
       }
     })
   }
+  ionViewDidEnter(){
+    this.routerOutlet.swipeGesture = false;
+  }
 
+  ionViewDidLeave(){
+    this.routerOutlet.swipeGesture = false;
+  }
   async isLogged() {
     var log_status = this.storage.get('userdata').then((userdata) => {
       if (userdata && userdata.length !== 0) {

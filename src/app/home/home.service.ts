@@ -31,20 +31,6 @@ export class HomeService {
 	  {
   		this.apiurl = this.appConst.getApiUrl();
         this.vturl = this.appConst.getVtUrl();
-
-        this.storage.create();
-
-        this.isLogged().then(response => {
-            if(response !== false){
-                this.userdata = response;
-            }else{
-                this.presentToast('Login failed. Please try again');
-                this.logoutUser();
-            }
-        });
-        this.platform.backButton.subscribeWithPriority(10, () => {
-            this.navCtrl.navigateForward('/home');
-          });
 	  }
 	  
 

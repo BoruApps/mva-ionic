@@ -9,6 +9,7 @@ import { AlertController } from '@ionic/angular';
 import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
 import { HomeService } from '../home/home.service';
 import { Platform } from '@ionic/angular';
+import { IonRouterOutlet } from '@ionic/angular';
 
 @Component({
     selector: 'app-home',
@@ -20,6 +21,7 @@ export class HomePage implements OnInit {
     apiurl: any;
     vturl: any;
     loading: any;
+    userdata: any;
     constructor(
       private router: Router,
       public storage: Storage,
@@ -31,7 +33,8 @@ export class HomePage implements OnInit {
       private barcodeScanner: BarcodeScanner,
       public loadingController: LoadingController,
       public homeService: HomeService,
-      private platform: Platform
+      private platform: Platform,
+      private routerOutlet: IonRouterOutlet
       ) {
         this.apiurl = this.appConst.getApiUrl();
         this.vturl = this.appConst.getVtUrl();
@@ -40,18 +43,56 @@ export class HomePage implements OnInit {
         });
     }
     async ngOnInit() {
+        this.routerOutlet.swipeGesture = false;
         await this.storage.create();
+        await this.isLogged().then(response => {
+            if (response !== false) {
+                this.userdata = response;
+            } else {
+                this.presentToast('Login failed. Please try again');
+                this.logoutUser();
+            }
+        });
         this.barcodenumber = '';
         this.storage.remove('assetstestcheckbox1');
         this.storage.remove('assetstestcheckbox');
     }
-    
+    ionViewDidEnter(){
+        this.routerOutlet.swipeGesture = false;
+    }
+
+    ionViewDidLeave(){
+        this.routerOutlet.swipeGesture = false;
+    }
     async getbarcodenumber() {
         var barcode = this.barcodenumber;
         if(barcode.length >= 8){
             var value = barcode.toLowerCase().trim();
             this.scansample();
         }
+    }
+     async isLogged() {
+        var log_status = this.storage.get('userdata').then((userdata) => {
+            if (userdata && userdata.length !== 0) {
+                return userdata;
+            } else {
+                return false;
+            }
+        });
+        return log_status;
+    }
+    logoutUser() {
+        this.storage.set("userdata", null);
+        this.router.navigateByUrl('/');
+    }
+    async presentToast(message: string) {
+        var toast = await this.toastController.create({
+            message: message,
+            duration: 3500,
+            position: "top",
+            color: "danger"
+        });
+        toast.present();
     }
     scanBarcode() {
         this.barcodeScanner.scan().then(barcodeData => {
