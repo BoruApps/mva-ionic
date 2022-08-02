@@ -31,9 +31,20 @@ export class HomeService {
 	  {
   		this.apiurl = this.appConst.getApiUrl();
         this.vturl = this.appConst.getVtUrl();
+        this.ngOnInit();
 	  }
 	  
-
+    async ngOnInit() {
+        await this.storage.create();
+        await this.isLogged().then(response => {
+            if (response !== false) {
+                this.userdata = response;
+            } else {
+                this.presentToast('Login failed. Please try again');
+                this.logoutUser();
+            }
+        });
+    }
     async isLogged() {
     	var log_status = this.storage.get('userdata').then((userdata) => {
             if (userdata && userdata.length !== 0) {

@@ -7,6 +7,7 @@ import {LoadingController} from '@ionic/angular';
 import {Storage} from '@ionic/storage-angular';
 import 'hammerjs';
 import {ImageCroppedEvent, ImageCropperModule} from 'ngx-image-cropper';
+import { Dimensions, ImageCropperComponent, ImageTransform } from 'ngx-image-cropper';
 
 @Component({
     selector: 'app-imageeditor',
@@ -14,6 +15,14 @@ import {ImageCroppedEvent, ImageCropperModule} from 'ngx-image-cropper';
     styleUrls: ['./imageeditor.page.css'],
 })
 export class ImageeditorPage implements OnInit {
+
+    canvasRotation = 0;
+    rotation = 0;
+    scale = 1;
+    showCropper = false;
+    containWithinAspectRatio = false;
+    transform: ImageTransform = {};
+
 
     apiurl: any;
     vturl: any;
@@ -78,6 +87,27 @@ export class ImageeditorPage implements OnInit {
         });
         toast.present();
     }
+    rotateLeft() {
+        this.canvasRotation--;
+        this.flipAfterRotate();
+    }
+
+    rotateRight() {
+        this.canvasRotation++;
+        this.flipAfterRotate();
+    }
+
+    private flipAfterRotate() {
+        const flippedH = this.transform.flipH;
+        const flippedV = this.transform.flipV;
+        this.transform = {
+            ...this.transform,
+            flipH: flippedV,
+            flipV: flippedH
+        };
+    }
+
+
 
     async presentToastPrimary(message: string) {
         var toast = await this.toastController.create({
