@@ -445,7 +445,7 @@ export class AssetPage implements OnInit {
 
     openActionSheet(index, section) {
         var options: CameraOptions = {
-            quality: 70,
+            quality: 45,
             sourceType: this.camera.PictureSourceType.CAMERA,
             destinationType: this.camera.DestinationType.DATA_URL,
             encodingType: this.camera.EncodingType.PNG,
