@@ -445,11 +445,12 @@ export class AssetPage implements OnInit {
 
     openActionSheet(index, section) {
         var options: CameraOptions = {
-            quality: 45,
+            quality: 70,
             sourceType: this.camera.PictureSourceType.CAMERA,
             destinationType: this.camera.DestinationType.DATA_URL,
             encodingType: this.camera.EncodingType.PNG,
-            mediaType: this.camera.MediaType.PICTURE
+            mediaType: this.camera.MediaType.PICTURE,
+            correctOrientation: true
         }
 
         this.camera.getPicture(options).then((imageData) => {
