@@ -87,26 +87,6 @@ export class ImageeditorPage implements OnInit {
         });
         toast.present();
     }
-    rotateLeft() {
-        this.canvasRotation--;
-        this.flipAfterRotate();
-    }
-
-    rotateRight() {
-        this.canvasRotation++;
-        this.flipAfterRotate();
-    }
-
-    private flipAfterRotate() {
-        const flippedH = this.transform.flipH;
-        const flippedV = this.transform.flipV;
-        this.transform = {
-            ...this.transform,
-            flipH: flippedV,
-            flipV: flippedH
-        };
-    }
-
 
 
     async presentToastPrimary(message: string) {

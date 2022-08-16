@@ -149,6 +149,11 @@ export class ResultsPage implements OnInit {
             if (verified == true) {
                  this.hideLoading();
                 var url = data['body']['pdfFilePath'];
+                let fileName = url.substring(url.lastIndexOf('/')+1);
+                console.log("--------- fileName ---------",fileName);
+                if(fileName == '' || fileName == undefined){
+                    fileName = 'download.pdf';
+                }
                 if (this.platform.is('ios')) {
                     var path = this.file.documentsDirectory;
                 } else {
@@ -159,8 +164,8 @@ export class ResultsPage implements OnInit {
                     httpResponse => {
                         var downloadedFile = new Blob([httpResponse.data], {type: 'application/pdf'});
 
-                        this.file.writeFile(path, "download.pdf", downloadedFile, {replace: true}).then(createdFile => {
-                            this.fileOpener.showOpenWithDialog(path + 'download.pdf', 'application/pdf')
+                        this.file.writeFile(path, fileName, downloadedFile, {replace: true}).then(createdFile => {
+                            this.fileOpener.showOpenWithDialog(path + fileName, 'application/pdf')
                                 .then(() => {
                                     this.hideLoading();
                                     console.log('File is opened');
