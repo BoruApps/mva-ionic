@@ -40,7 +40,7 @@ export class ProfilePage implements OnInit {
     async ngOnInit() {
         await this.storage.create();
 
-        this.isLogged().then(response => {
+        await this.isLogged().then(response => {
             console.log('response',response)
             if(response !== false){
                 this.userdata = response;
@@ -66,8 +66,8 @@ export class ProfilePage implements OnInit {
         return log_status;
     }
 
-    logoutUser(){
-        this.storage.set("userdata", null);
+    async logoutUser(){
+        await this.storage.set("userdata", null);
         this.router.navigateByUrl('/');
     }
 

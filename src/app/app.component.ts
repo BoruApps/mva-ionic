@@ -84,9 +84,9 @@ export class AppComponent {
     });
   }
   
-  logoutUser(){
+  async logoutUser(){
       console.log('logout clicked');
-      this.storage.set("userdata", null);
+      await this.storage.set("userdata", null);
       this.router.navigateByUrl('/');
   }
 }

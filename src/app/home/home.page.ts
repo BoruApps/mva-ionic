@@ -81,8 +81,8 @@ export class HomePage implements OnInit {
         });
         return log_status;
     }
-    logoutUser() {
-        this.storage.set("userdata", null);
+    async logoutUser() {
+        await this.storage.set("userdata", null);
         this.router.navigateByUrl('/');
     }
     async presentToast(message: string) {
@@ -122,8 +122,8 @@ export class HomePage implements OnInit {
             var verified = data['body']['success'];
             if (verified == true) {
 
-                this.storage.set('barcode', this.barcodenumber);
-                this.homeService.getrelatedAsset(this.barcodenumber);
+                await this.storage.set('barcode', this.barcodenumber);
+                await this.homeService.getrelatedAsset(this.barcodenumber);
             } else {
                 var message = 'This barcode number does not exist. Please verify the barcode and enter the correct number above.';
                 this.homeService.confirmCancelImage('Sample Status',message)

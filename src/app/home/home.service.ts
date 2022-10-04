@@ -39,6 +39,7 @@ export class HomeService {
         await this.isLogged().then(response => {
             if (response !== false) {
                 this.userdata = response;
+                console.log('this.userdata-1 == ',response);
             } else {
                 this.presentToast('Login failed. Please try again');
                 this.logoutUser();
@@ -48,6 +49,7 @@ export class HomeService {
     async isLogged() {
     	var log_status = this.storage.get('userdata').then((userdata) => {
             if (userdata && userdata.length !== 0) {
+                console.log('this.userdata-2 == ',userdata);
                 return userdata;
             } else {
                 return false;
@@ -57,6 +59,7 @@ export class HomeService {
     }
 
     logoutUser(){
+        this.ngOnInit();
         this.storage.set("userdata", null);
         this.router.navigateByUrl('/');
     }
@@ -84,8 +87,10 @@ export class HomeService {
             }
         }, 1000);
     }
-  	getrelatedAsset(barcode,assetsonly = false,assetid = 0){
+  	async getrelatedAsset(barcode,assetsonly = false,assetid = 0){
   		this.showLoading();
+        await this.ngOnInit();
+        console.log('this.userdata == ',this.userdata);
   		var data = {
             barcode: barcode,
             accountid: this.userdata.accountid,
@@ -96,7 +101,7 @@ export class HomeService {
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
         headers.append('Access-Control-Allow-Origin', '*');
         this.httpClient.post(this.apiurl + "OrderTests.php", data, {headers: headers,observe: 'response'
-        }).subscribe(data => {
+        }).subscribe( async data => {
             var responseData = data['body']['data'];
             this.hideLoading();
             if(responseData.status){
@@ -107,40 +112,40 @@ export class HomeService {
             for (var x in responseData.assets.entries){
                     responseData.assets.entries.hasOwnProperty(x) && res.push(responseData.assets.entries[x]);
                 }
-                this.storage.set('assetsentries',res);
-                this.storage.set('assetsentrieselected',responseData.assetid);
-                this.storage.set('assetnameentrieselected',responseData.assetname);
-                this.storage.set('equipmenttype',responseData.cf_922);
+                await this.storage.set('assetsentries',res);
+                await this.storage.set('assetsentrieselected',responseData.assetid);
+                await this.storage.set('assetnameentrieselected',responseData.assetname);
+                await this.storage.set('equipmenttype',responseData.cf_922);
 
                 var res0 = [];
                 for (var x in responseData.list_locations){
                     responseData.list_locations.hasOwnProperty(x) && res0.push(responseData.list_locations[x]);
                 }
-                this.storage.set('list_locations',res0);
+                await this.storage.set('list_locations',res0);
                 var res1 = [];
                 for (var x in responseData.tests.values){
                     responseData.tests.values.hasOwnProperty(x) && res1.push(responseData.tests.values[x]);
                 }
-                this.storage.remove('assetstestcheckbox');
-                this.storage.set('assetstestcheckbox',res1);
+                await this.storage.remove('assetstestcheckbox');
+                await this.storage.set('assetstestcheckbox',res1);
                 console.log('home-assetstestcheckbox = ',res1);
                 
                 var res2 = [];
                 for (var x in responseData.tests1.values){
                     responseData.tests1.values.hasOwnProperty(x) && res2.push(responseData.tests1.values[x]);
                 }
-                this.storage.remove('assetstestcheckbox1');
-                this.storage.set('assetstestcheckbox1',res2);
+                await this.storage.remove('assetstestcheckbox1');
+                await this.storage.set('assetstestcheckbox1',res2);
                 console.log('home-assetstestcheckbox1 = ',res2);
-                this.storage.set('sample_date',responseData.cf_1110);
-                this.storage.set('sample_due_date',responseData.cf_1161);
-                this.storage.set('sample_oil_temperature',responseData.cf_1107);
-                this.storage.set('identification_comments',responseData.cf_idcomments);
-                this.storage.set('cf_job_number',responseData.cf_job_number);
+                await this.storage.set('sample_date',responseData.cf_1110);
+                await this.storage.set('sample_due_date',responseData.cf_1161);
+                await this.storage.set('sample_oil_temperature',responseData.cf_1107);
+                await this.storage.set('identification_comments',responseData.cf_idcomments);
+                await this.storage.set('cf_job_number',responseData.cf_job_number);
                 if(responseData.message){
-                    this.storage.set('assetsmessage',responseData.message);
+                    await this.storage.set('assetsmessage',responseData.message);
                 }else{
-                    this.storage.set('assetsmessage','TEST');
+                    await this.storage.set('assetsmessage','TEST');
                 }
 
                 var params = {

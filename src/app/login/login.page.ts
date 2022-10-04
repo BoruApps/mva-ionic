@@ -37,6 +37,8 @@ export class LoginPage implements OnInit {
   ) {
     this.apiurl = this.appConst.getApiUrl();
     this.vturl = this.appConst.getVtUrl();
+    this.username = 'bpatel@boruapps.com';
+    this.password = 'g5m2sg5n';
   }
 
   loading: any;
@@ -88,6 +90,7 @@ export class LoginPage implements OnInit {
   }
   async isLogged() {
     var log_status = this.storage.get('userdata').then((userdata) => {
+      console.log('userdata === ',userdata);
       if (userdata && userdata.length !== 0) {
         return userdata;
       } else {
@@ -115,7 +118,7 @@ export class LoginPage implements OnInit {
       this.showLoading();
 
       this.httpClient.post(this.apiurl + "authenticate.php", form.value, {headers: headers, observe: 'response'})
-          .subscribe(data => {
+          .subscribe( async data => {
             this.hideLoading();
             var verified = data['body']['success'];
             console.log('login response was', verified);
@@ -126,7 +129,10 @@ export class LoginPage implements OnInit {
 
               this.userdata = userdata;
               this.userdata['theme'] = 'Light';
-              this.storage.set('userdata', this.userdata);
+              await this.storage.set('userdata', this.userdata);
+              var log_status = this.storage.get('userdata').then((userdata) => {
+                  console.log('userdata ====== ',userdata);
+              });
               this.navCtrl.navigateForward('/home');
               
             } else {

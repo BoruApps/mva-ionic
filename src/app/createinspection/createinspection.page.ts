@@ -152,8 +152,8 @@ export class CreateinspectionPage implements OnInit {
         });
         return log_status;
     }
-    logoutUser() {
-        this.storage.set("userdata", null);
+    async logoutUser() {
+        await this.storage.set("userdata", null);
         this.router.navigateByUrl('/');
     }
     async showLoading() {
