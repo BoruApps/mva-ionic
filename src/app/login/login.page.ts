@@ -37,8 +37,6 @@ export class LoginPage implements OnInit {
   ) {
     this.apiurl = this.appConst.getApiUrl();
     this.vturl = this.appConst.getVtUrl();
-    this.username = 'bpatel@boruapps.com';
-    this.password = 'g5m2sg5n';
   }
 
   loading: any;
