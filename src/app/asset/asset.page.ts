@@ -48,6 +48,7 @@ export class AssetPage implements OnInit {
     searchassetflag = 0;
     iscreateasset = 0;
     istapcounterreading = 0;
+    timer = 0;
 
     buttonLabels = ['Take Photo', 'Upload from Library'];
     public subSection: number;
@@ -403,43 +404,47 @@ export class AssetPage implements OnInit {
     }
 
     async getbarcodenumberasset() {
+        var self = this;
+        clearTimeout(this.timer);
+        var ms = 500; // milliseconds
+        this.timer = setTimeout(function() {
+            self.getbarcodenumberassetclick();
+        }, ms);
+    }
+    getbarcodenumberassetclick() {
+        
         var searchTerm = this.barcodenumberasset;
-        this.assetfilterlist = this.assetsentries.filter((asset) => {
-            if (searchTerm === undefined) {
-                return false
-            }
-            if (this.assetfilter == 'serialnumber') {
-                if(asset.assetname == null){
-                    return false
+        if(searchTerm != ''){
+            var postdata = {
+                act: 'get_list_assets',
+                accountid: this.userdata.accountid,
+                search_column : this.assetfilter,
+                search_value : searchTerm,
+            };
+            var headers = new HttpHeaders();
+            headers.append("Accept", "application/json");
+            headers.append("Content-Type", "application/x-www-form-urlencoded");
+            headers.append("Access-Control-Allow-Origin", "*");
+
+            this.httpClient.post(this.apiurl + "OrderTests.php", JSON.stringify(postdata), {
+                headers: headers,
+                observe: "response",
+            }).subscribe(async (data) => {
+                this.homeService.hideLoading();
+                var responseData = data['body']['data'];
+                var responseError = data['body']['error'];
+                if(!responseError){
+                    var res = [];
+                    for (var x in responseData.entries){
+                        responseData.entries.hasOwnProperty(x) && res.push(responseData.entries[x]);
+                    }
+                    this.assetfilterlist = res;
+                }else{
+                    this.assetfilterlist = [];
                 }
-                return asset.assetname.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
-            } else if (this.assetfilter == 'unitid') {
-                if(asset.cf_1164 == null){
-                    return false
-                }
-                return asset.cf_1164.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
-            } else if (this.assetfilter == 'equipmentid') {
-                if(asset.cf_922 == null){
-                    return false
-                }
-                return asset.cf_922.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
-            } else if (this.assetfilter == 'substationname') {
-                if(asset.multiaddressid == null){
-                    return false
-                }
-                return asset.multiaddressid.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
-            }
-        });
-        if (this.assetfilterlist.length == 0) {
-            this.searchassetflag = 1;
-        } else {
-            this.searchassetflag = 0;
-        }
-        for (var i = 0; i < this.assetfilterlist.length; i++) {
-            if (this.assetfilterlist[i].assetid == this.assetsentrieselected) {
-                var imortant_note = this.assetfilterlist.splice(i, 1);
-                this.assetfilterlist.unshift(imortant_note[0]);
-            }
+            });
+        }else{
+            this.assetfilterlist = this.assetsentries;
         }
     }
 

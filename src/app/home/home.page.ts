@@ -95,7 +95,11 @@ export class HomePage implements OnInit {
         toast.present();
     }
     scanBarcode() {
-        this.barcodeScanner.scan().then(barcodeData => {
+        var option = {
+                disableAnimations: false,
+                disableSuccessBeep: true,
+            }
+        this.barcodeScanner.scan(option).then(barcodeData => {
             if(barcodeData.text){
                 this.barcodenumber = barcodeData.text
             }
