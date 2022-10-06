@@ -14,6 +14,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {TermconditionsModal} from './termconditions/termconditions.page';
 import {CreateassetPage} from "./createasset/createasset.page";
 import {CreateinspectionPage} from "./createinspection/createinspection.page";
+import {ConfirmationModal} from "./confirmationmodel/confirmationmodel.page";
 import { Crop } from '@ionic-native/crop/ngx';
 import { Camera, CameraOptions } from '@awesome-cordova-plugins/camera/ngx';
 import { File } from '@awesome-cordova-plugins/file/ngx';
@@ -24,8 +25,8 @@ import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
 
 
 @NgModule({
-  declarations: [AppComponent,TermconditionsModal,CreateassetPage,CreateinspectionPage],
-  entryComponents: [TermconditionsModal,CreateassetPage,CreateinspectionPage],
+  declarations: [AppComponent,TermconditionsModal,CreateassetPage,CreateinspectionPage,ConfirmationModal],
+  entryComponents: [TermconditionsModal,CreateassetPage,CreateinspectionPage,ConfirmationModal],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,HttpClientModule , IonicStorageModule.forRoot()],
   providers: [
     Platform,
