@@ -7,7 +7,8 @@ import {AppConstants} from '../providers/constant/constant';
 import {LoadingController} from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { AlertController } from '@ionic/angular';
-import { Platform } from '@ionic/angular';
+import { ModalController,Platform } from '@ionic/angular';
+import {ConfirmationModal} from "../confirmationmodel/confirmationmodel.page";
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,8 @@ export class HomeService {
 		private navCtrl: NavController,
 		public alertController: AlertController,
 		public loadingController: LoadingController,
-        private platform: Platform
+        private platform: Platform,
+        private modalController: ModalController,
 		) 
 	  {
   		this.apiurl = this.appConst.getApiUrl();
@@ -158,21 +160,18 @@ export class HomeService {
             this.presentToast('Not Found.');
         });
     }
-    async confirmCancelImage(header,message){
-        const alert = await this.alertController.create({
-            cssClass: 'my-custom-class',
-            header: header,
-            message: message,
-            buttons: [
-                {
-                    text: 'OK',
-                    role: 'cancel',
-                    cssClass: 'secondary',
-                    handler: (blah) => {}
-                },
-            ]
+    
+    async confirmCancelImage(header,message){    
+        const addItem = await this.modalController.create({
+          component: ConfirmationModal,
+          componentProps: {header: header, message: message},
+          cssClass: 'auto-height',
         });
 
-        await alert.present();
-    }
+        addItem.onDidDismiss().then((dataReturned) => {
+          console.log('dataReturned',dataReturned.data)
+        });
+
+        return await addItem.present();
+  }
 }

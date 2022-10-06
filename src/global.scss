@@ -30,6 +30,27 @@
   --width: 95%;
   --height: 40%;
 }
+ion-modal.auto-height {
+    &.bottom {
+        align-items: flex-end;
+    }
+
+    --height: auto;
+    --width: 95%;
+
+    .ion-page {
+        position: relative;
+        display: block;
+        contain: content;
+
+        .inner-content {
+            max-height: 80vh;
+            overflow: auto;
+            padding: 10px;
+        }
+    }
+}
+
 .modal-50 {
   background: rgba(0, 0, 0, 0.5) !important;
   --width: 95%;

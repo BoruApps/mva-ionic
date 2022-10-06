@@ -96,7 +96,7 @@ export class HomePage implements OnInit {
     }
     scanBarcode() {
         var option = {
-                disableAnimations: false,
+                disableAnimations: true,
                 disableSuccessBeep: true,
             }
         this.barcodeScanner.scan(option).then(barcodeData => {
