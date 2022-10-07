@@ -1,11 +1,13 @@
 
 <ion-toolbar text-center>
-    <ion-buttons slot="secondary">
+    <div class="bar bar-header bar-stable">
+      <h4 class="title">{{header}}</h4>
+    </div>
+    <ion-buttons slot="end">
         <ion-button type="button" name="close" class="ion-close-center" size="small" (click)="closeModal()">
             <ion-icon name="close" size="small"></ion-icon>
         </ion-button>
     </ion-buttons>
-    <ion-title>{{header}}</ion-title>
 </ion-toolbar>
 <div class="inner-content">
     <ion-grid>
@@ -15,7 +17,9 @@
 <Ion-footer>
     <Ion-toolbar>
         <div>
-            <ion-button (click)="closeModal(true)" color="secondary" size="default" slot="end" type="button" style="float: right; margin: 10px;">ok</ion-button>
+            <ion-button (click)="closeModal(true)" color="secondary" size="default" slot="end" type="button" style="float: right; margin: 10px;">
+                <span style="padding: 0px 15px;">OK</span>
+            </ion-button>
         </div>
     </Ion-toolbar>
 </Ion-footer>

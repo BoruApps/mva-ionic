@@ -88,3 +88,9 @@ ion-header ion-toolbar {
   font-size: 20px !important;
   white-space: break-spaces
 }
+.md .bar.bar-header.bar-stable {
+    padding: 0px 10px;
+}
+.md .modal-default ion-toolbar.md.in-toolbar.hydrated {
+    --background: var(--ion-toolbar-background, var(--ion-color-step-50, #f7f7f7));
+}
