@@ -94,3 +94,31 @@ ion-header ion-toolbar {
 .md .modal-default ion-toolbar.md.in-toolbar.hydrated {
     --background: var(--ion-toolbar-background, var(--ion-color-step-50, #f7f7f7));
 }
+ion-checkbox {
+  --size: 20px;
+  --background-checked: #193667;
+}
+
+ion-checkbox::part(container) {
+  border-radius: 4px;
+  border: 2px solid #193667;
+}
+ion-radio {
+  --border-radius: 50%;
+  --inner-border-radius: 50%;
+
+  --color: #ddd;
+  --color-checked: #193667;
+}
+
+ion-radio.ios {
+  width: 20px;
+  height: 20px;
+
+  border: 2px solid #ddd;
+  border-radius: 50%;
+}
+
+.radio-checked.ios {
+  border-color: #193667;
+}

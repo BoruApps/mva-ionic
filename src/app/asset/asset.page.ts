@@ -336,13 +336,9 @@ export class AssetPage implements OnInit {
     async selecteasset(assetid) {
 
         this.assetsentrieselected = assetid;
-        this.assetfilterlist = this.assetsentries.filter((asset) => {
-            if (assetid === undefined) {
-                return false
-            }
-            return asset.assetid.toLowerCase().indexOf(assetid.toLowerCase()) > -1;
-
-        });
+        var selectedRecord = await this.assetfilterlist.find(o => o.assetid === assetid);
+        this.assetfilterlist = [];
+        this.assetfilterlist[0] = selectedRecord;
         this.equipmenttype = this.assetfilterlist[0]['cf_922'];
         this.assetnameentrieselected = this.assetfilterlist[0]['assetname'];
         var postdata = {
