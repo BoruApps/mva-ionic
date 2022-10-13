@@ -134,6 +134,7 @@ export class ResultsPage implements OnInit {
         }, ms);
     }
     async getFilteredLocations(){
+
         if(this.serialnumber != ''){
             var postdata = {
                 accountid: this.userdata.accountid,
@@ -153,6 +154,7 @@ export class ResultsPage implements OnInit {
                 var verified = data['body']['success'];
                 this.hideLoading();
                 if (verified == true) {
+                    this.assetfilterlist = [];
                     var assetdatalist = data['body']['data']['assets']['entries'];
                     for( let i in assetdatalist){
                         this.assetfilterlist.push(assetdatalist[i]);
