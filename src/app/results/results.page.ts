@@ -22,6 +22,7 @@ export class ResultsPage implements OnInit {
     userdata: any;
     assetlist: any = [];
     assetfilterlist = [];
+    timer = 0;
     constructor(
         private router: Router,
         public storage: Storage,
@@ -124,14 +125,49 @@ export class ResultsPage implements OnInit {
             this.presentToast('Something went wrong. Please try again');
         });
     }
-    async setFilteredLocations(){
-        this.assetfilterlist = this.assetlist.filter((asset) => {
-            if(this.serialnumber != undefined && this.serialnumber != ''){
-                return asset.assetname.toLowerCase().indexOf(this.serialnumber.toLowerCase()) > -1;
-            }else{
-                return this.assetlist;
-            }
-        });
+    async setFilteredLocations() {
+        var self = this;
+        clearTimeout(this.timer);
+        var ms = 800; // milliseconds
+        this.timer = setTimeout(function() {
+            self.getFilteredLocations();
+        }, ms);
+    }
+    async getFilteredLocations(){
+        if(this.serialnumber != ''){
+            var postdata = {
+                accountid: this.userdata.accountid,
+                search_column : 'assetname',
+                search_value : this.serialnumber,
+            };
+            this.showLoading();
+            var headers = new HttpHeaders();
+            headers.append("Accept", "application/json");
+            headers.append("Content-Type", "application/x-www-form-urlencoded");
+            headers.append("Access-Control-Allow-Origin", "*");
+
+            this.httpClient.post(this.apiurl + "scanAssetSerial.php", JSON.stringify(postdata), {
+                headers: headers,
+                observe: "response",
+            }).subscribe(async (data) => {
+                var verified = data['body']['success'];
+                this.hideLoading();
+                if (verified == true) {
+                    var assetdatalist = data['body']['data']['assets']['entries'];
+                    for( let i in assetdatalist){
+                        this.assetfilterlist.push(assetdatalist[i]);
+                    }
+                    this.assetfilterlist = this.assetfilterlist.reverse();
+                } else if(data['body']['data'] == 'Not Found') {
+                    this.assetfilterlist = [];
+                }else{
+                    this.presentToast('Something went wrong. Please try again');
+                    this.assetfilterlist = this.assetlist;
+                }
+            });
+        }else{
+            this.assetfilterlist = this.assetlist;
+        }
 
     }
     async assetPDF(selectassetsid){
