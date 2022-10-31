@@ -107,13 +107,13 @@
             <ion-label class="navbar-brand" color="primary" style="margin:auto;">Select Tests</ion-label>
           </ion-col>
         </ion-row>
-        <ion-card>
+        <ion-card style="margin-top: 0px">
             <ion-card-content>
                 <div>
                     <ion-button id="submit-button" color="secondary" expand="block" (click)="clearTests($event);">Clear Tests for This Sample</ion-button>
                 </div>
             </ion-card-content>
-            <ion-card-content>
+            <ion-card-content style="padding-top: 0">
                 <ion-radio-group [(ngModel)]="selectedbundle" style="display: flex" (ionChange)="checkTest($event)">
                 <ion-col size="6">
                     <div *ngFor="let assetcheckbox of assetstestcheckbox" >
