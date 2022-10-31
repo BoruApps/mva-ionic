@@ -35,10 +35,17 @@ a {
 .order-list-item, .asset-list-item {
     font-size: 15px;
     border-bottom: 1px solid #ececec;
-    padding: 3px 0;
+    padding: 5px 0;
+}
+.action-card {
+    margin: 0px 20px;
 }
 .asset-list-title {
     color: #193667 !important;
+    padding-left: 15px;
+}
+.asset-list-value {
+    padding: 0 15px;
 }
 .bolder {
     font-weight: 900;
@@ -75,8 +82,8 @@ a {
     width: 40%;
 }
 .form-table td, .form-table th {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
     padding-right: 0.5rem;
     padding-left: 0.5rem;
     border-bottom: 1px solid #dee2e6;

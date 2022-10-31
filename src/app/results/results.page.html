@@ -15,7 +15,7 @@
                 refreshingText="Refreshing....."></ion-refresher-content>
     </ion-refresher>
     <div class="ion-text-center navbar-brand ng-binding navbar_p_spacing">Asset Search</div>
-    <ion-card class="action-card">
+    <ion-card class="action-card ion-no-margin">
         <ion-item class="ion-padding">
              <ion-input class="transparent" name="serialnumber" id="serialnumber" [(ngModel)]="serialnumber" type="text" (ionChange)="setFilteredLocations()" placeholder="Type your Serial Number"></ion-input>
         </ion-item>
@@ -24,36 +24,36 @@
     <div class="mrg_bottom_submit">
         <div class="AllassetList">
             <div class="dark white-text result-asset-list barcode_division" id="{{asset.assetid}}" (click)="assetPDF(asset.assetid)" *ngFor="let asset of assetfilterlist">
-                <ion-grid>
+                <ion-grid class="ion-no-padding">
                     <ion-row class="row asset-list-item">
-                        <ion-col size="6">
+                        <ion-col size="5">
                             <strong class="bolder asset-list-title">Serial#: </strong>
                         </ion-col>
-                        <ion-col size="6" class="asset-list-value serialnumber">
+                        <ion-col size="7" class="asset-list-value serialnumber">
                             {{asset.assetname}}
                         </ion-col>
                     </ion-row>
                     <ion-row class="row asset-list-item">
-                        <ion-col size="6">
+                        <ion-col size="5">
                             <strong class="bolder asset-list-title">Unit ID: </strong>
                         </ion-col>
-                        <ion-col size="6">
+                        <ion-col size="7" class="asset-list-value">
                             {{asset.cf_1164}}
                         </ion-col>
                     </ion-row>
                     <ion-row class="row asset-list-item">
-                        <ion-col size="6">
+                        <ion-col size="5">
                             <strong class="bolder asset-list-title">Equipment Type: </strong>
                         </ion-col>
-                        <ion-col size="6">
+                        <ion-col size="7" class="asset-list-value">
                             {{asset.cf_922}}
                         </ion-col>
                     </ion-row>
                     <ion-row class="row asset-list-item">
-                        <ion-col size="6">
+                        <ion-col size="5">
                             <strong class="bolder asset-list-title">Substation: </strong>
                         </ion-col>
-                        <ion-col size="6">
+                        <ion-col size="7" class="asset-list-value">
                             {{asset.multiaddressid}}
                         </ion-col>
                     </ion-row>

@@ -30,6 +30,9 @@
   --width: 95%;
   --height: 40%;
 }
+ion-toolbar h4.title{
+  color: #183666;
+}
 ion-modal.auto-height {
     &.bottom {
         align-items: flex-end;
@@ -37,6 +40,7 @@ ion-modal.auto-height {
 
     --height: auto;
     --width: 95%;
+    color: #183666;
 
     .ion-page {
         position: relative;
@@ -83,6 +87,8 @@ ion-header ion-toolbar {
 .ioninput{
   border: 1px solid gray;
     border-radius: 5px;
+  --padding-top: 5px;
+  --padding-bottom: 5px;
 }
 .my-custom-class .alert-message.sc-ion-alert-md{
   font-size: 20px !important;
@@ -95,7 +101,7 @@ ion-header ion-toolbar {
     --background: var(--ion-toolbar-background, var(--ion-color-step-50, #f7f7f7));
 }
 ion-checkbox {
-  --size: 20px;
+  --size: 16px;
   --background-checked: #193667;
 }
 
@@ -112,8 +118,8 @@ ion-radio {
 }
 
 ion-radio.ios {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
 
   border: 2px solid #ddd;
   border-radius: 50%;

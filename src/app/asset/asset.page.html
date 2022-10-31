@@ -16,7 +16,7 @@
                 refreshingText="Refreshing....."></ion-refresher-content>
     </ion-refresher>
     <div class="ion-text-center navbar-brand ng-binding navbar_p_spacing">Select Asset</div>
-    <ion-card class="action-card">
+    <ion-card class="action-card ion-no-margin">
             <ion-grid>
               <ion-row>
                 <ion-col>
@@ -33,7 +33,7 @@
               </ion-row>
           </ion-grid>
         <ion-card-content>
-            <div class="ion-padding">
+            <div>
                 <ion-button id="submit-button" color="secondary" expand="block" (click)="openActionSheet()">SCAN SERIAL #</ion-button>
             </div>
         </ion-card-content>
@@ -42,36 +42,36 @@
     <div class="mrg_bottom_submit">
         <div class="AllassetList">
             <div class="dark white-text result-asset-list barcode_division" [ngClass]="assetsentrieselected > '0' && asset.assetid == assetsentrieselected ? (assetsentrieselected == '') ? '' : 'selected': (assetsentrieselected == '') ? '' : ''" class="dark white-text barcode_division asset-list" id="{{asset.assetid}}" *ngFor="let asset of assetfilterlist" (click) = "selecteasset(asset.assetid);">
-                <ion-grid>
+                <ion-grid class="ion-no-padding">
                     <ion-row class="row asset-list-item">
-                        <ion-col size="6">
+                        <ion-col size="5">
                             <strong class="bolder asset-list-title">Serial#: </strong>
                         </ion-col>
-                        <ion-col size="6" class="asset-list-value serialnumber">
+                        <ion-col size="7" class="asset-list-value serialnumber">
                             {{asset.assetname}}
                         </ion-col>
                     </ion-row>
                     <ion-row class="row asset-list-item">
-                        <ion-col size="6">
+                        <ion-col size="5">
                             <strong class="bolder asset-list-title">Unit ID: </strong>
                         </ion-col>
-                        <ion-col size="6">
+                        <ion-col size="7" class="asset-list-value">
                             {{asset.cf_1164}}
                         </ion-col>
                     </ion-row>
                     <ion-row class="row asset-list-item">
-                        <ion-col size="6">
+                        <ion-col size="5">
                             <strong class="bolder asset-list-title">Equipment Type: </strong>
                         </ion-col>
-                        <ion-col size="6">
+                        <ion-col size="7" class="asset-list-value">
                             {{asset.cf_922}}
                         </ion-col>
                     </ion-row>
                     <ion-row class="row asset-list-item">
-                        <ion-col size="6">
+                        <ion-col size="5">
                             <strong class="bolder asset-list-title">Substation: </strong>
                         </ion-col>
-                        <ion-col size="6">
+                        <ion-col size="7" class="asset-list-value">
                             {{asset.multiaddressid}}
                         </ion-col>
                     </ion-row>
@@ -109,7 +109,7 @@
         </ion-row>
         <ion-card>
             <ion-card-content>
-                <div class="ion-padding">
+                <div>
                     <ion-button id="submit-button" color="secondary" expand="block" (click)="clearTests($event);">Clear Tests for This Sample</ion-button>
                 </div>
             </ion-card-content>
@@ -117,26 +117,26 @@
                 <ion-radio-group [(ngModel)]="selectedbundle" style="display: flex" (ionChange)="checkTest($event)">
                 <ion-col size="6">
                     <div *ngFor="let assetcheckbox of assetstestcheckbox" >
-                        <ion-item *ngIf="assetcheckbox.isbundle == 0" class="ion-no-padding" lines="none">
+                        <ion-item *ngIf="assetcheckbox.isbundle == 0" class="ion-no-padding" lines="none" style="max-height:35px">
                             <ion-label class="test-list-sample">{{assetcheckbox.checkboxname}}</ion-label>
-                            <ion-checkbox style="margin: 5px" slot="start" color="primary" [(ngModel)]="assetcheckbox.checkboxvalue" value="{{assetcheckbox.fieldname}}"></ion-checkbox>
+                            <ion-checkbox style="margin-right: 5px" slot="start" color="primary" [(ngModel)]="assetcheckbox.checkboxvalue" value="{{assetcheckbox.fieldname}}"></ion-checkbox>
                         </ion-item>
-                        <ion-item *ngIf="assetcheckbox.isbundle == 1" class="ion-no-padding" lines="none">
+                        <ion-item *ngIf="assetcheckbox.isbundle == 1" class="ion-no-padding" lines="none" style="max-height:35px">
                           <ion-label>{{assetcheckbox.checkboxname}}</ion-label>
-                          <ion-radio style="margin: 5px" slot="start" color="primary" name="sel_bundles" value="{{assetcheckbox.fieldname}}" id="{{assetcheckbox.fieldname}}" ></ion-radio>
+                          <ion-radio style="margin-right: 5px" slot="start" color="primary" name="sel_bundles" value="{{assetcheckbox.fieldname}}" id="{{assetcheckbox.fieldname}}" ></ion-radio>
                         </ion-item>
                     </div>
                 </ion-col>
 
                 <ion-col size="6">
                     <div *ngFor="let assetcheckbox of assetstestcheckbox1" >
-                        <ion-item *ngIf="assetcheckbox.isbundle == 0" class="ion-no-padding" lines="none">
-                            <ion-checkbox style="margin: 5px" slot="start" color="primary" [(ngModel)]="assetcheckbox.checkboxvalue" value="{{assetcheckbox.fieldname}}"></ion-checkbox>
+                        <ion-item *ngIf="assetcheckbox.isbundle == 0" class="ion-no-padding" lines="none" style="max-height:35px">
+                            <ion-checkbox style="margin-right: 5px" slot="start" color="primary" [(ngModel)]="assetcheckbox.checkboxvalue" value="{{assetcheckbox.fieldname}}"></ion-checkbox>
                             <ion-label>{{assetcheckbox.checkboxname}}</ion-label>
                         </ion-item>
-                        <ion-item *ngIf="assetcheckbox.isbundle == 1" class="ion-no-padding" lines="none">
+                        <ion-item *ngIf="assetcheckbox.isbundle == 1" class="ion-no-padding" lines="none" style="max-height:35px">
                           <ion-label>{{assetcheckbox.checkboxname}}</ion-label>
-                          <ion-radio style="margin: 5px" slot="start" color="primary" name="sel_bundles" value="{{assetcheckbox.fieldname}}" id="{{assetcheckbox.fieldname}}" ></ion-radio>
+                          <ion-radio style="margin-right: 5px" slot="start" color="primary" name="sel_bundles" value="{{assetcheckbox.fieldname}}" id="{{assetcheckbox.fieldname}}" ></ion-radio>
                         </ion-item>
                     </div>
                 </ion-col>
@@ -150,7 +150,7 @@
                     <tbody>
                         <tr>
                             <td class="lblasset">
-                                <ion-label color="primary">
+                                <ion-label>
                                     Sample Date
                                 </ion-label>
                             </td>
@@ -211,13 +211,11 @@
                     </tbody>
                 </table>
           </ion-grid>
-        </ion-card>  
-        <ion-card> 
-            <ion-card-content class="ion-padding">
-                <ion-button id="submit-button" color="secondary" expand="block" (click) = "createinspection();">Inspection Report</ion-button>
-            </ion-card-content>
-        </ion-card> 
-        <ion-card color="primary">
+        </ion-card>
+        <ion-card-content class="ion-padding">
+            <ion-button id="submit-button" color="secondary" expand="block" (click) = "createinspection();">Inspection Report</ion-button>
+        </ion-card-content>
+        <ion-card color="primary" style="margin: 0px 16px">
             <ion-grid>
                 <ion-row>
                     <ion-col>
@@ -245,11 +243,9 @@
                 </ion-row>
           </ion-grid>
         </ion-card>
-        <ion-card> 
-            <ion-card-content class="ion-padding">
-                <ion-button id="submit-button" color="secondary" expand="block" (click) = "SaveTests();">Save</ion-button>
-            </ion-card-content>
-        </ion-card>
+        <ion-card-content class="ion-padding">
+            <ion-button id="submit-button" color="secondary" expand="block" (click) = "SaveTests();">Save</ion-button>
+        </ion-card-content>
     </div>
 </ion-content>
 
