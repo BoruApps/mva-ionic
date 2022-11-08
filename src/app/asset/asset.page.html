@@ -118,12 +118,12 @@
                 <ion-col size="6">
                     <div *ngFor="let assetcheckbox of assetstestcheckbox" >
                         <ion-item *ngIf="assetcheckbox.isbundle == 0" class="ion-no-padding" lines="none" style="max-height:35px">
-                            <ion-label class="test-list-sample">{{assetcheckbox.checkboxname}}</ion-label>
-                            <ion-checkbox style="margin-right: 5px" slot="start" color="primary" [(ngModel)]="assetcheckbox.checkboxvalue" value="{{assetcheckbox.fieldname}}"></ion-checkbox>
+                            <ion-label style="margin: 0px" class="test-list-sample">{{assetcheckbox.checkboxname}}</ion-label>
+                            <ion-checkbox style="margin: 0px 5px" slot="start" color="primary" [(ngModel)]="assetcheckbox.checkboxvalue" value="{{assetcheckbox.fieldname}}"></ion-checkbox>
                         </ion-item>
                         <ion-item *ngIf="assetcheckbox.isbundle == 1" class="ion-no-padding" lines="none" style="max-height:35px">
-                          <ion-label>{{assetcheckbox.checkboxname}}</ion-label>
-                          <ion-radio style="margin-right: 5px" slot="start" color="primary" name="sel_bundles" value="{{assetcheckbox.fieldname}}" id="{{assetcheckbox.fieldname}}" ></ion-radio>
+                          <ion-label style="margin: 0px">{{assetcheckbox.checkboxname}}</ion-label>
+                          <ion-radio style="margin: 0px 5px" slot="start" color="primary" name="sel_bundles" value="{{assetcheckbox.fieldname}}" id="{{assetcheckbox.fieldname}}" ></ion-radio>
                         </ion-item>
                     </div>
                 </ion-col>
@@ -131,12 +131,12 @@
                 <ion-col size="6">
                     <div *ngFor="let assetcheckbox of assetstestcheckbox1" >
                         <ion-item *ngIf="assetcheckbox.isbundle == 0" class="ion-no-padding" lines="none" style="max-height:35px">
-                            <ion-checkbox style="margin-right: 5px" slot="start" color="primary" [(ngModel)]="assetcheckbox.checkboxvalue" value="{{assetcheckbox.fieldname}}"></ion-checkbox>
-                            <ion-label>{{assetcheckbox.checkboxname}}</ion-label>
+                            <ion-checkbox style="margin: 0px 5px" slot="start" color="primary" [(ngModel)]="assetcheckbox.checkboxvalue" value="{{assetcheckbox.fieldname}}"></ion-checkbox>
+                            <ion-label style="margin: 0px">{{assetcheckbox.checkboxname}}</ion-label>
                         </ion-item>
                         <ion-item *ngIf="assetcheckbox.isbundle == 1" class="ion-no-padding" lines="none" style="max-height:35px">
-                          <ion-label>{{assetcheckbox.checkboxname}}</ion-label>
-                          <ion-radio style="margin-right: 5px" slot="start" color="primary" name="sel_bundles" value="{{assetcheckbox.fieldname}}" id="{{assetcheckbox.fieldname}}" ></ion-radio>
+                          <ion-label style="margin: 0px">{{assetcheckbox.checkboxname}}</ion-label>
+                          <ion-radio style="margin: 0px 5px" slot="start" color="primary" name="sel_bundles" value="{{assetcheckbox.fieldname}}" id="{{assetcheckbox.fieldname}}" ></ion-radio>
                         </ion-item>
                     </div>
                 </ion-col>
