@@ -51,7 +51,9 @@ a {
     font-weight: 900;
 }
 .test-list-sample {
-    font-size: 15px;
+    font-size: 14px;
+    margin: 0px;
+    white-space: inherit;
 }
 .mrg_bottom_submit{
     position: relative;
@@ -96,4 +98,5 @@ a {
 }
 ion-item {
     --min-height: 22px;
+    align-items: baseline;
 }
