@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class AppConstants  {
     workOrder: object = {};
-    apiurl : string = 'https://devl06.borugroup.com/mvagit/phoneapi_ionic/';
-    vturl : string = 'https://devl06.borugroup.com/mvagit/';
+    apiurl : string = 'https://mvaser.com/phoneapi_ionic/';
+    vturl : string = 'https://mvaser.com/';
     
     getApiUrl() {
         return this.apiurl;
