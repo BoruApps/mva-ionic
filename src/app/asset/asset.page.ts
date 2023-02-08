@@ -435,8 +435,10 @@ export class AssetPage implements OnInit {
                         responseData.entries.hasOwnProperty(x) && res.push(responseData.entries[x]);
                     }
                     this.assetfilterlist = res;
+                    this.searchassetflag = 0;
                 }else{
                     this.assetfilterlist = [];
+                    this.searchassetflag = 1;
                 }
             });
         }else{
