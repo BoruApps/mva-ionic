@@ -135,6 +135,18 @@ export class AssetPage implements OnInit {
 
         this.assetstestcheckbox = this.assetstestcheckboxconstruct;
         this.assetstestcheckbox1 = this.assetstestcheckboxconstruct1;
+        for (var x in this.assetstestcheckbox1) {
+            var tmp = this.assetstestcheckbox1[x];
+            if (tmp.isbundle == 1 && this.assetstestcheckbox1[x].checkboxvalue) {
+                this.selectedbundle = this.assetstestcheckbox1[x].fieldname;
+            }
+        }
+        for (var x in this.assetstestcheckbox) {
+            var tmp = this.assetstestcheckbox[x];
+            if (tmp.isbundle == 1 && this.assetstestcheckbox[x].checkboxvalue) {
+                this.selectedbundle = this.assetstestcheckbox[x].fieldname;
+            }
+        }
         console.log('assetstestcheckbox == ',this.assetstestcheckbox);
         console.log('assetstestcheckbox1 == ',this.assetstestcheckbox1);
         this.storage.get('list_locations').then((list_locations) => {
