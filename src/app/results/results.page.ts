@@ -92,6 +92,7 @@ export class ResultsPage implements OnInit {
     }
     async doRefresh(event) {
         this.serialnumber = '';
+        this.assetlist = [];
         this.ngOnInit();
         event.target.complete();
 

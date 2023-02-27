@@ -184,15 +184,16 @@ export class CreateassetPage implements OnInit {
             addLocation.onDidDismiss().then((dataReturned) => {
                 console.log('dataReturned - location', dataReturned.data)
                 if (dataReturned.data !== null && dataReturned.data != undefined) {
-                    var html = '<option value="'+dataReturned.data.id+'" class="ng-binding ng-scope">'+dataReturned.data.name+'</option>';
-                    jQuery('#multiaddressid').append(html);
-                    jQuery('#multiaddressid').val(dataReturned.data.id).trigger("change");
                     console.log('befor- list_locations = ',self.list_locations);
                     self.list_locations.push({ 
                         crmid : dataReturned.data.id,
                         address1 : dataReturned.data.name
                     });
                     console.log('after- list_locations = ',self.list_locations);
+                    setTimeout(() => {
+                        jQuery('#multiaddressid').val(dataReturned.data.id).trigger("change");
+                    }, 1000);
+                    
                 }
             });
 
@@ -345,6 +346,12 @@ export class CreateassetPage implements OnInit {
                 if (success == true) {
                     this.presentToast("Asset created successfully", 'success');
                     var newasset = [];
+                    var multiaddressid= formdata['multiaddressid'];
+                    for (var i = 0; i < this.list_locations.length; ++i) {
+                        if(this.list_locations[i]["crmid"] == formdata['multiaddressid']){
+                            multiaddressid = this.list_locations[i]["address1"];
+                        }
+                    }
                     newasset.push({
                         assetid: data["body"]['data'].toString(),
                         assetname: formdata['assetname'],
@@ -357,7 +364,7 @@ export class CreateassetPage implements OnInit {
                         cf_929: formdata['cf_929'],
                         cf_1150: formdata['cf_1150'],
                         cf_1164: formdata['cf_1164'],
-                        multiaddressid: formdata['multiaddressid']
+                        multiaddressid: multiaddressid
                     });
                     this.modalController.dismiss({'newasset':newasset});
                 } else if(data["body"]["existassert"] == 'EXIST') {
