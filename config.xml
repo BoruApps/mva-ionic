@@ -109,7 +109,9 @@
             <string>You can take photos of your completed work to show MVA</string>
         </config-file>
         <config-file parent="/manifest" target="AndroidManifest.xml" xmlns:android="http://schemas.android.com/apk/res/android">
-            <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+            <uses-permission
+    android:name="android.permission.REQUEST_INSTALL_PACKAGES"
+    tools:node="remove"/>
         </config-file>
         <edit-config file="*-Info.plist" mode="merge" target="NSPhotoLibraryUsageDescription">
             <string>Need photo library access in case you want to upload already taken photos instead</string>
