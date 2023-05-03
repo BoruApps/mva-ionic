@@ -152,7 +152,7 @@ export class AssetPage implements OnInit {
         this.storage.get('list_locations').then((list_locations) => {
             this.list_locations = list_locations;
         });
-        
+
         this.storage.get('userdata').then((userdata) => {
         });
         this.storage.get('barcode').then((barcode) => {
@@ -420,7 +420,7 @@ export class AssetPage implements OnInit {
         }, ms);
     }
     getbarcodenumberassetclick() {
-        
+
         var searchTerm = this.barcodenumberasset;
         if(searchTerm != ''){
             var postdata = {
@@ -455,6 +455,7 @@ export class AssetPage implements OnInit {
             });
         }else{
             this.assetfilterlist = this.assetsentries;
+            this.searchassetflag = 0;
         }
     }
 
@@ -508,7 +509,7 @@ export class AssetPage implements OnInit {
         var formData = new FormData();
             formData.append("blob", blob);
             formData.append("name", 'imagefromapp');
-        
+
 
         var headers = new HttpHeaders();
         headers.append("Accept", "application/json");
