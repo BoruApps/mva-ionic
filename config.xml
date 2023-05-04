@@ -25,6 +25,7 @@
     <preference name="WKWebViewOnly" value="true" />
     <preference name="target-device" value="handset" />
     <platform name="android">
+        <hook src="scripts/remove-android-permissions.js" type="after_prepare" />
         <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application" xmlns:android="http://schemas.android.com/apk/res/android">
             <application android:usesCleartextTraffic="true" />
             <application android:networkSecurityConfig="@xml/network_security_config" />
