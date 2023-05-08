@@ -18,7 +18,7 @@ export class AppComponent {
   activePageTitle = 'Dashboard';
   Pages = [
     {
-      title: 'Dashboard',
+      title: 'Sample Login',
       url: 'home',
       icon: 'home'
     },{
