@@ -34,3 +34,16 @@ ion-content.loginPage {
   text-overflow: unset;
   white-space: unset;
 }
+
+ion-button.new-light-btn {
+  border: 1px solid var(--ion-color-primary);
+  color: var(--ion-color-primary);
+  border-radius: 8px;
+  min-width: 160px;
+}
+
+.botton-right {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+}

@@ -22,6 +22,7 @@ export class LoginPage implements OnInit {
   password: string;
   isTermChecked: boolean = true;
   termConditionCheckbox: boolean = false;
+  isLoginForm: boolean = true;
   isTermError: boolean = false;
 
   constructor(
@@ -149,6 +150,40 @@ export class LoginPage implements OnInit {
     return false;
   }
 
+  forgotPassword(form: any) {
+    console.log('-- In - forgotPassword');
+
+    if (form.value.username === undefined || form.value.username == '') {
+      this.presentToast('Please fill email to continue.');
+      return false;
+    }
+
+    var headers = new HttpHeaders();
+    headers.append("Accept", 'application/json');
+    headers.append('Content-Type', 'application/json');
+    headers.append('Access-Control-Allow-Origin', '*');
+
+    this.showLoading();
+
+    this.httpClient.post(this.apiurl + "forgetPassword.php", form.value, {headers: headers, observe: 'response'})
+        .subscribe(async data => {
+          this.hideLoading();
+
+          console.log('forgotPassword response was', data);
+
+          var success = data["body"]["success"];
+          if (success == true) {
+            this.presentToast('Your request has been submitted and will be processed. For more immediate attention, please call (330) 498-6255.');
+          } else {
+            this.presentToast('Error while sending forget password email. Please try again after some time.');
+          }
+        }, error => {
+          this.hideLoading();
+          console.log('forgotPassword failed');
+          this.presentToast('Error while sending forget password email. Please try again after some time.');
+        });
+  }
+
   checkTermAndConditions() {
     var data = {
       _operation: 'terms',
@@ -208,5 +243,9 @@ export class LoginPage implements OnInit {
     });
 
     return await addItem.present();
+  }
+
+  async toggleForm(){
+    this.isLoginForm = !this.isLoginForm;
   }
 }
