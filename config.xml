@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.boruapps.mvaapp" version="2.2.10" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.boruapps.mvaapp" version="2.2.11" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>MVA</name>
     <description>Manage your Work Orders with ease.</description>
     <author email="appdev@boruapps.com" href="https://boruapps.com">Boru Apps</author>
@@ -29,6 +29,18 @@
         <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application" xmlns:android="http://schemas.android.com/apk/res/android">
             <application android:usesCleartextTraffic="true" />
             <application android:networkSecurityConfig="@xml/network_security_config" />
+        </edit-config>
+        <edit-config file="app/src/main/AndroidManifest.xml" target="/manifest/application/activity" mode="merge" xmlns:android="http://schemas.android.com/apk/res/android">
+            <activity android:exported="true"/>
+        </edit-config>
+        <edit-config file="app/src/main/AndroidManifest.xml" target="/manifest/application/service" mode="merge" xmlns:android="http://schemas.android.com/apk/res/android">
+            <service android:exported="true" />
+        </edit-config>
+        <edit-config file="app/src/main/AndroidManifest.xml" target="/manifest/application/provider" mode="merge" xmlns:android="http://schemas.android.com/apk/res/android">
+            <provider android:exported="true" />
+        </edit-config>
+        <edit-config file="app/src/main/AndroidManifest.xml" target="/manifest/application/receiver" mode="merge" xmlns:android="http://schemas.android.com/apk/res/android">
+            <receiver android:exported="true" />
         </edit-config>
         <resource-file src="resources/android/xml/network_security_config.xml" target="app/src/main/res/xml/network_security_config.xml" />
         <allow-intent href="market:*" />
