@@ -8,6 +8,7 @@ import {Storage} from '@ionic/storage-angular';
 import { File } from '@awesome-cordova-plugins/file/ngx';
 import { HTTP } from '@awesome-cordova-plugins/http/ngx';
 import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
+import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 
 @Component({
   selector: 'app-results',
@@ -35,7 +36,8 @@ export class ResultsPage implements OnInit {
         private platform: Platform,
         private file: File,
         private http: HTTP,
-        private fileOpener: FileOpener
+        private fileOpener: FileOpener,
+        private iab: InAppBrowser
     ) {
         this.apiurl = this.appConst.getApiUrl();
         this.vturl = this.appConst.getVtUrl();
@@ -188,6 +190,11 @@ export class ResultsPage implements OnInit {
             if (verified == true) {
                  this.hideLoading();
                 var url = data['body']['pdfFilePath'];
+
+                console.log('this.url',url)
+                this.iab.create(url, "_blank");
+                return true;
+
                 let fileName = url.substring(url.lastIndexOf('/')+1);
                 console.log("--------- fileName ---------",fileName);
                 if(fileName == '' || fileName == undefined){

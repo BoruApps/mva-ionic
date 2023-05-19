@@ -21,6 +21,7 @@ import { File } from '@awesome-cordova-plugins/file/ngx';
 import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
 import { HTTP } from '@awesome-cordova-plugins/http/ngx';
 import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
+import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 
 
 
@@ -37,6 +38,7 @@ import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
       useClass: IonicRouteStrategy 
     },
     AppConstants,
+    InAppBrowser,
     Crop,
     Camera,
     File,
