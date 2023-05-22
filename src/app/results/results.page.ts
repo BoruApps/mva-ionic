@@ -5,9 +5,7 @@ import {HttpHeaders, HttpClient} from '@angular/common/http';
 import {AppConstants} from '../providers/constant/constant';
 import {LoadingController} from '@ionic/angular';
 import {Storage} from '@ionic/storage-angular';
-import { File } from '@awesome-cordova-plugins/file/ngx';
 import { HTTP } from '@awesome-cordova-plugins/http/ngx';
-import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 
 @Component({
@@ -34,9 +32,7 @@ export class ResultsPage implements OnInit {
         private activatedRoute: ActivatedRoute,
         public loadingController: LoadingController,
         private platform: Platform,
-        private file: File,
         private http: HTTP,
-        private fileOpener: FileOpener,
         private iab: InAppBrowser
     ) {
         this.apiurl = this.appConst.getApiUrl();
@@ -191,47 +187,13 @@ export class ResultsPage implements OnInit {
                  this.hideLoading();
                 var url = data['body']['pdfFilePath'];
 
-                console.log('this.url',url)
-                this.iab.create(url, "_blank");
+                if (this.platform.is('android')) {
+                    url = 'https://docs.google.com/viewer?url=' + url;
+                }
+                var options = "location=yes,hidden=no,toolbar=yes,clearcache=yes,clearsessioncache=yes";
+
+                this.iab.create(url, "_blank",options);
                 return true;
-
-                let fileName = url.substring(url.lastIndexOf('/')+1);
-                console.log("--------- fileName ---------",fileName);
-                if(fileName == '' || fileName == undefined){
-                    fileName = 'download.pdf';
-                }
-                if (this.platform.is('ios')) {
-                    var path = this.file.documentsDirectory;
-                } else {
-                    var path = this.file.dataDirectory;
-                }
-
-                this.http.sendRequest(url, {method: "get", responseType: "arraybuffer"}).then(
-                    httpResponse => {
-                        var downloadedFile = new Blob([httpResponse.data], {type: 'application/pdf'});
-
-                        this.file.writeFile(path, fileName, downloadedFile, {replace: true}).then(createdFile => {
-                            this.fileOpener.showOpenWithDialog(path + fileName, 'application/pdf')
-                                .then(() => {
-                                    this.hideLoading();
-                                    console.log('File is opened');
-                                })
-                                .catch(e => {
-                                    this.hideLoading();
-                                    console.log('Error opening file', e);
-                                    this.presentToast('Error opening file :: '+JSON.stringify(e));
-                                });
-                        }).catch(err => {
-                            this.hideLoading();
-                            console.log('Error creating file', err)
-                            this.presentToast('Error creating file');
-                        });
-                    }
-                ).catch(err => {
-                    this.hideLoading();
-                    console.log('Error getting file', err)
-                    this.presentToast('Error getting file');
-                })
             } else {
                 this.hideLoading();
                 this.presentToast('Something went wrong. Please try again');

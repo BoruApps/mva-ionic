@@ -10,7 +10,6 @@ import {CreateassetPage} from "../createasset/createasset.page";
 import {CreateinspectionPage} from "../createinspection/createinspection.page";
 import {Crop} from '@ionic-native/crop/ngx';
 import {Camera, CameraOptions} from '@awesome-cordova-plugins/camera/ngx';
-import {File} from '@awesome-cordova-plugins/file/ngx';
 import {ImageeditorPage} from "../imageeditor/imageeditor.page";
 import { HomeService } from '../home/home.service';
 
@@ -67,7 +66,6 @@ export class AssetPage implements OnInit {
         public modalCtrl: ModalController,
         private crop: Crop,
         private camera: Camera,
-        private file: File,
         public homeService: HomeService
     ) {
         this.apiurl = this.appConst.getApiUrl();

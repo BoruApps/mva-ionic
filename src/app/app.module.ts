@@ -17,8 +17,6 @@ import {CreateinspectionPage} from "./createinspection/createinspection.page";
 import {ConfirmationModal} from "./confirmationmodel/confirmationmodel.page";
 import { Crop } from '@ionic-native/crop/ngx';
 import { Camera, CameraOptions } from '@awesome-cordova-plugins/camera/ngx';
-import { File } from '@awesome-cordova-plugins/file/ngx';
-import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
 import { HTTP } from '@awesome-cordova-plugins/http/ngx';
 import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
@@ -41,8 +39,6 @@ import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
     InAppBrowser,
     Crop,
     Camera,
-    File,
-    FileOpener,
     HTTP,
     BarcodeScanner,
   ],
