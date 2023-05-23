@@ -96,9 +96,11 @@ export class HomePage implements OnInit {
     }
     scanBarcode() {
         var option = {
-                disableAnimations: true,
-                disableSuccessBeep: true,
-            }
+            disableAnimations: true,
+            disableSuccessBeep: true,
+            showTorchButton : true, // iOS and Android
+            torchOn: true, // Android, launch with the torch switched on (if available)
+        };
         this.barcodeScanner.scan(option).then(barcodeData => {
             if(barcodeData.text){
                 this.barcodenumber = barcodeData.text
