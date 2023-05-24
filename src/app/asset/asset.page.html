@@ -20,7 +20,7 @@
             <ion-grid>
               <ion-row>
                 <ion-col>
-                      <ion-select id="assetfilter" [(ngModel)]="assetfilter" value="serialnumber">
+                      <ion-select id="assetfilter" [(ngModel)]="assetfilter" value="serialnumber" (ionChange)="getbarcodenumberasset()">
                         <ion-select-option value = "serialnumber">Serial#</ion-select-option>
                         <ion-select-option value = "unitid">Unit ID</ion-select-option>
                         <ion-select-option value = "equipmentid">Equipment Type</ion-select-option>
